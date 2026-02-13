@@ -26,7 +26,7 @@ export const HomePageClient = () => {
   const [selectedProduct, setSelectedProduct] = useState<any>(null)
   const [currentSlide, setCurrentSlide] = useState(0)
 
-  const featuredProducts = products.filter((p) => p.featured).slice(0, 8)
+  const featuredProducts = products.filter((p) => p.isFeatured).slice(0, 8)
   const newProducts = products.slice(0, 8)
 
   const heroSlides = [
@@ -226,12 +226,11 @@ export const HomePageClient = () => {
                   transition={{ delay: index * 0.05 }}
                 >
                   <ProductCard
-                    {...product}
-                    deliveryType={deliveryType}
-                    onQuickView={() => setSelectedProduct(product)}
-                    showInstallments={true}
-                    installmentsCount={12}
-                  />
+                  image={''} {...product}
+                  deliveryType={deliveryType}
+                  onQuickView={() => setSelectedProduct(product)}
+                  showInstallments={true}
+                  installmentsCount={12}                  />
                 </motion.div>
               )
             })}
@@ -265,12 +264,11 @@ export const HomePageClient = () => {
                   transition={{ delay: index * 0.05 }}
                 >
                   <ProductCard
-                    {...product}
-                    deliveryType={deliveryType}
-                    onQuickView={() => setSelectedProduct(product)}
-                    showInstallments={true}
-                    installmentsCount={12}
-                  />
+                  image={''} {...product}
+                  deliveryType={deliveryType}
+                  onQuickView={() => setSelectedProduct(product)}
+                  showInstallments={true}
+                  installmentsCount={12}                  />
                 </motion.div>
               )
             })}

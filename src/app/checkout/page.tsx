@@ -1,5 +1,6 @@
 import { Metadata } from 'next'
 import { CheckoutPageClient } from '@/components/checkout/CheckoutPageClient'
+import { Link } from 'lucide-react'
 
 export const metadata: Metadata = {
   title: 'Checkout - Finalizar Compra | MG Trator Peças',
@@ -15,9 +16,9 @@ export default function CheckoutPage() {
         <div className="bg-white border-b">
           <div className="max-w-7xl mx-auto px-4 py-4">
             <div className="flex items-center gap-2 text-sm">
-              <a href="/" className="text-[var(--neutral-600)] hover:text-[var(--primary)] transition-colors">
+              <Link href="/" className="text-[var(--neutral-600)] hover:text-[var(--primary)] transition-colors">
                 Início
-              </a>
+              </Link>
               <span className="text-[var(--neutral-400)]">/</span>
               <a href="/carrinho" className="text-[var(--neutral-600)] hover:text-[var(--primary)] transition-colors">
                 Carrinho
