@@ -1,12 +1,12 @@
 'use client'
 
-import { useState } from 'react'
-import { ShoppingCart, Check, Truck, Shield, Plus, Minus, Package, CreditCard, RotateCcw, BadgeCheck, Phone, ChevronDown, ChevronUp, Star, MessageCircle, Clock, Plane, Info } from 'lucide-react'
+import { useState, useEffect, useCallback } from 'react'
+import { ShoppingCart, Check, Truck, Shield, Plus, Minus, Package, CreditCard, RotateCcw, BadgeCheck, Phone, ChevronDown, ChevronUp, Star, MessageCircle, Clock, Plane, Info, X, ChevronLeft, ChevronRight, ZoomIn } from 'lucide-react'
 import { ImageWithFallback } from '@/components/figma/ImageWithFallback'
 import { Breadcrumbs } from '@/components/layout/Breadcrumbs'
 import { products } from '@/data/mockData'
 import { useCart } from '@/contexts/CartContext'
-import { motion } from 'motion/react'
+import { motion, AnimatePresence } from 'motion/react'
 import { ProductCard } from './ProductCard'
 import Link from 'next/link'
 
@@ -20,15 +20,37 @@ export const ProductDetailClient = ({ slug }: ProductDetailClientProps) => {
   const [selectedImage, setSelectedImage] = useState(0)
   const [quantity, setQuantity] = useState(1)
   const [expandedFaq, setExpandedFaq] = useState<number | null>(0)
+  const [isLightboxOpen, setIsLightboxOpen] = useState(false)
   const { addItem } = useCart()
   
   const product = products.find(p => {
     if (p.slug === slug) return true
-    
     if (String(p.id) === slug) return true
-    
     return false
   })
+
+  const rawImages = product ? [product.thumbnail, ...(product.images || [])] : []
+  const uniqueImages = Array.from(new Set(rawImages.filter(Boolean))) as string[]
+  const safeImages = uniqueImages.length === 0 ? ['/placeholder.png'] : uniqueImages
+
+  const nextImage = () => {
+    setSelectedImage((prev) => (prev + 1) % safeImages.length)
+  }
+
+  const prevImage = () => {
+    setSelectedImage((prev) => (prev - 1 + safeImages.length) % safeImages.length)
+  }
+
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (!isLightboxOpen) return
+      if (e.key === 'Escape') setIsLightboxOpen(false)
+      if (e.key === 'ArrowRight') nextImage()
+      if (e.key === 'ArrowLeft') prevImage()
+    }
+    window.addEventListener('keydown', handleKeyDown)
+    return () => window.removeEventListener('keydown', handleKeyDown)
+  }, [isLightboxOpen, nextImage, prevImage])
 
   if (!product) {
     return (
@@ -41,10 +63,6 @@ export const ProductDetailClient = ({ slug }: ProductDetailClientProps) => {
   }
 
   const relatedProducts = products.filter((p) => p.brandName === product.brandName && p.id !== product.id).slice(0, 4)
-  
-  const images = [product.thumbnail, ...product.images].filter(Boolean) as string[]
-  if (images.length === 0) images.push('/placeholder.png')
-
   const deliveryType = product.deliveryType || 'pronta-entrega'
   
   const getTrustBadges = () => {
@@ -145,8 +163,6 @@ export const ProductDetailClient = ({ slug }: ProductDetailClientProps) => {
   }
 
   const trustBadges = getTrustBadges()
-  const DeliveryBadgeIcon = trustBadges.delivery.icon
-  const WarrantyBadgeIcon = trustBadges.warranty.icon
 
   const handleAddToCart = () => {
     if (IS_CATALOG_MODE) return
@@ -206,29 +222,36 @@ export const ProductDetailClient = ({ slug }: ProductDetailClientProps) => {
 
         <div className="grid lg:grid-cols-2 gap-12 mt-8 mb-16">
           <div>
-            <div className="aspect-square bg-gradient-to-br from-slate-50 via-slate-100 to-slate-50 rounded-2xl overflow-hidden mb-4 border-2 border-[var(--neutral-200)] relative group">
+            <div 
+              className="aspect-square bg-gradient-to-br from-slate-50 via-slate-100 to-slate-50 rounded-2xl overflow-hidden mb-4 border-2 border-[var(--neutral-200)] relative group cursor-zoom-in"
+              onClick={() => setIsLightboxOpen(true)}
+            >
               <ImageWithFallback
-                src={images[selectedImage]}
+                src={safeImages[selectedImage]}
                 alt={product.name}
                 className="w-full h-full object-contain p-8 group-hover:scale-105 transition-transform duration-500"
               />
-              <div className="absolute bottom-4 right-4 bg-black/60 text-white text-xs px-3 py-1.5 rounded-lg backdrop-blur-sm opacity-0 group-hover:opacity-100 transition-opacity">
+              <div className="absolute bottom-4 right-4 bg-black/60 text-white text-xs px-3 py-1.5 rounded-lg backdrop-blur-sm opacity-0 group-hover:opacity-100 transition-opacity flex items-center gap-2">
+                <ZoomIn className="w-4 h-4" />
                 Clique para ampliar
               </div>
             </div>
-            <div className="grid grid-cols-4 gap-3">
-              {[...images, ...images].slice(0, 4).map((img, idx) => (
-                <button
-                  key={idx}
-                  onClick={() => setSelectedImage(idx % images.length)}
-                  className={`aspect-square bg-[var(--neutral-100)] rounded-lg overflow-hidden border-2 transition-all hover:scale-105 ${
-                    selectedImage === (idx % images.length) ? 'border-[var(--primary)] shadow-lg' : 'border-transparent'
-                  }`}
-                >
-                  <ImageWithFallback src={img} alt={`${product.name} ${idx + 1}`} className="w-full h-full object-cover" />
-                </button>
-              ))}
-            </div>
+            
+            {safeImages.length > 1 && (
+              <div className="grid grid-cols-4 gap-3">
+                {safeImages.map((img, idx) => (
+                  <button
+                    key={idx}
+                    onClick={() => setSelectedImage(idx)}
+                    className={`aspect-square bg-[var(--neutral-100)] rounded-lg overflow-hidden border-2 transition-all hover:scale-105 ${
+                      selectedImage === idx ? 'border-[var(--primary)] shadow-lg' : 'border-transparent'
+                    }`}
+                  >
+                    <ImageWithFallback src={img} alt={`${product.name} ${idx + 1}`} className="w-full h-full object-cover" />
+                  </button>
+                ))}
+              </div>
+            )}
           </div>
 
           <div>
@@ -535,6 +558,68 @@ export const ProductDetailClient = ({ slug }: ProductDetailClientProps) => {
           </section>
         )}
       </div>
+
+      <AnimatePresence>
+        {isLightboxOpen && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-50 bg-black/95 backdrop-blur-sm flex items-center justify-center p-4"
+          >
+            <button
+              onClick={() => setIsLightboxOpen(false)}
+              className="absolute top-4 right-4 text-white/70 hover:text-white bg-white/10 hover:bg-white/20 p-2 rounded-full transition-all z-50"
+            >
+              <X className="w-8 h-8" />
+            </button>
+
+            <motion.div 
+              initial={{ scale: 0.9, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.9, opacity: 0 }}
+              className="relative w-full h-full max-w-6xl max-h-[85vh] flex items-center justify-center"
+            >
+              <ImageWithFallback
+                src={safeImages[selectedImage]}
+                alt={product.name}
+                className="w-full h-full object-contain"
+              />
+              
+              {safeImages.length > 1 && (
+                <>
+                  <button
+                    onClick={prevImage}
+                    className="absolute left-0 top-1/2 -translate-y-1/2 p-3 text-white/70 hover:text-white bg-black/40 hover:bg-black/60 rounded-r-xl transition-all"
+                  >
+                    <ChevronLeft className="w-8 h-8" />
+                  </button>
+                  <button
+                    onClick={nextImage}
+                    className="absolute right-0 top-1/2 -translate-y-1/2 p-3 text-white/70 hover:text-white bg-black/40 hover:bg-black/60 rounded-l-xl transition-all"
+                  >
+                    <ChevronRight className="w-8 h-8" />
+                  </button>
+
+                  <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2 overflow-x-auto max-w-full px-4 py-2 bg-black/40 backdrop-blur-md rounded-full">
+                    {safeImages.map((img, idx) => (
+                      <button
+                        key={idx}
+                        onClick={() => setSelectedImage(idx)}
+                        className={`w-12 h-12 rounded-lg overflow-hidden border-2 transition-all flex-shrink-0 ${
+                          selectedImage === idx ? 'border-white opacity-100' : 'border-transparent opacity-50 hover:opacity-80'
+                        }`}
+                      >
+                        <ImageWithFallback src={img} alt="" className="w-full h-full object-cover" />
+                      </button>
+                    ))}
+                  </div>
+                </>
+              )}
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   )
 }
