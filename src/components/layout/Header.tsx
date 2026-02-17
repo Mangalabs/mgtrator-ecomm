@@ -13,8 +13,9 @@ export const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
   const [isScrolled, setIsScrolled] = useState(false)
   const [searchQuery, setSearchQuery] = useState('')
-  const [showSuggestions, setShowSuggestions] = useState(false)
   const searchRef = useRef<HTMLDivElement>(null)
+
+  const showSuggestions = searchQuery.trim().length >= 2
 
   const pathname = usePathname()
   const router = useRouter()
@@ -54,7 +55,7 @@ export const Header = () => {
         searchRef.current &&
         !searchRef.current.contains(event.target as Node)
       ) {
-        setShowSuggestions(false)
+        setSearchQuery('')
       }
     }
 
@@ -80,7 +81,6 @@ export const Header = () => {
     if (searchQuery.trim()) {
       router.push(`/busca?q=${encodeURIComponent(searchQuery.trim())}`)
       setSearchQuery('')
-      setShowSuggestions(false)
     }
   }
 
@@ -88,20 +88,17 @@ export const Header = () => {
     const identifier = product.slug || product.id
     router.push(`/produtos/${identifier}`)
     setSearchQuery('')
-    setShowSuggestions(false)
   }
 
   const handleViewAllResults = () => {
     if (searchQuery.trim()) {
       router.push(`/busca?q=${encodeURIComponent(searchQuery.trim())}`)
       setSearchQuery('')
-      setShowSuggestions(false)
     }
   }
 
   const handleInputChange = (value: string) => {
     setSearchQuery(value)
-    if (value.trim().length < 2) setShowSuggestions(false)
   }
 
   return (
@@ -151,9 +148,6 @@ export const Header = () => {
                   type='text'
                   value={searchQuery}
                   onChange={(e) => handleInputChange(e.target.value)}
-                  onFocus={() =>
-                    searchQuery.trim().length >= 2 && setShowSuggestions(true)
-                  }
                   placeholder='Buscar por código, marca ou modelo...'
                   className='w-full h-11 pl-12 pr-24 rounded-full border-2 border-gray-200 focus:border-[var(--primary)] focus:outline-none'
                 />
