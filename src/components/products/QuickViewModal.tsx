@@ -8,6 +8,8 @@ import { motion, AnimatePresence } from 'motion/react'
 import { useCart } from '@/contexts/CartContext'
 import type { Product } from '@/data/types'
 
+const IS_CATALOG_MODE = true
+
 interface QuickViewModalProps {
   product: Product | null
   onClose: () => void
@@ -102,19 +104,20 @@ export const QuickViewModal = ({ product, onClose }: QuickViewModalProps) => {
   const config = DELIVERY_CONFIG[deliveryType] || DELIVERY_CONFIG['pronta-entrega']
   const DeliveryIcon = config.icon
   
-  const hasDiscount = product.originalPrice && product.originalPrice > product.price
+  const hasDiscount = !IS_CATALOG_MODE && product.originalPrice && product.originalPrice > product.price
   const discountPercent = hasDiscount 
     ? Math.round(((product.originalPrice! - product.price) / product.originalPrice!) * 100) 
     : 0
 
   const handleWhatsApp = () => {
     const message = encodeURIComponent(
-      `Olá! Gostaria de consultar a peça:\n\n*${product.name}*\nCódigo: ${productCode}\nPreço: R$ ${product.price.toFixed(2)}\n\nPode me ajudar?`
+      `Olá! Gostaria de consultar a peça:\n\n*${product.name}*\nCódigo: ${productCode}\n\nPode me ajudar com valores e disponibilidade?`
     )
     window.open(`https://wa.me/5531998753200?text=${message}`, '_blank')
   }
 
   const handleAddToCart = () => {
+    if (IS_CATALOG_MODE) return
     for (let i = 0; i < quantity; i++) {
       addItem(product)
     }
@@ -122,6 +125,10 @@ export const QuickViewModal = ({ product, onClose }: QuickViewModalProps) => {
   }
 
   const { delivery: deliveryBadge, warranty: warrantyBadge } = config.badges
+
+  // Override text for Catalog Mode
+  const deliveryTitle = IS_CATALOG_MODE ? (deliveryType === 'pronta-entrega' ? 'Entrega Facilitada' : deliveryBadge.title) : deliveryBadge.title
+  const deliverySubtitle = IS_CATALOG_MODE ? (deliveryType === 'pronta-entrega' ? 'Consulte regiões' : 'Consulte prazos') : deliveryBadge.subtitle
 
   return (
     <AnimatePresence>
@@ -214,15 +221,17 @@ export const QuickViewModal = ({ product, onClose }: QuickViewModalProps) => {
                     <div className="flex items-center justify-center mb-1">
                       <deliveryBadge.Icon className={`w-6 h-6 ${deliveryBadge.style}`} />
                     </div>
-                    <div className="text-[10px] text-[var(--neutral-600)] font-semibold">{deliveryBadge.title}</div>
-                    <div className="text-[8px] text-[var(--neutral-600)] font-semibold">{deliveryBadge.subtitle}</div>
+                    <div className="text-[10px] text-[var(--neutral-600)] font-semibold">{deliveryTitle}</div>
+                    <div className="text-[8px] text-[var(--neutral-600)] font-semibold">{deliverySubtitle}</div>
                   </div>
                   <div className="text-center p-3 bg-[var(--neutral-50)] rounded-lg">
                     <div className="flex items-center justify-center mb-1">
                       <warrantyBadge.Icon className={`w-6 h-6 ${warrantyBadge.style}`} />
                     </div>
-                    <div className="text-[10px] text-[var(--neutral-600)] font-semibold">{warrantyBadge.title}</div>
-                    <div className="text-[8px] text-[var(--neutral-600)] font-semibold">{warrantyBadge.subtitle}</div>
+                    <div className="text-center">
+                        <div className="text-[10px] text-[var(--neutral-600)] font-semibold">{warrantyBadge.title}</div>
+                        <div className="text-[8px] text-[var(--neutral-600)] font-semibold">{warrantyBadge.subtitle}</div>
+                    </div>
                   </div>
                   <div className="text-center p-3 bg-[var(--neutral-50)] rounded-lg">
                     <div className="flex items-center justify-center mb-1">
@@ -249,15 +258,17 @@ export const QuickViewModal = ({ product, onClose }: QuickViewModalProps) => {
                       </div>
                     )}
 
-                    <div className={`${config.style.bg} border-2 ${config.style.border} rounded-xl px-3 py-2 shadow-md inline-flex items-center gap-2`}>
-                      <div className="flex items-center gap-1.5">
-                        <div className={`w-2 h-2 rounded-full ${config.style.dot}`} />
-                        <DeliveryIcon className={`w-3.5 h-3.5 ${config.style.icon}`} />
-                      </div>
-                      <span className={`text-xs font-black ${config.style.text}`}>
-                        {config.label}
-                      </span>
-                    </div>
+                    {!IS_CATALOG_MODE && (
+                        <div className={`${config.style.bg} border-2 ${config.style.border} rounded-xl px-3 py-2 shadow-md inline-flex items-center gap-2`}>
+                        <div className="flex items-center gap-1.5">
+                            <div className={`w-2 h-2 rounded-full ${config.style.dot}`} />
+                            <DeliveryIcon className={`w-3.5 h-3.5 ${config.style.icon}`} />
+                        </div>
+                        <span className={`text-xs font-black ${config.style.text}`}>
+                            {config.label}
+                        </span>
+                        </div>
+                    )}
                   </div>
 
                   {product.description && (
@@ -288,57 +299,86 @@ export const QuickViewModal = ({ product, onClose }: QuickViewModalProps) => {
                     }} />
                     
                     <div className="relative">
-                      <div className="flex items-center gap-2 mb-2">
-                        <div className="w-1.5 h-1.5 rounded-full bg-[var(--secondary)] animate-pulse" />
-                        <span className="text-[11px] text-white/70 uppercase tracking-widest font-bold">
-                          Valor especial
-                        </span>
-                      </div>
-                      <div className="flex items-baseline gap-2">
-                        <span className="text-base text-white/80 font-bold">R$</span>
-                        <span className="text-[42px] font-black text-white leading-none tracking-tighter">
-                          {product.price.toFixed(2).split('.')[0]}
-                        </span>
-                        <span className="text-2xl font-black text-white/90 leading-none">
-                          ,{product.price.toFixed(2).split('.')[1]}
-                        </span>
-                      </div>
+                      {!IS_CATALOG_MODE ? (
+                          <>
+                            <div className="flex items-center gap-2 mb-2">
+                                <div className="w-1.5 h-1.5 rounded-full bg-[var(--secondary)] animate-pulse" />
+                                <span className="text-[11px] text-white/70 uppercase tracking-widest font-bold">
+                                Valor especial
+                                </span>
+                            </div>
+                            <div className="flex items-baseline gap-2">
+                                <span className="text-base text-white/80 font-bold">R$</span>
+                                <span className="text-[42px] font-black text-white leading-none tracking-tighter">
+                                {product.price.toFixed(2).split('.')[0]}
+                                </span>
+                                <span className="text-2xl font-black text-white/90 leading-none">
+                                ,{product.price.toFixed(2).split('.')[1]}
+                                </span>
+                            </div>
+                          </>
+                      ) : (
+                          <div className="flex flex-col gap-1">
+                                <span className="text-[11px] text-white/70 uppercase tracking-widest font-bold">
+                                Disponibilidade
+                                </span>
+                                <span className="text-2xl font-black text-white leading-none tracking-tight">
+                                Preço sob consulta
+                                </span>
+                          </div>
+                      )}
                     </div>
                   </div>
                 </div>
 
                 <div className="space-y-3">
                   <div className="flex items-center gap-3">
-                    <div className="flex items-center gap-2 bg-white border-2 border-[var(--neutral-200)] rounded-xl p-1">
-                      <motion.button
-                        whileTap={{ scale: 0.9 }}
-                        onClick={() => setQuantity(Math.max(1, quantity - 1))}
-                        className="w-8 h-8 bg-[var(--neutral-100)] hover:bg-[var(--neutral-200)] rounded-lg flex items-center justify-center transition-all cursor-pointer"
-                        aria-label="Diminuir quantidade"
-                      >
-                        <Minus className="w-4 h-4 text-[var(--neutral-700)]" />
-                      </motion.button>
-                      <span className="w-12 text-center font-black text-[var(--neutral-900)]">{quantity}</span>
-                      <motion.button
-                        whileTap={{ scale: 0.9 }}
-                        onClick={() => setQuantity(quantity + 1)}
-                        className="w-8 h-8 bg-[var(--neutral-100)] hover:bg-[var(--neutral-200)] rounded-lg flex items-center justify-center transition-all cursor-pointer"
-                        aria-label="Aumentar quantidade"
-                      >
-                        <Plus className="w-4 h-4 text-[var(--neutral-700)]" />
-                      </motion.button>
-                    </div>
+                    
+                    {!IS_CATALOG_MODE ? (
+                        <>
+                            <div className="flex items-center gap-2 bg-white border-2 border-[var(--neutral-200)] rounded-xl p-1">
+                                <motion.button
+                                    whileTap={{ scale: 0.9 }}
+                                    onClick={() => setQuantity(Math.max(1, quantity - 1))}
+                                    className="w-8 h-8 bg-[var(--neutral-100)] hover:bg-[var(--neutral-200)] rounded-lg flex items-center justify-center transition-all cursor-pointer"
+                                    aria-label="Diminuir quantidade"
+                                >
+                                    <Minus className="w-4 h-4 text-[var(--neutral-700)]" />
+                                </motion.button>
+                                <span className="w-12 text-center font-black text-[var(--neutral-900)]">{quantity}</span>
+                                <motion.button
+                                    whileTap={{ scale: 0.9 }}
+                                    onClick={() => setQuantity(quantity + 1)}
+                                    className="w-8 h-8 bg-[var(--neutral-100)] hover:bg-[var(--neutral-200)] rounded-lg flex items-center justify-center transition-all cursor-pointer"
+                                    aria-label="Aumentar quantidade"
+                                >
+                                    <Plus className="w-4 h-4 text-[var(--neutral-700)]" />
+                                </motion.button>
+                            </div>
 
-                    <motion.button
-                      whileHover={{ scale: 1.03, y: -2 }}
-                      whileTap={{ scale: 0.97 }}
-                      onClick={handleAddToCart}
-                      className="flex-1 relative overflow-hidden bg-gradient-to-br from-[var(--primary)] via-[#2847a0] to-[#1a2d5f] text-white py-4 rounded-2xl font-black shadow-2xl hover:shadow-[var(--primary)]/50 transition-all flex items-center justify-center gap-2.5 group/cart border-2 border-white/20 cursor-pointer"
-                    >
-                      <div className="absolute inset-0 bg-gradient-to-t from-transparent via-white/10 to-white/20 opacity-0 group-hover/cart:opacity-100 transition-opacity" />
-                      <ShoppingCart className="w-5 h-5 relative z-10 group-hover/cart:scale-110 transition-transform" />
-                      <span className="relative z-10">Adicionar ao Carrinho</span>
-                    </motion.button>
+                            <motion.button
+                            whileHover={{ scale: 1.03, y: -2 }}
+                            whileTap={{ scale: 0.97 }}
+                            onClick={handleAddToCart}
+                            className="flex-1 relative overflow-hidden bg-gradient-to-br from-[var(--primary)] via-[#2847a0] to-[#1a2d5f] text-white py-4 rounded-2xl font-black shadow-2xl hover:shadow-[var(--primary)]/50 transition-all flex items-center justify-center gap-2.5 group/cart border-2 border-white/20 cursor-pointer"
+                            >
+                            <div className="absolute inset-0 bg-gradient-to-t from-transparent via-white/10 to-white/20 opacity-0 group-hover/cart:opacity-100 transition-opacity" />
+                            <ShoppingCart className="w-5 h-5 relative z-10 group-hover/cart:scale-110 transition-transform" />
+                            <span className="relative z-10">Adicionar ao Carrinho</span>
+                            </motion.button>
+                        </>
+                    ) : (
+                        <motion.button
+                            whileHover={{ scale: 1.03, y: -2 }}
+                            whileTap={{ scale: 0.97 }}
+                            onClick={handleWhatsApp}
+                            className="w-full relative overflow-hidden bg-gradient-to-r from-[#25D366] to-[#128C7E] text-white py-4 rounded-2xl font-black text-lg shadow-2xl hover:shadow-[#25D366]/50 transition-all flex items-center justify-center gap-3 group border-2 border-white/20 cursor-pointer"
+                            >
+                            <div className="absolute inset-0 bg-gradient-to-t from-transparent via-white/10 to-white/20 opacity-0 group-hover:opacity-100 transition-opacity" />
+                            <MessageCircle className="w-6 h-6 relative z-10 group-hover:scale-110 transition-transform" />
+                            <span className="relative z-10">Solicitar cotação</span>
+                        </motion.button>
+                    )}
                   </div>
 
                   <div className="relative h-px bg-gradient-to-r from-transparent via-[var(--neutral-200)] to-transparent" />
@@ -354,15 +394,17 @@ export const QuickViewModal = ({ product, onClose }: QuickViewModalProps) => {
                       </motion.button>
                     </Link>
 
-                    <motion.button
-                      whileHover={{ scale: 1.01 }}
-                      whileTap={{ scale: 0.99 }}
-                      onClick={handleWhatsApp}
-                      className="w-full bg-gradient-to-r from-[#25D366] to-[#20BD5A] text-white py-3 rounded-xl font-bold text-sm shadow-lg shadow-[#25D366]/20 hover:shadow-xl transition-all flex items-center justify-center gap-2 cursor-pointer"
-                    >
-                      <MessageCircle className="w-4 h-4" />
-                      <span>Dúvidas? Fale conosco</span>
-                    </motion.button>
+                    {!IS_CATALOG_MODE && (
+                        <motion.button
+                        whileHover={{ scale: 1.01 }}
+                        whileTap={{ scale: 0.99 }}
+                        onClick={handleWhatsApp}
+                        className="w-full bg-gradient-to-r from-[#25D366] to-[#20BD5A] text-white py-3 rounded-xl font-bold text-sm shadow-lg shadow-[#25D366]/20 hover:shadow-xl transition-all flex items-center justify-center gap-2 cursor-pointer"
+                        >
+                        <MessageCircle className="w-4 h-4" />
+                        <span>Dúvidas? Fale conosco</span>
+                        </motion.button>
+                    )}
                   </div>
                 </div>
               </div>

@@ -1,7 +1,7 @@
 'use client'
 
 import { useState } from 'react'
-import { ShoppingCart, Check, Truck, Shield, CheckCircle, Plus, Minus, Package, CreditCard, RotateCcw, BadgeCheck, Phone, ChevronDown, ChevronUp, Star, MessageCircle, Clock, Plane } from 'lucide-react'
+import { ShoppingCart, Check, Truck, Shield, Plus, Minus, Package, CreditCard, RotateCcw, BadgeCheck, Phone, ChevronDown, ChevronUp, Star, MessageCircle, Clock, Plane, Info } from 'lucide-react'
 import { ImageWithFallback } from '@/components/figma/ImageWithFallback'
 import { Breadcrumbs } from '@/components/layout/Breadcrumbs'
 import { products } from '@/data/mockData'
@@ -9,6 +9,8 @@ import { useCart } from '@/contexts/CartContext'
 import { motion } from 'motion/react'
 import { ProductCard } from './ProductCard'
 import Link from 'next/link'
+
+const IS_CATALOG_MODE = true
 
 interface ProductDetailClientProps {
   slug: string
@@ -56,8 +58,8 @@ export const ProductDetailClient = ({ slug }: ProductDetailClientProps) => {
             iconColor: 'text-emerald-600',
             titleColor: 'text-emerald-900',
             subtitleColor: 'text-emerald-700',
-            title: 'Entrega Rápida',
-            subtitle: '1-7 dias úteis'
+            title: IS_CATALOG_MODE ? 'Entrega Facilitada' : 'Entrega Rápida',
+            subtitle: IS_CATALOG_MODE ? 'Consulte regiões' : '1-7 dias úteis'
           },
           warranty: {
             icon: Shield,
@@ -80,7 +82,7 @@ export const ProductDetailClient = ({ slug }: ProductDetailClientProps) => {
             titleColor: 'text-orange-900',
             subtitleColor: 'text-orange-700',
             title: 'Sob Encomenda',
-            subtitle: '15-30 dias'
+            subtitle: IS_CATALOG_MODE ? 'Consulte prazos' : '15-30 dias'
           },
           warranty: {
             icon: Shield,
@@ -103,7 +105,7 @@ export const ProductDetailClient = ({ slug }: ProductDetailClientProps) => {
             titleColor: 'text-sky-900',
             subtitleColor: 'text-sky-700',
             title: 'Importado',
-            subtitle: '30-60 dias'
+            subtitle: IS_CATALOG_MODE ? 'Consulte prazos' : '30-60 dias'
           },
           warranty: {
             icon: Shield,
@@ -125,8 +127,8 @@ export const ProductDetailClient = ({ slug }: ProductDetailClientProps) => {
             iconColor: 'text-emerald-600',
             titleColor: 'text-emerald-900',
             subtitleColor: 'text-emerald-700',
-            title: 'Entrega Rápida',
-            subtitle: '1-7 dias úteis'
+            title: IS_CATALOG_MODE ? 'Entrega Facilitada' : 'Entrega Rápida',
+            subtitle: IS_CATALOG_MODE ? 'Consulte regiões' : '1-7 dias úteis'
           },
           warranty: {
             icon: Shield,
@@ -147,6 +149,7 @@ export const ProductDetailClient = ({ slug }: ProductDetailClientProps) => {
   const WarrantyBadgeIcon = trustBadges.warranty.icon
 
   const handleAddToCart = () => {
+    if (IS_CATALOG_MODE) return
     for (let i = 0; i < quantity; i++) {
         addItem({
             ...product,
@@ -161,7 +164,7 @@ export const ProductDetailClient = ({ slug }: ProductDetailClientProps) => {
 
   const handleWhatsApp = () => {
     const message = encodeURIComponent(
-      `Olá! Tenho interesse na peça:\n${product.name}\nCódigo: ${product.sku || product.partNumber}\nPreço: R$ ${product.price.toFixed(2)}\nQuantidade: ${quantity}`
+      `Olá! Tenho interesse na peça:\n${product.name}\nCódigo: ${product.sku || product.partNumber}`
     )
     window.open(`https://wa.me/5531998753200?text=${message}`, '_blank')
   }
@@ -172,12 +175,8 @@ export const ProductDetailClient = ({ slug }: ProductDetailClientProps) => {
       answer: 'Trabalhamos com peças 100% originais de fábrica. Todas nossas peças possuem certificado de autenticidade e garantia do fabricante.'
     },
     {
-      question: 'Qual o prazo de entrega?',
-      answer: 'Para a região de Belo Horizonte: 1-2 dias úteis. Para outras regiões: 3-7 dias úteis dependendo da localidade. Peças em pronta entrega saem no mesmo dia para pedidos até 14h.'
-    },
-    {
-      question: 'Posso parcelar a compra?',
-      answer: 'Sim! Aceitamos parcelamento em até 12x no cartão de crédito. Também trabalhamos com PIX (5% desconto), boleto e transferência bancária.'
+      question: 'Como faço para comprar?',
+      answer: 'Como atuamos com peças técnicas, preferimos um atendimento consultivo. Clique no botão de WhatsApp para falar com um especialista que confirmará a aplicação correta e passará os valores atualizados.'
     },
     {
       question: 'A peça tem garantia?',
@@ -200,7 +199,7 @@ export const ProductDetailClient = ({ slug }: ProductDetailClientProps) => {
     <div className="min-h-screen bg-white">
       <div className="max-w-7xl mx-auto px-4 py-8">
         <Breadcrumbs items={[
-          { label: 'Produtos', href: '/produtos' },
+          { label: 'Catálogo', href: '/produtos' },
           { label: product.categoryName || 'Peças', href: '/produtos' },
           { label: product.name }
         ]} />
@@ -245,19 +244,17 @@ export const ProductDetailClient = ({ slug }: ProductDetailClientProps) => {
                 <Package className="w-4 h-4 text-[var(--primary)]" />
                 <span className="text-sm">Código: <span className="font-bold text-[var(--neutral-900)]">{product.sku || product.partNumber || product.code}</span></span>
               </div>
-              <div className="w-2 h-2 bg-[var(--neutral-300)] rounded-full hidden sm:block"></div>
-              <div className="flex items-center gap-2 text-green-600 font-semibold bg-green-50 px-3 py-1.5 rounded-lg">
-                <Check className="w-4 h-4" />
-                Em estoque
-              </div>
-              <div className="flex items-center gap-1 text-sm">
-                <Star className="w-4 h-4 fill-yellow-400 text-yellow-400" />
-                <Star className="w-4 h-4 fill-yellow-400 text-yellow-400" />
-                <Star className="w-4 h-4 fill-yellow-400 text-yellow-400" />
-                <Star className="w-4 h-4 fill-yellow-400 text-yellow-400" />
-                <Star className="w-4 h-4 fill-yellow-400 text-yellow-400" />
-                <span className="text-[var(--neutral-600)] ml-1">(127)</span>
-              </div>
+              
+              {!IS_CATALOG_MODE && (
+                <>
+                  <div className="w-2 h-2 bg-[var(--neutral-300)] rounded-full hidden sm:block"></div>
+                  <div className="flex items-center gap-2 text-green-600 font-semibold bg-green-50 px-3 py-1.5 rounded-lg">
+                    <Check className="w-4 h-4" />
+                    Em estoque
+                  </div>
+                </>
+              )}
+              
             </div>
 
             {product.compatibility && (
@@ -275,106 +272,136 @@ export const ProductDetailClient = ({ slug }: ProductDetailClientProps) => {
             )}
 
             <div className="bg-gradient-to-br from-[var(--neutral-50)] to-white border-2 border-[var(--neutral-200)] rounded-2xl p-6 mb-6">
-              <div className="flex items-baseline gap-3 mb-3">
-                <div className="text-sm text-[var(--neutral-600)] font-medium">Preço:</div>
-                <div className="text-5xl font-black text-[var(--primary)]">
-                  R$ {product.price.toFixed(2).split('.')[0]}
-                  <span className="text-3xl">,{product.price.toFixed(2).split('.')[1]}</span>
-                </div>
-              </div>
-              
-              <div className="grid grid-cols-2 gap-2 mb-4">
-                {paymentMethods.map((method) => (
-                  <div key={method.name} className="bg-white border border-[var(--neutral-200)] rounded-lg p-2 text-center">
-                    <div className="text-lg mb-0.5">{method.icon}</div>
-                    <div className="font-bold text-xs text-[var(--neutral-900)]">{method.name}</div>
-                    {method.discount && (
-                      <div className="text-[10px] text-green-600 font-semibold">{method.discount}</div>
-                    )}
-                    {method.installments && (
-                      <div className="text-[10px] text-[var(--neutral-600)]">{method.installments}</div>
-                    )}
+              {!IS_CATALOG_MODE ? (
+                <>
+                  <div className="flex items-baseline gap-3 mb-3">
+                    <div className="text-sm text-[var(--neutral-600)] font-medium">Preço:</div>
+                    <div className="text-5xl font-black text-[var(--primary)]">
+                      R$ {product.price.toFixed(2).split('.')[0]}
+                      <span className="text-3xl">,{product.price.toFixed(2).split('.')[1]}</span>
+                    </div>
                   </div>
-                ))}
-              </div>
+                  
+                  <div className="grid grid-cols-2 gap-2 mb-4">
+                    {paymentMethods.map((method) => (
+                      <div key={method.name} className="bg-white border border-[var(--neutral-200)] rounded-lg p-2 text-center">
+                        <div className="text-lg mb-0.5">{method.icon}</div>
+                        <div className="font-bold text-xs text-[var(--neutral-900)]">{method.name}</div>
+                        {method.discount && (
+                          <div className="text-[10px] text-green-600 font-semibold">{method.discount}</div>
+                        )}
+                        {method.installments && (
+                          <div className="text-[10px] text-[var(--neutral-600)]">{method.installments}</div>
+                        )}
+                      </div>
+                    ))}
+                  </div>
+                </>
+              ) : (
+                <div>
+                  <div className="flex items-baseline gap-3 mb-2">
+                    <div className="flex items-center gap-2 text-amber-700 bg-amber-50 px-3 py-1.5 rounded-lg border border-amber-200 w-full">
+                        <Info className="w-4 h-4" />
+                        <span className="text-sm font-semibold">Preço e disponibilidade sob consulta</span>
+                    </div>
+                  </div>
+                  
+                  <div className="text-sm text-[var(--neutral-600)] mt-3">
+                      Para garantir a aplicação correta e o melhor preço atualizado, fale com um de nossos consultores.
+                  </div>
+                </div>
+              )}
 
-              <div className="text-xs text-[var(--neutral-600)] text-center">
+              <div className="text-xs text-gray-900 text-center mt-2">
                  Condições especiais para atacado •  Consulte-nos
               </div>
             </div>
 
             <div className="space-y-3 mb-6">
-              <div className="flex items-center gap-3">
-                <div className="flex items-center gap-2 bg-white border-2 border-[var(--neutral-300)] rounded-xl p-1.5">
+              {!IS_CATALOG_MODE && (
+                <div className="flex items-center gap-3">
+                  <div className="flex items-center gap-2 bg-white border-2 border-[var(--neutral-300)] rounded-xl p-1.5">
+                    <motion.button
+                      whileTap={{ scale: 0.9 }}
+                      onClick={() => setQuantity(Math.max(1, quantity - 1))}
+                      className="w-10 h-10 bg-[var(--neutral-100)] hover:bg-[var(--neutral-200)] rounded-lg flex items-center justify-center transition-all"
+                      aria-label="Diminuir quantidade"
+                    >
+                      <Minus className="w-5 h-5 text-[var(--neutral-700)]" />
+                    </motion.button>
+                    <span className="w-16 text-center font-black text-xl text-[var(--neutral-900)]">{quantity}</span>
+                    <motion.button
+                      whileTap={{ scale: 0.9 }}
+                      onClick={() => setQuantity(quantity + 1)}
+                      className="w-10 h-10 bg-[var(--neutral-100)] hover:bg-[var(--neutral-200)] rounded-lg flex items-center justify-center transition-all"
+                      aria-label="Aumentar quantidade"
+                    >
+                      <Plus className="w-5 h-5 text-[var(--neutral-700)]" />
+                    </motion.button>
+                  </div>
+
                   <motion.button
-                    whileTap={{ scale: 0.9 }}
-                    onClick={() => setQuantity(Math.max(1, quantity - 1))}
-                    className="w-10 h-10 bg-[var(--neutral-100)] hover:bg-[var(--neutral-200)] rounded-lg flex items-center justify-center transition-all"
-                    aria-label="Diminuir quantidade"
+                    whileHover={{ scale: 1.02, y: -2 }}
+                    whileTap={{ scale: 0.98 }}
+                    onClick={handleAddToCart}
+                    className="flex-1 relative overflow-hidden bg-gradient-to-br from-[var(--primary)] via-[#2847a0] to-[#1a2d5f] text-white py-4 rounded-2xl font-black text-lg shadow-2xl hover:shadow-[var(--primary)]/50 transition-all flex items-center justify-center gap-3 group border-2 border-white/20"
                   >
-                    <Minus className="w-5 h-5 text-[var(--neutral-700)]" />
-                  </motion.button>
-                  <span className="w-16 text-center font-black text-xl text-[var(--neutral-900)]">{quantity}</span>
-                  <motion.button
-                    whileTap={{ scale: 0.9 }}
-                    onClick={() => setQuantity(quantity + 1)}
-                    className="w-10 h-10 bg-[var(--neutral-100)] hover:bg-[var(--neutral-200)] rounded-lg flex items-center justify-center transition-all"
-                    aria-label="Aumentar quantidade"
-                  >
-                    <Plus className="w-5 h-5 text-[var(--neutral-700)]" />
+                    <div className="absolute inset-0 bg-gradient-to-t from-transparent via-white/10 to-white/20 opacity-0 group-hover:opacity-100 transition-opacity" />
+                    <ShoppingCart className="w-6 h-6 relative z-10 group-hover:scale-110 transition-transform" />
+                    <span className="relative z-10">Adicionar ao Carrinho</span>
                   </motion.button>
                 </div>
+              )}
 
-                <motion.button
-                  whileHover={{ scale: 1.02, y: -2 }}
-                  whileTap={{ scale: 0.98 }}
-                  onClick={handleAddToCart}
-                  className="flex-1 relative overflow-hidden bg-gradient-to-br from-[var(--primary)] via-[#2847a0] to-[#1a2d5f] text-white py-4 rounded-2xl font-black text-lg shadow-2xl hover:shadow-[var(--primary)]/50 transition-all flex items-center justify-center gap-3 group border-2 border-white/20"
-                >
-                  <div className="absolute inset-0 bg-gradient-to-t from-transparent via-white/10 to-white/20 opacity-0 group-hover:opacity-100 transition-opacity" />
-                  <ShoppingCart className="w-6 h-6 relative z-10 group-hover:scale-110 transition-transform" />
-                  <span className="relative z-10">Adicionar ao Carrinho</span>
-                </motion.button>
-              </div>
+              {IS_CATALOG_MODE && (
+                 <motion.button
+                    whileHover={{ scale: 1.02, y: -2 }}
+                    whileTap={{ scale: 0.98 }}
+                    onClick={handleWhatsApp}
+                    className="w-full relative overflow-hidden bg-gradient-to-r from-[#25D366] to-[#128C7E] text-white py-4 rounded-2xl font-black text-lg shadow-2xl hover:shadow-[#25D366]/50 transition-all flex items-center justify-center gap-3 group border-2 border-white/20 cursor-pointer"
+                  >
+                    <div className="absolute inset-0 bg-gradient-to-t from-transparent via-white/10 to-white/20 opacity-0 group-hover:opacity-100 transition-opacity" />
+                    <MessageCircle className="w-6 h-6 relative z-10 group-hover:scale-110 transition-transform" />
+                    <span className="relative z-10">Solicitar cotação</span>
+                  </motion.button>
+              )}
 
-              <div className="text-center text-sm text-[var(--neutral-600)]">
-                <span className="font-semibold text-green-600">✓ Estoque disponível</span> • Envio imediato
-              </div>
+              {!IS_CATALOG_MODE && (
+                <div className="text-center text-sm text-[var(--neutral-600)]">
+                  <span className="font-semibold text-green-600">✓ Estoque disponível</span> • Envio imediato
+                </div>
+              )}
             </div>
 
              <div className="space-y-3 mb-6">
-              <motion.button
-                whileHover={{ scale: 1.02 }}
-                whileTap={{ scale: 0.98 }}
-                onClick={handleWhatsApp}
-                className="w-full bg-gradient-to-r from-[#25D366] to-[#20BD5A] text-white py-4 px-6 rounded-xl font-bold hover:shadow-xl transition-all flex items-center justify-center gap-2 shadow-lg shadow-[#25D366]/20"
-              >
-                <MessageCircle className="w-5 h-5" />
-                Dúvidas? Fale conosco
-              </motion.button>
+              {!IS_CATALOG_MODE && (
+                <motion.button
+                  whileHover={{ scale: 1.02 }}
+                  whileTap={{ scale: 0.98 }}
+                  onClick={handleWhatsApp}
+                  className="w-full bg-gradient-to-r from-[#25D366] to-[#20BD5A] text-white py-4 px-6 rounded-xl font-bold hover:shadow-xl transition-all flex items-center justify-center gap-2 shadow-lg shadow-[#25D366]/20"
+                >
+                  <MessageCircle className="w-5 h-5" />
+                  Dúvidas? Fale conosco
+                </motion.button>
+              )}
             </div>
 
-            <div className="grid grid-cols-3 gap-3 mb-6">
-              <div className={`text-center p-4 ${trustBadges.delivery.bgColor} border ${trustBadges.delivery.borderColor} rounded-xl`}>
+            <div className="grid grid-cols-2 gap-3 mb-6">
+              <div className={`text-center p-4 bg-gray-50 border border-gray-200 rounded-xl`}>
                 <div className="flex items-center justify-center mb-2">
-                  <DeliveryBadgeIcon className={`w-8 h-8 ${trustBadges.delivery.iconColor}`} />
+                   <Shield className={`w-8 h-8 text-blue-600`} />
                 </div>
-                <div className={`text-xs ${trustBadges.delivery.titleColor} font-bold`}>{trustBadges.delivery.title}</div>
-                <div className={`text-[10px] ${trustBadges.delivery.subtitleColor}`}>{trustBadges.delivery.subtitle}</div>
+                <div className={`text-xs text-gray-900 font-bold`}>Garantia Assegurada</div>
+                <div className={`text-[10px] text-gray-600`}>Peças com procedência</div>
               </div>
-              <div className={`text-center p-4 ${trustBadges.warranty.bgColor} border ${trustBadges.warranty.borderColor} rounded-xl`}>
+              
+              <div className="text-center p-4 bg-gray-50 rounded-xl border border-gray-200">
                 <div className="flex items-center justify-center mb-2">
-                  <WarrantyBadgeIcon className={`w-8 h-8 ${trustBadges.warranty.iconColor}`} />
+                  <BadgeCheck className="w-8 h-8 text-green-600" />
                 </div>
-                <div className={`text-xs ${trustBadges.warranty.titleColor} font-bold`}>{trustBadges.warranty.title}</div>
-                <div className={`text-[10px] ${trustBadges.warranty.subtitleColor}`}>{trustBadges.warranty.subtitle}</div>
-              </div>
-              <div className="text-center p-4 bg-gradient-to-br from-green-50 to-green-100 rounded-xl border border-green-200">
-                <div className="flex items-center justify-center mb-2">
-                  <CheckCircle className="w-8 h-8 text-green-600" />
-                </div>
-                <div className="text-xs text-green-900 font-bold">100% Original</div>
-                <div className="text-[10px] text-green-700">Certificado</div>
+                <div className="text-xs text-gray-900 font-bold">Qualidade Original</div>
+                <div className="text-[10px] text-gray-600">Certificada</div>
               </div>
             </div>
 
@@ -384,10 +411,12 @@ export const ProductDetailClient = ({ slug }: ProductDetailClientProps) => {
                   <RotateCcw className="w-4 h-4 text-[var(--primary)]" />
                   <span className="text-[var(--neutral-700)]">Troca fácil</span>
                 </div>
-                <div className="flex items-center gap-2">
-                  <CreditCard className="w-4 h-4 text-[var(--primary)]" />
-                  <span className="text-[var(--neutral-700)]">Parcele em 12x</span>
-                </div>
+                {!IS_CATALOG_MODE && (
+                  <div className="flex items-center gap-2">
+                    <CreditCard className="w-4 h-4 text-[var(--primary)]" />
+                    <span className="text-[var(--neutral-700)]">Parcele em 12x</span>
+                  </div>
+                )}
                 <div className="flex items-center gap-2">
                   <BadgeCheck className="w-4 h-4 text-[var(--primary)]" />
                   <span className="text-[var(--neutral-700)]">Peça original</span>
@@ -410,9 +439,6 @@ export const ProductDetailClient = ({ slug }: ProductDetailClientProps) => {
               <button className="pb-4 border-b-2 border-transparent text-[var(--neutral-600)] hover:text-[var(--primary)] transition-colors font-bold">
                 Especificações
               </button>
-              <button className="pb-4 border-b-2 border-transparent text-[var(--neutral-600)] hover:text-[var(--primary)] transition-colors font-bold">
-                Avaliações (127)
-              </button>
             </div>
           </div>
 
@@ -424,7 +450,7 @@ export const ProductDetailClient = ({ slug }: ProductDetailClientProps) => {
                   {product.description || 'Peça de alta qualidade para equipamentos pesados.'}
                 </p>
                 <p className="text-base">
-                  Esta peça {product.brandName} é ideal para manutenção preventiva e corretiva de equipamentos pesados.
+                  Esta peça {product.brandName} é ideal para manutenção preventiva e corretiva de equipamentos pesados. Entre em contato para verificar a aplicação exata.
                 </p>
               </div>
             </div>
@@ -503,7 +529,7 @@ export const ProductDetailClient = ({ slug }: ProductDetailClientProps) => {
                     deliveryType={p.deliveryType}
                     stockQuantity={p.inStock ? 10 : 0}
                     thumbnail={p.thumbnail}
-                 />
+                  />
               ))}
             </div>
           </section>

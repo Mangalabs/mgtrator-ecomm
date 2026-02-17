@@ -8,6 +8,8 @@ import { Breadcrumbs } from '@/components/layout/Breadcrumbs'
 import { products, categories, brands } from '@/data/mockData'
 import type { Product } from '@/data/types'
 
+const IS_CATALOG_MODE = true
+
 export const ProductsPageClient = () => {
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null)
   const [selectedCategory, setSelectedCategory] = useState<string>('all')
@@ -20,10 +22,13 @@ export const ProductsPageClient = () => {
   const filteredProducts = products.filter((product) => {
     if (selectedCategory !== 'all' && product.categoryName !== selectedCategory) return false
     if (selectedBrand !== 'all' && product.brandName !== selectedBrand) return false
-    if (priceRange === 'under200' && product.price >= 200) return false
-    if (priceRange === '200-500' && (product.price < 200 || product.price >= 500)) return false
-    if (priceRange === '500-1000' && (product.price < 500 || product.price >= 1000)) return false
-    if (priceRange === 'over1000' && product.price < 1000) return false
+    
+    if (!IS_CATALOG_MODE) {
+      if (priceRange === 'under200' && product.price >= 200) return false
+      if (priceRange === '200-500' && (product.price < 200 || product.price >= 500)) return false
+      if (priceRange === '500-1000' && (product.price < 500 || product.price >= 1000)) return false
+      if (priceRange === 'over1000' && product.price < 1000) return false
+    }
     
     if (searchQuery) {
       const searchLower = searchQuery.toLowerCase()
@@ -43,9 +48,9 @@ export const ProductsPageClient = () => {
   const sortedProducts = [...filteredProducts].sort((a, b) => {
     switch (sortBy) {
       case 'price-asc':
-        return a.price - b.price
+        return IS_CATALOG_MODE ? 0 : a.price - b.price
       case 'price-desc':
-        return b.price - a.price
+        return IS_CATALOG_MODE ? 0 : b.price - a.price
       case 'name-asc':
         return a.name.localeCompare(b.name)
       case 'name-desc':
@@ -178,8 +183,12 @@ export const ProductsPageClient = () => {
                     className="w-full border-2 border-[var(--neutral-200)] rounded-xl px-4 py-3 text-sm font-semibold focus:ring-4 focus:ring-[var(--primary)]/10 focus:border-[var(--primary)] transition-all bg-white cursor-pointer hover:border-[var(--primary)]/50"
                   >
                     <option value="relevance">Mais Relevantes</option>
-                    <option value="price-asc">Menor Preço</option>
-                    <option value="price-desc">Maior Preço</option>
+                    {!IS_CATALOG_MODE && (
+                      <>
+                        <option value="price-asc">Menor Preço</option>
+                        <option value="price-desc">Maior Preço</option>
+                      </>
+                    )}
                     <option value="name-asc">Nome A-Z</option>
                   </select>
                 </div>

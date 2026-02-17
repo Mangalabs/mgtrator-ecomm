@@ -1,9 +1,11 @@
-import { Eye, Clock, Plane, Zap, Tag, ShoppingCart } from 'lucide-react'
+import { Eye, Clock, Plane, Zap, Tag, ShoppingCart, MessageCircle } from 'lucide-react'
 import Image from 'next/image'
 import Link from 'next/link'
 import { motion } from 'motion/react'
 import { useCart } from '@/contexts/CartContext'
 import { useMemo } from 'react'
+
+const IS_CATALOG_MODE = true
 
 interface ProductCardProps {
   id: string | number
@@ -112,6 +114,15 @@ export function ProductCard({
     })
   }
 
+  const handleConsult = (e: React.MouseEvent) => {
+    e.preventDefault()
+    e.stopPropagation()
+    const message = encodeURIComponent(
+      `Olá! Tenho interesse no produto: ${name} (Cód: ${productDetails.code}). Poderia me passar mais informações?`
+    )
+    window.open(`https://wa.me/5531998753200?text=${message}`, '_blank')
+  }
+
   return (
     <motion.article
       initial={{ opacity: 0, y: 20 }}
@@ -119,7 +130,7 @@ export function ProductCard({
       whileHover={{ y: -12 }}
       transition={{ duration: 0.5, ease: [0.23, 1, 0.32, 1] }}
       className="group relative bg-white rounded-3xl border border-[var(--neutral-200)] overflow-hidden hover:border-[var(--primary)]/30 hover:shadow-[0_32px_64px_-12px_rgba(33,58,119,0.18)] transition-all duration-500 flex flex-col h-full"
-      aria-label={`Produto: ${name} - ${brand} - R$ ${productDetails.finalPrice.toFixed(2)}`}
+      aria-label={`Produto: ${name} - ${brand}`}
     >
       <div className="absolute inset-0 bg-gradient-to-br from-[var(--primary)]/[0.03] via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none" />
 
@@ -149,7 +160,7 @@ export function ProductCard({
             </span>
           </div>
 
-          {productDetails.hasDiscount && (
+          {!IS_CATALOG_MODE && productDetails.hasDiscount && (
             <motion.div
               initial={{ scale: 0, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
@@ -197,46 +208,57 @@ export function ProductCard({
         )}
 
         <div className="space-y-2 mt-2">
-          {productDetails.hasDiscount && (
-            <div className="flex items-center gap-2 flex-wrap">
-              <span className="text-sm text-gray-400 line-through">
-                R$ {productDetails.finalOriginalPrice.toFixed(2)}
-              </span>
-              <span className="text-xs font-bold text-red-600 bg-red-50 px-2 py-1 rounded-md">
-                Economize {productDetails.discountPercent}%
-              </span>
-            </div>
-          )}
+          {!IS_CATALOG_MODE ? (
+            <>
+              {productDetails.hasDiscount && (
+                <div className="flex items-center gap-2 flex-wrap">
+                  <span className="text-sm text-gray-400 line-through">
+                    R$ {productDetails.finalOriginalPrice.toFixed(2)}
+                  </span>
+                  <span className="text-xs font-bold text-red-600 bg-red-50 px-2 py-1 rounded-md">
+                    Economize {productDetails.discountPercent}%
+                  </span>
+                </div>
+              )}
 
-          <div className="flex items-baseline gap-1.5">
-            <span className="text-sm text-gray-500 font-semibold">R$</span>
-            <span className="text-3xl font-black text-[var(--primary)] leading-none">
-              {productDetails.priceMajor}
-            </span>
-            <span className="text-lg font-black text-[var(--primary)]/80 leading-none">
-              ,{productDetails.priceMinor}
+              <div className="flex items-baseline gap-1.5">
+                <span className="text-sm text-gray-500 font-semibold">R$</span>
+                <span className="text-3xl font-black text-[var(--primary)] leading-none">
+                  {productDetails.priceMajor}
+                </span>
+                <span className="text-lg font-black text-[var(--primary)]/80 leading-none">
+                  ,{productDetails.priceMinor}
+                </span>
+              </div>
+
+              {showInstallments && installmentsCount > 0 && (
+                <div className="text-xs text-gray-600">
+                  ou <span className="font-bold text-gray-900">{installmentsCount}x de R$ {(productDetails.finalPrice / installmentsCount).toFixed(2).replace('.', ',')}</span>
+                </div>
+              )}
+            </>
+          ) : (
+             <div className="flex flex-col gap-1">
+                <span className="text-sm font-bold text-gray-500 uppercase tracking-wide">Preço sob consulta</span>
+                <div className="h-0.5 w-12 bg-gray-200 mt-1"></div>
+             </div>
+          )}
+        </div>
+
+        {!IS_CATALOG_MODE && (
+          <div className={`${deliveryConfig.style} border px-3 py-2 rounded-lg flex items-center gap-2 mt-auto`}>
+            <deliveryConfig.Icon className={`w-4 h-4 ${deliveryConfig.iconColor}`} />
+            <span className="text-xs font-bold">
+              {deliveryConfig.label}
+              {estimatedDays && deliveryType !== 'pronta-entrega' && (
+                <span className="opacity-70 ml-1">• {estimatedDays}</span>
+              )}
             </span>
           </div>
+        )}
 
-          {showInstallments && installmentsCount > 0 && (
-            <div className="text-xs text-gray-600">
-              ou <span className="font-bold text-gray-900">{installmentsCount}x de R$ {(productDetails.finalPrice / installmentsCount).toFixed(2).replace('.', ',')}</span>
-            </div>
-          )}
-        </div>
-
-        <div className={`${deliveryConfig.style} border px-3 py-2 rounded-lg flex items-center gap-2 mt-auto`}>
-          <deliveryConfig.Icon className={`w-4 h-4 ${deliveryConfig.iconColor}`} />
-          <span className="text-xs font-bold">
-            {deliveryConfig.label}
-            {estimatedDays && deliveryType !== 'pronta-entrega' && (
-              <span className="opacity-70 ml-1">• {estimatedDays}</span>
-            )}
-          </span>
-        </div>
-
-        <div className="flex flex-col gap-2.5 pt-2">
-          {stockQuantity <= 5 && stockQuantity > 0 && (
+        <div className={`flex flex-col gap-2.5 ${IS_CATALOG_MODE ? 'mt-auto' : 'pt-2'}`}>
+          {!IS_CATALOG_MODE && stockQuantity <= 5 && stockQuantity > 0 && (
             <div className="bg-amber-50 border border-amber-200 text-amber-800 px-3 py-2 rounded-lg text-xs font-bold text-center">
               Apenas {stockQuantity} {stockQuantity === 1 ? 'unidade' : 'unidades'} disponível
             </div>
@@ -245,12 +267,12 @@ export function ProductCard({
           <motion.button
             whileHover={{ scale: 1.02 }}
             whileTap={{ scale: 0.98 }}
-            onClick={handleAddToCart}
-            className="w-full bg-gradient-to-br from-[var(--primary)] to-[#1a2d5f] text-white py-4 rounded-xl font-bold text-sm shadow-lg shadow-[var(--primary)]/30 hover:shadow-xl hover:shadow-[var(--primary)]/40 transition-all flex items-center justify-center gap-2 group/cart"
-            aria-label={`Adicionar ${name} ao carrinho`}
+            onClick={IS_CATALOG_MODE ? handleConsult : handleAddToCart}
+            className={`w-full ${IS_CATALOG_MODE ? 'bg-gradient-to-r from-[#25D366] to-[#128C7E]' : 'bg-gradient-to-br from-[var(--primary)] to-[#1a2d5f]'} text-white py-4 rounded-xl font-bold text-sm shadow-lg hover:shadow-xl transition-all flex items-center justify-center gap-2 group/cart`}
+            aria-label={IS_CATALOG_MODE ? 'Solicitar cotação' : `Adicionar ${name} ao carrinho`}
           >
-            <ShoppingCart className="w-5 h-5 transition-transform group-hover/cart:scale-110" />
-            <span>COMPRAR AGORA</span>
+            {IS_CATALOG_MODE ? <MessageCircle className="w-5 h-5" /> : <ShoppingCart className="w-5 h-5 transition-transform group-hover/cart:scale-110" />}
+            <span>{IS_CATALOG_MODE ? 'Solicitar cotação' : 'COMPRAR AGORA'}</span>
           </motion.button>
 
           <Link href={productDetails.url} className="w-full block">

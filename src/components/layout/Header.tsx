@@ -223,7 +223,7 @@ export const Header = () => {
               ))}
             </nav>
 
-            <div className='flex items-center gap-3 ml-4'>
+            {/* <div className='flex items-center gap-3 ml-4'>
               <Link href='/carrinho' className='relative p-2'>
                 <ShoppingCart className='w-6 h-6 text-[var(--primary)]' />
                 <AnimatePresence>
@@ -244,7 +244,7 @@ export const Header = () => {
                 className='lg:hidden p-2'>
                 {isMenuOpen ? <X /> : <Menu />}
               </button>
-            </div>
+            </div> */}
           </div>
         </div>
       </header>
