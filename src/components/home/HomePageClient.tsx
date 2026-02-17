@@ -226,11 +226,20 @@ export const HomePageClient = () => {
                   transition={{ delay: index * 0.05 }}
                 >
                   <ProductCard
-                  image={''} {...product}
-                  deliveryType={deliveryType}
-                  onQuickView={() => setSelectedProduct(product)}
-                  showInstallments={true}
-                  installmentsCount={12}                  />
+                    id={product.id}
+                    name={product.name}
+                    price={product.price}
+                    image={product.thumbnail}
+                    code={product.code}
+                    partNumber={product.partNumber}
+                    brand={product.brandName}
+                    deliveryType={deliveryType}
+                    stockQuantity={product.inStock ? 100 : 0}
+                    thumbnail={product.thumbnail}
+                    onQuickView={() => setSelectedProduct(product)}
+                    showInstallments={true}
+                    installmentsCount={12}
+                  />
                 </motion.div>
               )
             })}
@@ -264,11 +273,20 @@ export const HomePageClient = () => {
                   transition={{ delay: index * 0.05 }}
                 >
                   <ProductCard
-                  image={''} {...product}
-                  deliveryType={deliveryType}
-                  onQuickView={() => setSelectedProduct(product)}
-                  showInstallments={true}
-                  installmentsCount={12}                  />
+                    id={product.id}
+                    name={product.name}
+                    price={product.price}
+                    image={product.thumbnail}
+                    code={product.code}
+                    partNumber={product.partNumber}
+                    brand={product.brandName}
+                    deliveryType={deliveryType}
+                    stockQuantity={product.inStock ? 100 : 0}
+                    thumbnail={product.thumbnail}
+                    onQuickView={() => setSelectedProduct(product)}
+                    showInstallments={true}
+                    installmentsCount={12}
+                  />
                 </motion.div>
               )
             })}
