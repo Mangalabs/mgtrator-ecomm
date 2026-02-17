@@ -6,6 +6,7 @@ import { MapPin, Phone, Mail, Clock, Send, MessageCircle, Zap } from 'lucide-rea
 import { Breadcrumbs } from '@/components/layout/Breadcrumbs'
 import { stores } from '@/data/mockData'
 import Link from 'next/link'
+import PageHero from '../common/PageHero'
 
 export const ContatoPageClient = () => {
   const [formData, setFormData] = useState({
@@ -35,24 +36,14 @@ export const ContatoPageClient = () => {
 
   return (
     <div className='min-h-screen bg-white'>
-      <section
-        className='relative bg-gradient-to-br from-[var(--primary)] via-[#1a2d5e] to-[var(--primary)] text-white overflow-hidden'
-        style={{ height: '320px' }}>
-        <div className='absolute inset-0 opacity-5'>
-          <div className='absolute top-0 right-0 w-96 h-96 bg-white rounded-full blur-3xl transform translate-x-1/2 -translate-y-1/2'></div>
-          <div className='absolute bottom-0 left-0 w-96 h-96 bg-[var(--secondary)] rounded-full blur-3xl transform -translate-x-1/2 translate-y-1/2'></div>
-        </div>
-
-        <div className='max-w-7xl mx-auto px-4 h-full flex items-center relative z-10'>
-          <div>
-            <Breadcrumbs items={[{ label: 'Contato' }]} />
-            <h1 className='text-white mt-6 mb-4'>Entre em Contato</h1>
-            <p className='text-xl text-blue-100 max-w-2xl'>
-              Estamos prontos para atender você. Escolha o canal de sua preferência
-            </p>
-          </div>
-        </div>
-      </section>
+      <PageHero
+        breadcrumbs={[{
+          label: "Contato",
+          href: ''
+        }]}
+        title="Entre em contato"
+        description="Estamos prontos para atender você. Escolha o canal de sua preferência">
+      </PageHero>
 
       <section className='py-16'>
         <div className='max-w-7xl mx-auto px-4'>
