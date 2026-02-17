@@ -153,7 +153,7 @@ export const Header = () => {
                 />
                 <button
                   type='submit'
-                  className='absolute right-2 top-1/2 -translate-y-1/2 bg-[var(--primary)] text-white px-4 py-2 rounded-full'>
+                  className='absolute right-1 top-1/2 -translate-y-1/2 bg-[var(--primary)] text-white px-4 py-1 rounded-full'>
                   Buscar
                 </button>
 
