@@ -6,14 +6,22 @@ import { Header } from '@/components/layout/Header'
 import { Footer } from '@/components/layout/Footer'
 import { WhatsAppFloating } from '@/components/layout/WhatsAppFloating'
 import { CartProvider } from '@/contexts/CartContext'
-import { Toaster } from 'sonner'
 
 const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
-  title: 'MG Trator Peças - E-commerce de Peças para Tratores e Máquinas Pesadas',
-  description: 'E-commerce especializado em peças originais para tratores e máquinas pesadas. Estoque completo Caterpillar, Volvo, Case, JCB. Compre online com entrega rápida em MG.',
-  keywords: ['peças para tratores', 'peças caterpillar', 'peças volvo', 'peças case', 'e-commerce MG', 'comprar peças online'],
+  title:
+    'MG Trator Peças - E-commerce de Peças para Tratores e Máquinas Pesadas',
+  description:
+    'E-commerce especializado em peças originais para tratores e máquinas pesadas. Estoque completo Caterpillar, Volvo, Case, JCB. Compre online com entrega rápida em MG.',
+  keywords: [
+    'peças para tratores',
+    'peças caterpillar',
+    'peças volvo',
+    'peças case',
+    'e-commerce MG',
+    'comprar peças online',
+  ],
 }
 
 export default function RootLayout({
@@ -22,24 +30,13 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="pt-BR">
+    <html lang='pt-BR'>
       <body>
         <CartProvider>
           <Header />
           <main>{children}</main>
           <Footer />
           <WhatsAppFloating />
-          {/* <Toaster 
-            position="top-right" 
-            richColors 
-            closeButton
-            toastOptions={{
-              duration: 3000,
-              style: {
-                fontFamily: inter.style.fontFamily,
-              }
-            }}
-          /> */}
         </CartProvider>
       </body>
     </html>

@@ -1,69 +1,124 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useMemo, useState, useEffect } from 'react'
 import { Filter, ChevronDown, Search, X } from 'lucide-react'
 import { ProductCard } from './ProductCard'
 import { QuickViewModal } from './QuickViewModal'
-import { products, categories, brands } from '@/data/mockData'
 import type { Product } from '@/data/types'
 import PageHero from '../common/PageHero'
 
 const IS_CATALOG_MODE = true
 const ITEMS_PER_PAGE = 6
 
-export const ProductsPageClient = () => {
+type PaginationInfo = {
+  page: number
+  limit: number
+  total: number
+  totalPages: number
+  hasNext: boolean
+  hasPrev: boolean
+}
+
+type ProductsPageClientProps = {
+  initialProducts: Product[]
+  initialPagination?: PaginationInfo
+}
+
+export const ProductsPageClient = ({
+  initialProducts,
+  initialPagination,
+}: ProductsPageClientProps) => {
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null)
+  const [products, setProducts] = useState<Product[]>(initialProducts)
   const [selectedCategory, setSelectedCategory] = useState<string>('all')
-  const [selectedBrand, setSelectedBrand] = useState<string>('all')
   const [priceRange, setPriceRange] = useState<string>('all')
   const [sortBy, setSortBy] = useState<string>('relevance')
   const [showFilters, setShowFilters] = useState(false)
   const [searchQuery, setSearchQuery] = useState<string>('')
   const [currentPage, setCurrentPage] = useState(1)
+  const [pagination, setPagination] = useState<PaginationInfo | null>(
+    initialPagination ?? null,
+  )
+  const [loading, setLoading] = useState(false)
 
-  useEffect(() => {
-    requestAnimationFrame(() => {
-      setCurrentPage(1)
+  const categoryOptions = useMemo(() => {
+    const counts = new Map<string, number>()
+    products.forEach((product) => {
+      const name = product.categoryName?.trim()
+      if (!name) return
+      counts.set(name, (counts.get(name) || 0) + 1)
     })
-  }, [selectedCategory, selectedBrand, priceRange, searchQuery, sortBy])
 
-  const filteredProducts = products.filter((product) => {
-    if (selectedCategory !== 'all' && product.categoryName !== selectedCategory)
-      return false
-    if (selectedBrand !== 'all' && product.brandName !== selectedBrand)
-      return false
+    return Array.from(counts.entries())
+      .map(([name, count]) => ({ name, count }))
+      .sort((a, b) => a.name.localeCompare(b.name))
+  }, [products])
 
-    if (!IS_CATALOG_MODE) {
-      if (priceRange === 'under200' && product.price >= 200) return false
-      if (
-        priceRange === '200-500' &&
-        (product.price < 200 || product.price >= 500)
-      )
-        return false
-      if (
-        priceRange === '500-1000' &&
-        (product.price < 500 || product.price >= 1000)
-      )
-        return false
-      if (priceRange === 'over1000' && product.price < 1000) return false
+  const handleSearchChange = (value: string) => {
+    setSearchQuery(value)
+    setCurrentPage(1)
+  }
+
+  const handleCategoryChange = (value: string) => {
+    setSelectedCategory(value)
+    setCurrentPage(1)
+  }
+  useEffect(() => {
+    let isMounted = true
+    const controller = new AbortController()
+
+    const fetchProducts = async () => {
+      setLoading(true)
+      try {
+        const params = new URLSearchParams()
+        params.set('page', String(currentPage))
+        params.set('limit', String(ITEMS_PER_PAGE))
+        params.set('inStock', 'true')
+        if (searchQuery.trim()) {
+          params.set('search', searchQuery.trim())
+        }
+        if (selectedCategory !== 'all') {
+          params.set('category', selectedCategory)
+        }
+
+        const response = await fetch(`/api/products?${params.toString()}`, {
+          signal: controller.signal,
+        })
+
+        const payload = (await response.json()) as {
+          success: boolean
+          data?: {
+            data: Product[]
+            pagination?: PaginationInfo
+          }
+        }
+
+        if (!isMounted) return
+        if (payload.success && payload.data) {
+          setProducts(payload.data.data || [])
+          setPagination(payload.data.pagination ?? null)
+        } else {
+          setProducts([])
+          setPagination(null)
+        }
+      } catch (error) {
+        if (!isMounted) return
+        setProducts([])
+        setPagination(null)
+      } finally {
+        if (isMounted) setLoading(false)
+      }
     }
 
-    if (searchQuery) {
-      const searchLower = searchQuery.toLowerCase()
-      const matchesSearch =
-        product.name.toLowerCase().includes(searchLower) ||
-        product.code?.toLowerCase().includes(searchLower) ||
-        product.brandName.toLowerCase().includes(searchLower) ||
-        product.categoryName.toLowerCase().includes(searchLower) ||
-        product.description?.toLowerCase().includes(searchLower)
+    fetchProducts()
 
-      if (!matchesSearch) return false
+    return () => {
+      isMounted = false
+      controller.abort()
     }
+  }, [currentPage, searchQuery, selectedCategory])
 
-    return true
-  })
-
-  const sortedProducts = [...filteredProducts].sort((a, b) => {
+  const sortedProducts = [...products].sort((a, b) => {
     switch (sortBy) {
       case 'price-asc':
         return IS_CATALOG_MODE ? 0 : a.price - b.price
@@ -78,11 +133,35 @@ export const ProductsPageClient = () => {
         return 0
     }
   })
+  const visibleProducts = sortedProducts.filter(
+    (product) => (product.stockQuantity ?? 0) >= 1 || product.inStock,
+  )
+  const totalPages = pagination?.totalPages ?? 1
+  const pageItems = useMemo(() => {
+    if (totalPages <= 7) {
+      return Array.from({ length: totalPages }, (_, i) => i + 1)
+    }
 
-  const totalPages = Math.ceil(sortedProducts.length / ITEMS_PER_PAGE)
-  const startIndex = (currentPage - 1) * ITEMS_PER_PAGE
-  const endIndex = startIndex + ITEMS_PER_PAGE
-  const currentProducts = sortedProducts.slice(startIndex, endIndex)
+    const items: Array<number | '...'> = []
+    const start = Math.max(2, currentPage - 1)
+    const end = Math.min(totalPages - 1, currentPage + 1)
+
+    items.push(1)
+    if (start > 2) {
+      items.push('...')
+    }
+    for (let page = start; page <= end; page += 1) {
+      items.push(page)
+    }
+    if (end < totalPages - 1) {
+      items.push('...')
+    }
+    items.push(totalPages)
+
+    return items
+  }, [currentPage, totalPages])
+  const canGoPrev = pagination?.hasPrev ?? currentPage > 1
+  const canGoNext = pagination?.hasNext ?? currentPage < totalPages
 
   const handlePageChange = (page: number) => {
     setCurrentPage(page)
@@ -124,15 +203,15 @@ export const ProductsPageClient = () => {
                 <input
                   type='text'
                   value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                  placeholder='Buscar por peça, código, marca ou categoria... (Ex: filtro, bomba hidráulica, CAT)'
+                  onChange={(e) => handleSearchChange(e.target.value)}
+                  placeholder='Buscar por peça, código ou categoria... (Ex: filtro, bomba hidráulica)'
                   className='w-full py-5 pl-16 pr-16 rounded-3xl border-2 border-[var(--neutral-300)] bg-white focus:border-[var(--primary)] focus:outline-none focus:ring-4 focus:ring-[var(--primary)]/10 transition-all shadow-lg hover:shadow-xl text-lg'
-                  aria-label='Buscar produtos - Digite peça, código ou marca'
+                  aria-label='Buscar produtos - Digite peça, código ou categoria'
                 />
                 {searchQuery && (
                   <button
                     type='button'
-                    onClick={() => setSearchQuery('')}
+                    onClick={() => handleSearchChange('')}
                     className='absolute right-6 top-1/2 -translate-y-1/2 w-10 h-10 flex items-center justify-center rounded-full bg-[var(--neutral-100)] text-[var(--neutral-500)] hover:bg-red-50 hover:text-red-600 transition-all'
                     aria-label='Limpar busca'>
                     <X className='w-5 h-5' />
@@ -146,8 +225,8 @@ export const ProductsPageClient = () => {
                 <div className='inline-flex items-center gap-2 bg-gradient-to-r from-[var(--primary)] to-[#1a2d5e] text-white px-5 py-2.5 rounded-2xl font-bold shadow-lg'>
                   <Search className='w-5 h-5' aria-hidden='true' />
                   <span>
-                    {filteredProducts.length} resultado(s) encontrado(s) para
-                    &quot;{searchQuery}&quot;
+                    {pagination?.total ?? visibleProducts.length} resultado(s)
+                    encontrado(s) para &quot;{searchQuery}&quot;
                   </span>
                 </div>
               </div>
@@ -183,29 +262,12 @@ export const ProductsPageClient = () => {
                   </h4>
                   <select
                     value={selectedCategory}
-                    onChange={(e) => setSelectedCategory(e.target.value)}
+                    onChange={(e) => handleCategoryChange(e.target.value)}
                     className='w-full border-2 border-[var(--neutral-200)] rounded-xl px-4 py-3 text-sm font-semibold focus:ring-4 focus:ring-[var(--primary)]/10 focus:border-[var(--primary)] transition-all bg-white cursor-pointer hover:border-[var(--primary)]/50'>
                     <option value='all'>Todas as categorias</option>
-                    {categories.map((cat) => (
-                      <option key={cat.id} value={cat.name}>
-                        {cat.name} ({cat.productCount})
-                      </option>
-                    ))}
-                  </select>
-                </div>
-
-                <div className='mb-6'>
-                  <h4 className='text-sm font-bold mb-3 text-[var(--neutral-700)] uppercase tracking-wide'>
-                    Marca
-                  </h4>
-                  <select
-                    value={selectedBrand}
-                    onChange={(e) => setSelectedBrand(e.target.value)}
-                    className='w-full border-2 border-[var(--neutral-200)] rounded-xl px-4 py-3 text-sm font-semibold focus:ring-4 focus:ring-[var(--primary)]/10 focus:border-[var(--primary)] transition-all bg-white cursor-pointer hover:border-[var(--primary)]/50'>
-                    <option value='all'>Todas as marcas</option>
-                    {brands.map((brand) => (
-                      <option key={brand.id} value={brand.name}>
-                        {brand.name}
+                    {categoryOptions.map((cat) => (
+                      <option key={cat.name} value={cat.name}>
+                        {cat.name} ({cat.count})
                       </option>
                     ))}
                   </select>
@@ -233,10 +295,10 @@ export const ProductsPageClient = () => {
                 <button
                   onClick={() => {
                     setSelectedCategory('all')
-                    setSelectedBrand('all')
                     setPriceRange('all')
                     setSortBy('relevance')
                     setSearchQuery('')
+                    setCurrentPage(1)
                   }}
                   className='w-full bg-[var(--neutral-100)] text-[var(--primary)] font-bold text-sm py-3 px-4 rounded-xl hover:bg-[var(--primary)]/10 transition-all flex items-center justify-center gap-2'>
                   <X className='w-4 h-4' aria-hidden='true' />
@@ -247,7 +309,7 @@ export const ProductsPageClient = () => {
 
             <div className='flex-1'>
               <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 lg:gap-7'>
-                {currentProducts.map((product) => (
+                {visibleProducts.map((product) => (
                   <ProductCard
                     key={product.id}
                     id={product.id}
@@ -256,16 +318,21 @@ export const ProductsPageClient = () => {
                     image={product.thumbnail}
                     code={product.code}
                     partNumber={product.partNumber}
-                    brand={product.brandName}
                     deliveryType={product.deliveryType}
-                    stockQuantity={product.inStock ? 100 : 0}
+                    stockQuantity={product.stockQuantity ?? 0}
                     thumbnail={product.thumbnail}
                     onQuickView={() => setSelectedProduct(product)}
                   />
                 ))}
               </div>
 
-              {filteredProducts.length === 0 && (
+              {loading && (
+                <div className='text-center py-16 text-[var(--neutral-600)]'>
+                  Carregando produtos...
+                </div>
+              )}
+
+              {!loading && visibleProducts.length === 0 && (
                 <div className='text-center py-20'>
                   <div className='inline-flex items-center justify-center w-24 h-24 bg-gradient-to-br from-[var(--neutral-100)] to-[var(--neutral-200)] rounded-3xl mb-6'>
                     <Search
@@ -282,9 +349,9 @@ export const ProductsPageClient = () => {
                   <button
                     onClick={() => {
                       setSelectedCategory('all')
-                      setSelectedBrand('all')
                       setPriceRange('all')
                       setSearchQuery('')
+                      setCurrentPage(1)
                     }}
                     className='inline-flex items-center gap-2 bg-[var(--primary)] text-white px-6 py-3 rounded-xl font-bold hover:bg-[var(--primary)]/90 transition-all'>
                     <X className='w-5 h-5' aria-hidden='true' />
@@ -293,20 +360,27 @@ export const ProductsPageClient = () => {
                 </div>
               )}
 
-              {filteredProducts.length > ITEMS_PER_PAGE && (
+              {totalPages > 1 && (
                 <div className='flex justify-center flex-wrap gap-2 mt-16'>
                   <button
                     onClick={() => handlePageChange(currentPage - 1)}
-                    disabled={currentPage === 1}
+                    disabled={!canGoPrev || loading}
                     className='px-5 py-3 border-2 border-[var(--neutral-200)] rounded-xl hover:bg-white hover:border-[var(--primary)] hover:text-[var(--primary)] transition-all font-semibold bg-white/60 backdrop-blur-sm disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:border-[var(--neutral-200)] disabled:hover:text-inherit'>
                     Anterior
                   </button>
 
-                  {Array.from({ length: totalPages }, (_, i) => i + 1).map(
-                    (page) => (
+                  {pageItems.map((page, index) =>
+                    page === '...' ? (
+                      <span
+                        key={`ellipsis-${index}`}
+                        className='px-4 py-3 text-[var(--neutral-500)] font-semibold'>
+                        ...
+                      </span>
+                    ) : (
                       <button
                         key={page}
                         onClick={() => handlePageChange(page)}
+                        disabled={loading}
                         className={`px-5 py-3 rounded-xl font-bold shadow-sm transition-all ${
                           currentPage === page
                             ? 'bg-gradient-to-r from-[var(--primary)] to-[#1a2d5e] text-white shadow-lg scale-105'
@@ -319,7 +393,7 @@ export const ProductsPageClient = () => {
 
                   <button
                     onClick={() => handlePageChange(currentPage + 1)}
-                    disabled={currentPage === totalPages}
+                    disabled={!canGoNext || loading}
                     className='px-5 py-3 border-2 border-[var(--neutral-200)] rounded-xl hover:bg-white hover:border-[var(--primary)] hover:text-[var(--primary)] transition-all font-semibold bg-white/60 backdrop-blur-sm disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:border-[var(--neutral-200)] disabled:hover:text-inherit'>
                     Próxima
                   </button>

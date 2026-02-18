@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { type ClassValue, clsx } from 'clsx'
 import { twMerge } from 'tailwind-merge'
 
@@ -13,11 +12,13 @@ export function formatCurrency(value: number): string {
   }).format(value)
 }
 
-export function calculateDiscountedPrice(price: number, discount?: number): number {
+export function calculateDiscountedPrice(
+  price: number,
+  discount?: number,
+): number {
   if (!discount) return price
   return price * (1 - discount / 100)
 }
-
 
 export function formatDiscount(discount?: number): string {
   if (!discount) return ''
@@ -29,14 +30,13 @@ export function truncateText(text: string, maxLength: number): string {
   return text.slice(0, maxLength).trim() + '...'
 }
 
-
 export function slugify(text: string): string {
   return text
     .toLowerCase()
     .normalize('NFD')
-    .replace(/[\u0300-\u036f]/g, '') 
-    .replace(/[^\w\s-]/g, '') 
-    .replace(/\s+/g, '-') 
+    .replace(/[\u0300-\u036f]/g, '')
+    .replace(/[^\w\s-]/g, '')
+    .replace(/\s+/g, '-')
     .replace(/-+/g, '-')
     .trim()
 }
@@ -44,20 +44,19 @@ export function slugify(text: string): string {
 export function capitalize(text: string): string {
   return text
     .split(' ')
-    .map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
+    .map((word) => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
     .join(' ')
 }
 
-
 export function formatPhone(phone: string): string {
   const cleaned = phone.replace(/\D/g, '')
-  
+
   if (cleaned.length === 11) {
     return `(${cleaned.slice(0, 2)}) ${cleaned.slice(2, 3)} ${cleaned.slice(3, 7)}-${cleaned.slice(7)}`
   } else if (cleaned.length === 10) {
     return `(${cleaned.slice(0, 2)}) ${cleaned.slice(2, 6)}-${cleaned.slice(6)}`
   }
-  
+
   return phone
 }
 
@@ -106,7 +105,7 @@ export function getRelativeTime(date: Date | string): string {
   const now = new Date()
   const diffInMs = now.getTime() - dateObj.getTime()
   const diffInDays = Math.floor(diffInMs / (1000 * 60 * 60 * 24))
-  
+
   if (diffInDays === 0) return 'Hoje'
   if (diffInDays === 1) return 'Ontem'
   if (diffInDays < 7) return `Há ${diffInDays} dias`
@@ -132,29 +131,29 @@ export function isValidCEP(cep: string): boolean {
 
 export function isValidCNPJ(cnpj: string): boolean {
   const cleaned = cnpj.replace(/\D/g, '')
-  
+
   if (cleaned.length !== 14) return false
   if (/^(\d)\1+$/.test(cleaned)) return false
-  
+
   let sum = 0
   let factor = 5
-  
+
   for (let i = 0; i < 12; i++) {
     sum += parseInt(cleaned[i]) * factor
     factor = factor === 2 ? 9 : factor - 1
   }
-  
+
   let digit = sum % 11 < 2 ? 0 : 11 - (sum % 11)
   if (parseInt(cleaned[12]) !== digit) return false
-  
+
   sum = 0
   factor = 6
-  
+
   for (let i = 0; i < 13; i++) {
     sum += parseInt(cleaned[i]) * factor
     factor = factor === 2 ? 9 : factor - 1
   }
-  
+
   digit = sum % 11 < 2 ? 0 : 11 - (sum % 11)
   return parseInt(cleaned[13]) === digit
 }
@@ -202,7 +201,6 @@ export function readFromLocalStorage<T>(key: string): T | null {
   }
 }
 
-
 export function removeFromLocalStorage(key: string): void {
   try {
     localStorage.removeItem(key)
@@ -216,44 +214,50 @@ export function unique<T>(array: T[]): T[] {
 }
 
 export function groupBy<T>(array: T[], key: keyof T): Record<string, T[]> {
-  return array.reduce((acc, item) => {
-    const group = String(item[key])
-    if (!acc[group]) acc[group] = []
-    acc[group].push(item)
-    return acc
-  }, {} as Record<string, T[]>)
+  return array.reduce(
+    (acc, item) => {
+      const group = String(item[key])
+      if (!acc[group]) acc[group] = []
+      acc[group].push(item)
+      return acc
+    },
+    {} as Record<string, T[]>,
+  )
 }
 
-export function sortBy<T>(array: T[], key: keyof T, order: 'asc' | 'desc' = 'asc'): T[] {
+export function sortBy<T>(
+  array: T[],
+  key: keyof T,
+  order: 'asc' | 'desc' = 'asc',
+): T[] {
   return [...array].sort((a, b) => {
     const aVal = a[key]
     const bVal = b[key]
-    
+
     if (aVal < bVal) return order === 'asc' ? -1 : 1
     if (aVal > bVal) return order === 'asc' ? 1 : -1
     return 0
   })
 }
 
-export function debounce<T extends (...args: any[]) => any>(
+export function debounce<T extends (...args: unknown[]) => unknown>(
   func: T,
-  wait: number
+  wait: number,
 ): (...args: Parameters<T>) => void {
   let timeout: NodeJS.Timeout | null = null
-  
+
   return (...args: Parameters<T>) => {
     if (timeout) clearTimeout(timeout)
     timeout = setTimeout(() => func(...args), wait)
   }
 }
 
-
-export function throttle<T extends (...args: any[]) => any>(
+export function throttle<T extends (...args: unknown[]) => unknown>(
   func: T,
-  limit: number
+  limit: number,
 ): (...args: Parameters<T>) => void {
   let inThrottle: boolean = false
-  
+
   return (...args: Parameters<T>) => {
     if (!inThrottle) {
       func(...args)
@@ -299,7 +303,7 @@ export async function shareContent(data: ShareData): Promise<boolean> {
 }
 export function isMobile(): boolean {
   return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
-    navigator.userAgent
+    navigator.userAgent,
   )
 }
 

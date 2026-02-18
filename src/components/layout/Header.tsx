@@ -1,18 +1,19 @@
 'use client'
 
-import { useState, useEffect, useRef, useMemo } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { Menu, X, Phone, MapPin, ShoppingCart, Search } from 'lucide-react'
 import Link from 'next/link'
 import { usePathname, useRouter } from 'next/navigation'
 import { useCart } from '@/contexts/CartContext'
 import { motion, AnimatePresence } from 'motion/react'
-import { products } from '@/data/mockData'
 import { Product } from '@/data/types'
 
 export const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
   const [isScrolled, setIsScrolled] = useState(false)
   const [searchQuery, setSearchQuery] = useState('')
+  const [suggestions, setSuggestions] = useState<Product[]>([])
+  const [isSearching, setIsSearching] = useState(false)
   const searchRef = useRef<HTMLDivElement>(null)
 
   const showSuggestions = searchQuery.trim().length >= 2
@@ -21,26 +22,33 @@ export const Header = () => {
   const router = useRouter()
   const { itemCount } = useCart()
 
-  const filteredProducts = useMemo(() => {
-    if (searchQuery.trim().length < 2) return []
+  useEffect(() => {
+    const controller = new AbortController()
 
-    const query = searchQuery.toLowerCase()
+    const fetchSuggestions = async () => {
+      if (searchQuery.trim().length < 2) {
+        setSuggestions([])
+        return
+      }
 
-    return products
-      .filter((product) => {
-        const checkField = (field: unknown) =>
-          field ? String(field).toLowerCase().includes(query) : false
-
-        return (
-          checkField(product.name) ||
-          checkField(product.sku) ||
-          checkField(product.code) ||
-          checkField(product.brandName) ||
-          checkField(product.compatibility) ||
-          checkField(product.description)
+      try {
+        setIsSearching(true)
+        const response = await fetch(
+          `/api/products?q=${encodeURIComponent(searchQuery.trim())}&limit=5`,
+          { signal: controller.signal },
         )
-      })
-      .slice(0, 5)
+        const data = await response.json()
+        setSuggestions(data?.data?.data || [])
+      } catch (error) {
+        setSuggestions([])
+      } finally {
+        setIsSearching(false)
+      }
+    }
+
+    fetchSuggestions()
+
+    return () => controller.abort()
   }, [searchQuery])
 
   useEffect(() => {
@@ -157,10 +165,10 @@ export const Header = () => {
                   Buscar
                 </button>
 
-                {showSuggestions && filteredProducts.length > 0 && (
+                {showSuggestions && suggestions.length > 0 && (
                   <div className='absolute top-full left-0 right-0 mt-2 bg-white rounded-2xl shadow-2xl border-2 border-gray-200 z-50'>
                     <div className='p-2'>
-                      {filteredProducts.map((product) => (
+                      {suggestions.map((product) => (
                         <button
                           key={product.id}
                           onClick={() => handleProductClick(product)}
@@ -194,7 +202,8 @@ export const Header = () => {
 
                 {showSuggestions &&
                   searchQuery.trim().length >= 2 &&
-                  filteredProducts.length === 0 && (
+                  !isSearching &&
+                  suggestions.length === 0 && (
                     <div className='absolute top-full left-0 right-0 mt-2 bg-white rounded-2xl shadow-2xl border-2 border-gray-200 p-6 text-center z-50'>
                       Nenhum produto encontrado
                     </div>

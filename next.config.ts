@@ -7,6 +7,16 @@ const nextConfig = {
       'res.cloudinary.com',
       'firebasestorage.googleapis.com',
     ],
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: '**.gestaoclick.com',
+      },
+      {
+        protocol: 'https',
+        hostname: 'upload-arquivos.s3-sa-east-1.amazonaws.com',
+      },
+    ],
     formats: ['image/avif', 'image/webp'],
   },
 
