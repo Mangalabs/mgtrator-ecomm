@@ -32,6 +32,7 @@ import { useCart } from '@/contexts/CartContext'
 import { motion, AnimatePresence } from 'motion/react'
 import { ProductCard } from './ProductCard'
 import Link from 'next/link'
+import { getWhatsAppUrl } from '@/lib/whatsapp'
 
 const IS_CATALOG_MODE = true
 
@@ -211,10 +212,7 @@ export const ProductDetailClient = ({
   }
 
   const handleWhatsApp = () => {
-    const message = encodeURIComponent(
-      `Olá! Tenho interesse na peça:\n${product.name}\nCódigo: ${product.sku || product.partNumber}`,
-    )
-    window.open(`https://wa.me/5531998753200?text=${message}`, '_blank')
+    window.open(getWhatsAppUrl(product.name, product.sku || product.partNumber || product.code), '_blank')
   }
 
   const faqs = [

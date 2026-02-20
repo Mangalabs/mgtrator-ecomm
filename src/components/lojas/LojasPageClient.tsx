@@ -3,33 +3,13 @@
 import { MapPin, Phone, Clock, Navigation, Car, Wrench, Store as StoreIcon, Shield, Zap, MessageCircle, ArrowRight, Star } from 'lucide-react'
 import { motion } from 'motion/react'
 import { ImageWithFallback } from '@/components/figma/ImageWithFallback'
-import { Breadcrumbs } from '@/components/layout/Breadcrumbs'
-import { stores } from '@/data/mockData'
+import { storesData } from '@/data/stores'
+import { siteConfig } from '@/data/site'
 import PageHero from '../common/PageHero'
-
-const storeDetails: Record<string, {
-  mapEmbed: string
-  mapsLink: string
-  features: string[]
-  hours: string[]
-}> = {
-  '1': {
-    mapEmbed: 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3751.446679576435!2d-44.03759392583256!3d-19.90549463774883!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xa6966579659357%3A0x2863a436972049e4!2sAv.%20Industrial%2C%201250%20-%20Centro%2C%20Contagem%20-%20MG%2C%2032040-000!5e0!3m2!1spt-BR!2sbr!4v1709228392154!5m2!1spt-BR!2sbr',
-    mapsLink: 'https://maps.google.com/?q=Av.+Industrial,+1250+-+Centro,+Contagem+-+MG',
-    features: ['Estacionamento Próprio', 'Wi-Fi Grátis', 'Sala de Espera Climatizada', 'Showroom'],
-    hours: ['Segunda a Sexta: 08:00 - 18:00', 'Sábado: 08:00 - 12:00', 'Domingo: Fechado']
-  },
-  '2': {
-    mapEmbed: 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3749.664478474284!2d-44.19875692583109!3d-19.98038763923725!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xa6be31d6437d71%3A0x6a2c27057774431e!2sR.%20das%20M%C3%A1quinas%2C%20850%20-%20Distrito%20Industrial%2C%20Betim%20-%20MG%2C%2032669-900!5e0!3m2!1spt-BR!2sbr!4v1709228456231!5m2!1spt-BR!2sbr',
-    mapsLink: 'https://maps.google.com/?q=Rua+das+M%C3%A1quinas,+850+-+Distrito+Industrial,+Betim+-+MG',
-    features: ['Oficina Integrada', 'Amplo Pátio', 'Café', 'Área de Descanso'],
-    hours: ['Segunda a Sexta: 07:30 - 17:30', 'Sábado: Fechado', 'Domingo: Fechado']
-  }
-}
 
 export const LojasPageClient = () => {
   const handleWhatsApp = (storeWhatsapp?: string) => {
-    const phone = storeWhatsapp ? storeWhatsapp.replace(/\D/g, '') : '5531998753200'
+    const phone = storeWhatsapp ? storeWhatsapp.replace(/\D/g, '') : siteConfig.contact.whatsapp
     const message = encodeURIComponent('Olá! Gostaria de consultar sobre peças para tratores e máquinas pesadas. Pode me ajudar?')
     window.open(`https://wa.me/${phone}?text=${message}`, '_blank')
   }
@@ -45,163 +25,152 @@ export const LojasPageClient = () => {
         description="Visite nossa unidade"
       />
 
-      <section className="py-20 bg-gradient-to-br from-slate-50 via-white to-blue-50/30 relative overflow-hidden">
+      <section className="bg-gradient-to-br from-slate-50 via-white to-blue-50/30 relative overflow-hidden">
         <div className="absolute inset-0 opacity-40" aria-hidden="true">
           <div className="absolute top-20 right-0 w-[500px] h-[500px] bg-[var(--primary)]/5 rounded-full blur-[120px]" />
           <div className="absolute bottom-0 left-0 w-[600px] h-[600px] bg-[var(--secondary)]/5 rounded-full blur-[100px]" />
         </div>
 
         <div className="relative max-w-7xl mx-auto px-4">
-          <div className="space-y-12">
-            {stores.map((store, index) => {
-              const details = storeDetails[store.id] || {
-                mapEmbed: '',
-                mapsLink: '',
-                features: [],
-                hours: []
-              }
-
-              return (
-                <motion.div
-                  key={store.id}
-                  initial={{ opacity: 0, y: 30 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.5, delay: index * 0.1 }}
-                  className="group bg-white/90 backdrop-blur-sm rounded-[32px] border-2 border-[var(--neutral-200)] shadow-2xl overflow-hidden hover:border-[var(--primary)]/50 hover:shadow-[0_24px_60px_-12px_rgba(33,58,119,0.28)] transition-all duration-500"
-                >
-                  <div className="grid lg:grid-cols-2 gap-0">
-                    <div className="relative">
-                      <div className="absolute top-6 left-6 z-10">
-                        <div className="inline-flex items-center gap-2 bg-white/95 backdrop-blur-xl border-2 border-white/60 px-4 py-2 rounded-2xl shadow-xl">
-                          <StoreIcon className="w-5 h-5 text-[var(--primary)]" />
-                          <span className="font-black text-[var(--primary)] uppercase tracking-wide">Unidade {index + 1}</span>
-                        </div>
-                      </div>
-
-                      <div className="aspect-video lg:aspect-[4/3] overflow-hidden">
-                        <ImageWithFallback
-                          src={store.image}
-                          alt={`Loja ${store.name} da MG Trator Peças - ${store.address.street} em ${store.address.city}`}
-                          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
-                        />
-                      </div>
-                      
-                      <div className="h-64 overflow-hidden border-t-2 border-[var(--neutral-200)]">
-                        <iframe
-                          src={details.mapEmbed}
-                          width="100%"
-                          height="100%"
-                          allowFullScreen
-                          loading="lazy"
-                          referrerPolicy="no-referrer-when-downgrade"
-                          title={`Localização ${store.name}`}
-                          className="grayscale hover:grayscale-0 transition-all duration-500"
-                        ></iframe>
+          <div className="space-y-8">
+            {storesData.map((store, index) => (
+              <motion.div
+                key={store.id}
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.5, delay: index * 0.1 }}
+                className="group bg-white/90 backdrop-blur-sm rounded-[32px] border-2 border-[var(--neutral-200)] shadow-2xl overflow-hidden hover:border-[var(--primary)]/50 hover:shadow-[0_24px_60px_-12px_rgba(33,58,119,0.28)] transition-all duration-500"
+              >
+                <div className="grid lg:grid-cols-2 gap-0">
+                  <div className="relative">
+                    <div className="absolute top-6 left-6 z-10">
+                      <div className="inline-flex items-center gap-2 bg-white/95 backdrop-blur-xl border-2 border-white/60 px-4 py-2 rounded-2xl shadow-xl">
+                        <StoreIcon className="w-5 h-5 text-[var(--primary)]" />
+                        <span className="font-black text-[var(--primary)] uppercase tracking-wide">Unidade {index + 1}</span>
                       </div>
                     </div>
 
-                    <div className="p-8 lg:p-10 flex flex-col">
-                      <h2 className="font-black text-3xl text-[var(--neutral-900)] mb-6">
-                        {store.name}
-                      </h2>
-
-                      <div className="space-y-4 mb-8">
-                        <div className="flex items-start gap-4 p-4 bg-slate-50 rounded-2xl border border-[var(--neutral-200)] hover:border-[var(--primary)]/30 transition-colors">
-                          <div className="w-12 h-12 bg-gradient-to-br from-[var(--primary)] to-[#1a2d5e] rounded-xl flex items-center justify-center flex-shrink-0">
-                            <MapPin className="w-6 h-6 text-white" />
-                          </div>
-                          <div className="flex-1">
-                            <div className="font-bold text-sm text-[var(--neutral-900)] mb-1">Endereço</div>
-                            <div className="text-sm text-[var(--neutral-700)] leading-relaxed">
-                              {store.address.street}, {store.address.number}<br />
-                              {store.address.city}/{store.address.state}<br />
-                              CEP: {store.address.zipCode}
-                            </div>
-                          </div>
-                        </div>
-
-                        <div className="flex items-start gap-4 p-4 bg-slate-50 rounded-2xl border border-[var(--neutral-200)] hover:border-[var(--primary)]/30 transition-colors">
-                          <div className="w-12 h-12 bg-gradient-to-br from-[var(--secondary)] to-[#f4d348] rounded-xl flex items-center justify-center flex-shrink-0">
-                            <Phone className="w-6 h-6 text-[var(--primary)]" />
-                          </div>
-                          <div className="flex-1">
-                            <div className="font-bold text-sm text-[var(--neutral-900)] mb-1">Telefones</div>
-                            <div className="text-sm text-[var(--neutral-700)]">
-                              <a href={`tel:${store.contact.phone}`} className="hover:text-[var(--primary)] transition-colors font-medium">
-                                {store.contact.phone}
-                              </a>
-                              <br />
-                              {store.contact.whatsapp && (
-                                <>
-                                  <span className="text-xs text-[var(--neutral-500)]">WhatsApp:</span>{' '}
-                                  <a href={`https://wa.me/${store.contact.whatsapp.replace(/\D/g, '')}`} className="hover:text-[#25D366] transition-colors font-medium">
-                                    {store.contact.whatsapp}
-                                  </a>
-                                </>
-                              )}
-                            </div>
-                          </div>
-                        </div>
-
-                        <div className="flex items-start gap-4 p-4 bg-slate-50 rounded-2xl border border-[var(--neutral-200)] hover:border-[var(--primary)]/30 transition-colors">
-                          <div className="w-12 h-12 bg-gradient-to-br from-emerald-500 to-emerald-600 rounded-xl flex items-center justify-center flex-shrink-0">
-                            <Clock className="w-6 h-6 text-white" />
-                          </div>
-                          <div className="flex-1">
-                            <div className="font-bold text-sm text-[var(--neutral-900)] mb-1">Horário de Funcionamento</div>
-                            <div className="text-sm text-[var(--neutral-700)] space-y-1">
-                              {details.hours.map((h, i) => (
-                                <div key={i}>{h}</div>
-                              ))}
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-
-                      {details.features && details.features.length > 0 && (
-                        <div className="mb-8">
-                          <div className="font-bold text-sm text-[var(--neutral-900)] mb-3 uppercase tracking-wide">Diferenciais da Loja</div>
-                          <div className="grid grid-cols-2 gap-3">
-                            {details.features.map((feature, idx) => (
-                              <div key={idx} className="flex items-center gap-2 text-sm text-[var(--neutral-700)] bg-white rounded-xl px-3 py-2 border border-[var(--neutral-200)]">
-                                <div className="w-2 h-2 bg-[var(--secondary)] rounded-full flex-shrink-0" />
-                                <span className="font-semibold">{feature}</span>
-                              </div>
-                            ))}
-                          </div>
-                        </div>
-                      )}
-
-                      <div className="grid grid-cols-2 gap-3 mt-auto">
-                        <button
-                          onClick={() => handleWhatsApp(store.contact.whatsapp)}
-                          className="flex items-center justify-center gap-2 bg-gradient-to-br from-[#25D366] to-[#20BD5A] text-white py-4 px-5 rounded-2xl font-black hover:shadow-xl hover:scale-[1.02] transition-all duration-300"
-                        >
-                          <MessageCircle className="w-5 h-5" />
-                          <span>WhatsApp</span>
-                        </button>
-                        
-                        <a
-                          href={details.mapsLink}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="flex items-center justify-center gap-2 border-2 border-[var(--primary)] text-[var(--primary)] py-4 px-5 rounded-2xl font-black hover:bg-[var(--primary)] hover:text-white transition-all duration-300"
-                        >
-                          <Navigation className="w-5 h-5" />
-                          <span>Como Chegar</span>
-                        </a>
-                      </div>
+                    <div className="aspect-video lg:aspect-[4/3] overflow-hidden">
+                      <ImageWithFallback
+                        src={store.image}
+                        alt={`Loja ${store.name} da ${siteConfig.name} - ${store.address.street} em ${store.address.city}`}
+                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
+                      />
+                    </div>
+                    
+                    <div className="h-64 overflow-hidden border-t-2 border-[var(--neutral-200)]">
+                      <iframe
+                        src={store.mapEmbed}
+                        width="100%"
+                        height="100%"
+                        allowFullScreen
+                        loading="lazy"
+                        referrerPolicy="no-referrer-when-downgrade"
+                        title={`Localização ${store.name}`}
+                        className="grayscale hover:grayscale-0 transition-all duration-500"
+                      ></iframe>
                     </div>
                   </div>
-                </motion.div>
-              )
-            })}
+
+                  <div className="p-8 lg:p-10 flex flex-col">
+                    <h2 className="font-black text-3xl text-[var(--neutral-900)] mb-6">
+                      {store.name}
+                    </h2>
+
+                    <div className="space-y-4 mb-8">
+                      <div className="flex items-start gap-4 p-4 bg-slate-50 rounded-2xl border border-[var(--neutral-200)] hover:border-[var(--primary)]/30 transition-colors">
+                        <div className="w-12 h-12 bg-gradient-to-br from-[var(--primary)] to-[#1a2d5e] rounded-xl flex items-center justify-center flex-shrink-0">
+                          <MapPin className="w-6 h-6 text-white" />
+                        </div>
+                        <div className="flex-1">
+                          <div className="font-bold text-sm text-[var(--neutral-900)] mb-1">Endereço</div>
+                          <div className="text-sm text-[var(--neutral-700)] leading-relaxed">
+                            {store.address.street}, {store.address.number}<br />
+                            {store.address.city}/{store.address.state}<br />
+                            CEP: {store.address.zipCode}
+                          </div>
+                        </div>
+                      </div>
+
+                      <div className="flex items-start gap-4 p-4 bg-slate-50 rounded-2xl border border-[var(--neutral-200)] hover:border-[var(--primary)]/30 transition-colors">
+                        <div className="w-12 h-12 bg-gradient-to-br from-[var(--secondary)] to-[#f4d348] rounded-xl flex items-center justify-center flex-shrink-0">
+                          <Phone className="w-6 h-6 text-[var(--primary)]" />
+                        </div>
+                        <div className="flex-1">
+                          <div className="font-bold text-sm text-[var(--neutral-900)] mb-1">Telefones</div>
+                          <div className="text-sm text-[var(--neutral-700)]">
+                            <a href={`tel:${store.contact.phone}`} className="hover:text-[var(--primary)] transition-colors font-medium">
+                              {store.contact.phoneFormatted}
+                            </a>
+                            <br />
+                            {store.contact.whatsapp && (
+                              <>
+                                <span className="text-xs text-[var(--neutral-500)]">WhatsApp:</span>{' '}
+                                <a href={`https://wa.me/${store.contact.whatsapp.replace(/\D/g, '')}`} className="hover:text-[#25D366] transition-colors font-medium">
+                                  {store.contact.whatsapp}
+                                </a>
+                              </>
+                            )}
+                          </div>
+                        </div>
+                      </div>
+
+                      <div className="flex items-start gap-4 p-4 bg-slate-50 rounded-2xl border border-[var(--neutral-200)] hover:border-[var(--primary)]/30 transition-colors">
+                        <div className="w-12 h-12 bg-gradient-to-br from-emerald-500 to-emerald-600 rounded-xl flex items-center justify-center flex-shrink-0">
+                          <Clock className="w-6 h-6 text-white" />
+                        </div>
+                        <div className="flex-1">
+                          <div className="font-bold text-sm text-[var(--neutral-900)] mb-1">Horário de Funcionamento</div>
+                          <div className="text-sm text-[var(--neutral-700)] space-y-1">
+                            <div>{siteConfig.businessHours.detailed}</div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    {store.features && store.features.length > 0 && (
+                      <div className="mb-8">
+                        <div className="font-bold text-sm text-[var(--neutral-900)] mb-3 uppercase tracking-wide">Diferenciais da Loja</div>
+                        <div className="grid grid-cols-2 gap-3">
+                          {store.features.map((feature, idx) => (
+                            <div key={idx} className="flex items-center gap-2 text-sm text-[var(--neutral-700)] bg-white rounded-xl px-3 py-2 border border-[var(--neutral-200)]">
+                              <div className="w-2 h-2 bg-[var(--secondary)] rounded-full flex-shrink-0" />
+                              <span className="font-semibold">{feature}</span>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    )}
+
+                    <div className="grid grid-cols-2 gap-3 mt-auto">
+                      <button
+                        onClick={() => handleWhatsApp(store.contact.whatsapp)}
+                        className="flex items-center justify-center gap-2 bg-gradient-to-br from-[#25D366] to-[#20BD5A] text-white py-4 px-5 rounded-2xl font-black hover:shadow-xl hover:scale-[1.02] transition-all duration-300"
+                      >
+                        <MessageCircle className="w-5 h-5" />
+                        <span>WhatsApp</span>
+                      </button>
+                      
+                      <a
+                        href={store.mapsLink}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="flex items-center justify-center gap-2 border-2 border-[var(--primary)] text-[var(--primary)] py-4 px-5 rounded-2xl font-black hover:bg-[var(--primary)] hover:text-white transition-all duration-300"
+                      >
+                        <Navigation className="w-5 h-5" />
+                        <span>Como Chegar</span>
+                      </a>
+                    </div>
+                  </div>
+                </div>
+              </motion.div>
+            ))}
           </div>
         </div>
       </section>
 
-      <section className="py-20 bg-white relative overflow-hidden">
+      <section className=" bg-white relative overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-b from-slate-50/50 to-white" aria-hidden="true" />
         
         <div className="relative max-w-7xl mx-auto px-4">
@@ -318,7 +287,7 @@ export const LojasPageClient = () => {
                       <StoreIcon className="w-5 h-5 text-white" />
                     </div>
                     <div>
-                      <div className="font-black text-lg text-[var(--neutral-900)]">2</div>
+                      <div className="font-black text-lg text-[var(--neutral-900)]">{storesData.length}</div>
                       <div className="text-xs text-[var(--neutral-600)] font-semibold">Unidades</div>
                     </div>
                   </div>

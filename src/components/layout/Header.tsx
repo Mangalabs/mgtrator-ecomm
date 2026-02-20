@@ -8,6 +8,7 @@ import { usePathname, useRouter } from 'next/navigation'
 import { useCart } from '@/contexts/CartContext'
 import { motion, AnimatePresence } from 'motion/react'
 import { Product } from '@/data/types'
+import { siteConfig } from '@/data/site'
 
 export const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
@@ -122,16 +123,16 @@ export const Header = () => {
           <div className='flex items-center gap-6'>
             <div className='flex items-center gap-2'>
               <Phone className='w-4 h-4' />
-              <a href='tel:+553133684500' className='hover:text-yellow-200 transition-colors'>
-                (31) 3368-4500
+              <a href={`tel:${siteConfig.contact.phone}`} className='hover:text-yellow-200 transition-colors'>
+                {siteConfig.contact.phoneFormatted}
               </a>
             </div>
             <div className='flex items-center gap-2'>
               <MapPin className='w-4 h-4' />
-              <span>São Luis/MA</span>
+              <span>{siteConfig.location.city}</span>
             </div>
           </div>
-          <span>Seg–Sex | 8h–17h</span>
+          <span>{siteConfig.businessHours.short}</span>
         </div>
       </div>
 
@@ -143,14 +144,11 @@ export const Header = () => {
           <div className='flex items-center justify-between'>
             <Link href='/'>
               <Image
-                src='/logo.png'
-                alt='MG TratorPeças'
-                height={28}
-                width={150}
-                style={{
-                  filter:
-                    'brightness(0) saturate(100%) invert(15%) sepia(58%) saturate(2786%) hue-rotate(210deg)',
-                }}
+                src={siteConfig.images.logo}
+                alt={siteConfig.name}
+                height={siteConfig.images.logoHeight}
+                width={siteConfig.images.logoWidth}
+                style={siteConfig.images.logoStyle}
               />
             </Link>
             <div
@@ -184,7 +182,7 @@ export const Header = () => {
                         >
                           <div className='w-12 h-12 bg-gray-100 rounded-lg overflow-hidden flex-shrink-0'>
                             <img
-                              src={product.thumbnail || product.images?.[0] || '/placeholder-product.png'}
+                              src={product.thumbnail || product.images?.[0] || siteConfig.images.productPlaceholder}
                               alt={product.name}
                               className='w-full h-full object-contain p-1'
                             />

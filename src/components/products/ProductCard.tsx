@@ -12,6 +12,7 @@ import Link from 'next/link'
 import { motion } from 'motion/react'
 import { useCart } from '@/contexts/CartContext'
 import { useMemo } from 'react'
+import { getWhatsAppUrl } from '@/lib/whatsapp'
 
 const IS_CATALOG_MODE = true
 
@@ -127,10 +128,7 @@ export function ProductCard({
   const handleConsult = (e: React.MouseEvent) => {
     e.preventDefault()
     e.stopPropagation()
-    const message = encodeURIComponent(
-      `Olá! Tenho interesse no produto: ${name} (Cód: ${productDetails.code}). Poderia me passar mais informações?`,
-    )
-    window.open(`https://wa.me/5531998753200?text=${message}`, '_blank')
+    window.open(getWhatsAppUrl(name, productDetails.code), '_blank')
   }
 
   return (

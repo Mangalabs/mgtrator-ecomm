@@ -310,7 +310,7 @@ export function PoliticasPageClient() {
               </a>
             </div>
             <p className="text-sm text-blue-200 mt-6">
-              Horário de atendimento: Segunda a Sexta, 8h às 18h | Sábado, 8h às 12h
+              Horário de atendimento: Segunda a Sexta, 8h às 18h
             </p>
           </motion.div>
         </div>

@@ -7,6 +7,7 @@ import Image from 'next/image'
 import { motion, AnimatePresence } from 'motion/react'
 import { useCart } from '@/contexts/CartContext'
 import type { Product } from '@/data/types'
+import { getWhatsAppUrl } from '@/lib/whatsapp'
 
 const IS_CATALOG_MODE = true
 
@@ -110,10 +111,7 @@ export const QuickViewModal = ({ product, onClose }: QuickViewModalProps) => {
     : 0
 
   const handleWhatsApp = () => {
-    const message = encodeURIComponent(
-      `Olá! Gostaria de consultar a peça:\n\n*${product.name}*\nCódigo: ${productCode}\n\nPode me ajudar com valores e disponibilidade?`
-    )
-    window.open(`https://wa.me/5531998753200?text=${message}`, '_blank')
+    window.open(getWhatsAppUrl(product.name, productCode), '_blank')
   }
 
   const handleAddToCart = () => {
@@ -126,7 +124,6 @@ export const QuickViewModal = ({ product, onClose }: QuickViewModalProps) => {
 
   const { delivery: deliveryBadge, warranty: warrantyBadge } = config.badges
 
-  // Override text for Catalog Mode
   const deliveryTitle = IS_CATALOG_MODE ? (deliveryType === 'pronta-entrega' ? 'Entrega Facilitada' : deliveryBadge.title) : deliveryBadge.title
   const deliverySubtitle = IS_CATALOG_MODE ? (deliveryType === 'pronta-entrega' ? 'Consulte regiões' : 'Consulte prazos') : deliveryBadge.subtitle
 
