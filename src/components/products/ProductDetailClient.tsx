@@ -537,9 +537,6 @@ export const ProductDetailClient = ({
               <button className='pb-4 border-b-2 border-[var(--primary)] text-[var(--primary)] font-bold'>
                 Descrição
               </button>
-              <button className='pb-4 border-b-2 border-transparent text-[var(--neutral-600)] hover:text-[var(--primary)] transition-colors font-bold'>
-                Especificações
-              </button>
             </div>
           </div>
 

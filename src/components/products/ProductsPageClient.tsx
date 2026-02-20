@@ -34,8 +34,9 @@ export const ProductsPageClient = ({
   const [priceRange, setPriceRange] = useState<string>('all')
   const [sortBy, setSortBy] = useState<string>('relevance')
   const [showFilters, setShowFilters] = useState(false)
+  const [searchInput, setSearchInput] = useState<string>('')
   const [searchQuery, setSearchQuery] = useState<string>('')
-  const [currentPage, setCurrentPage] = useState(1)
+  const [currentPage, setCurrentPage] = useState(initialPagination?.page ?? 1)
   const [pagination, setPagination] = useState<PaginationInfo | null>(
     initialPagination ?? null,
   )
@@ -43,7 +44,7 @@ export const ProductsPageClient = ({
 
   const categoryOptions = useMemo(() => {
     const counts = new Map<string, number>()
-    products.forEach((product) => {
+    initialProducts.forEach((product) => {
       const name = product.categoryName?.trim()
       if (!name) return
       counts.set(name, (counts.get(name) || 0) + 1)
@@ -52,17 +53,18 @@ export const ProductsPageClient = ({
     return Array.from(counts.entries())
       .map(([name, count]) => ({ name, count }))
       .sort((a, b) => a.name.localeCompare(b.name))
-  }, [products])
+  }, [initialProducts])
 
-  const handleSearchChange = (value: string) => {
-    setSearchQuery(value)
-    setCurrentPage(1)
-  }
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      if (searchQuery !== searchInput) {
+        setSearchQuery(searchInput)
+        setCurrentPage(1)
+      }
+    }, 500)
+    return () => clearTimeout(timer)
+  }, [searchInput, searchQuery])
 
-  const handleCategoryChange = (value: string) => {
-    setSelectedCategory(value)
-    setCurrentPage(1)
-  }
   useEffect(() => {
     let isMounted = true
     const controller = new AbortController()
@@ -74,6 +76,7 @@ export const ProductsPageClient = ({
         params.set('page', String(currentPage))
         params.set('limit', String(ITEMS_PER_PAGE))
         params.set('inStock', 'true')
+        params.set('sortBy', sortBy)
         if (searchQuery.trim()) {
           params.set('search', searchQuery.trim())
         }
@@ -116,7 +119,7 @@ export const ProductsPageClient = ({
       isMounted = false
       controller.abort()
     }
-  }, [currentPage, searchQuery, selectedCategory])
+  }, [currentPage, searchQuery, selectedCategory, sortBy])
 
   const sortedProducts = [...products].sort((a, b) => {
     switch (sortBy) {
@@ -171,6 +174,11 @@ export const ProductsPageClient = ({
     }
   }
 
+  const handleCategoryChange = (value: string) => {
+    setSelectedCategory(value)
+    setCurrentPage(1)
+  }
+
   return (
     <div className='min-h-screen bg-white'>
       <PageHero
@@ -202,16 +210,20 @@ export const ProductsPageClient = ({
                 />
                 <input
                   type='text'
-                  value={searchQuery}
-                  onChange={(e) => handleSearchChange(e.target.value)}
+                  value={searchInput}
+                  onChange={(e) => setSearchInput(e.target.value)}
                   placeholder='Buscar por peça, código ou categoria... (Ex: filtro, bomba hidráulica)'
                   className='w-full py-5 pl-16 pr-16 rounded-3xl border-2 border-[var(--neutral-300)] bg-white focus:border-[var(--primary)] focus:outline-none focus:ring-4 focus:ring-[var(--primary)]/10 transition-all shadow-lg hover:shadow-xl text-lg'
                   aria-label='Buscar produtos - Digite peça, código ou categoria'
                 />
-                {searchQuery && (
+                {searchInput && (
                   <button
                     type='button'
-                    onClick={() => handleSearchChange('')}
+                    onClick={() => {
+                      setSearchInput('')
+                      setSearchQuery('')
+                      setCurrentPage(1)
+                    }}
                     className='absolute right-6 top-1/2 -translate-y-1/2 w-10 h-10 flex items-center justify-center rounded-full bg-[var(--neutral-100)] text-[var(--neutral-500)] hover:bg-red-50 hover:text-red-600 transition-all'
                     aria-label='Limpar busca'>
                     <X className='w-5 h-5' />
@@ -279,7 +291,10 @@ export const ProductsPageClient = ({
                   </h4>
                   <select
                     value={sortBy}
-                    onChange={(e) => setSortBy(e.target.value)}
+                    onChange={(e) => {
+                      setSortBy(e.target.value)
+                      setCurrentPage(1)
+                    }}
                     className='w-full border-2 border-[var(--neutral-200)] rounded-xl px-4 py-3 text-sm font-semibold focus:ring-4 focus:ring-[var(--primary)]/10 focus:border-[var(--primary)] transition-all bg-white cursor-pointer hover:border-[var(--primary)]/50'>
                     <option value='relevance'>Mais Relevantes</option>
                     {!IS_CATALOG_MODE && (
@@ -297,6 +312,7 @@ export const ProductsPageClient = ({
                     setSelectedCategory('all')
                     setPriceRange('all')
                     setSortBy('relevance')
+                    setSearchInput('')
                     setSearchQuery('')
                     setCurrentPage(1)
                   }}
@@ -350,6 +366,7 @@ export const ProductsPageClient = ({
                     onClick={() => {
                       setSelectedCategory('all')
                       setPriceRange('all')
+                      setSearchInput('')
                       setSearchQuery('')
                       setCurrentPage(1)
                     }}

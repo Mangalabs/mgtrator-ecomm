@@ -15,6 +15,7 @@ export const products: Product[] = [
     brandName: 'Caterpillar',
     images: [
       'https://images.unsplash.com/photo-1599928789465-352021f5f3a7?w=400',
+      'https://blog.pecahoje.com.br/wp-content/uploads/2022/01/blog-pecahoje-filtrooleo.png'
     ],
     thumbnail:
       'https://images.unsplash.com/photo-1599928789465-352021f5f3a7?w=400',

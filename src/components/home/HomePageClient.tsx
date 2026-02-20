@@ -278,57 +278,6 @@ export const HomePageClient = ({
         </div>
       </section>
 
-      {newProducts.length > 0 && (
-        <section className='py-12 bg-white'>
-          <div className='max-w-7xl mx-auto px-4'>
-            <div className='flex items-center justify-between mb-8'>
-              <div className='flex items-center gap-3'>
-                <div className='w-12 h-12 bg-gradient-to-br from-emerald-600 to-emerald-700 rounded-xl flex items-center justify-center shadow-lg'>
-                  <TrendingUp className='w-6 h-6 text-white' />
-                </div>
-                <div>
-                  <h2 className='font-black text-3xl text-gray-900'>
-                    Recém Chegados
-                  </h2>
-                  <p className='text-gray-600 text-sm'>
-                    Últimas adições ao nosso catálogo
-                  </p>
-                </div>
-              </div>
-            </div>
-
-            <div className='grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6'>
-              {newProducts.slice(0, maxNew).map((product, index) => {
-                const deliveryType = normalizeDeliveryType(product.deliveryType)
-                return (
-                  <motion.div
-                    key={product.id}
-                    initial={{ opacity: 0, y: 20 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ delay: index * 0.05 }}>
-                    <ProductCard
-                      id={product.id}
-                      name={product.name}
-                      price={product.price}
-                      image={product.thumbnail}
-                      code={product.code}
-                      partNumber={product.partNumber}
-                      deliveryType={deliveryType}
-                      stockQuantity={product.inStock ? 100 : 0}
-                      thumbnail={product.thumbnail}
-                      onQuickView={() => setSelectedProduct(product)}
-                      showInstallments={true}
-                      installmentsCount={12}
-                    />
-                  </motion.div>
-                )
-              })}
-            </div>
-          </div>
-        </section>
-      )}
-
       {selectedProduct && (
         <QuickViewModal
           product={selectedProduct}
