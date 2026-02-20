@@ -15,10 +15,10 @@ interface BreadcrumbsProps {
 }
 
 export const Breadcrumbs = ({ items, className = '', theme = 'light' }: BreadcrumbsProps) => {
-  const textColor = theme === 'dark' ? 'text-white/80' : 'text-gray-600'
+  const textColor = theme === 'dark' ? 'text-white/80' : 'text-blue-900'
   const hoverColor = theme === 'dark' ? 'hover:text-white' : 'hover:text-[#213A77]'
   const activeColor = theme === 'dark' ? 'text-white' : 'text-[#213A77]'
-  const iconColor = theme === 'dark' ? 'text-white' : 'text-gray-400'
+  const iconColor = theme === 'dark' ? 'text-white' : 'text-blue-900'
   
   return (
     <nav 
@@ -29,10 +29,10 @@ export const Breadcrumbs = ({ items, className = '', theme = 'light' }: Breadcru
         <li>
           <Link
             href="/"
-            className={`flex items-center gap-1 ${hoverColor} transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 rounded px-1 text-white`}
+            className={`flex items-center gap-1 ${hoverColor} transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 rounded px-1 ${textColor}`}
             aria-label="Voltar para página inicial"
           >
-            <Home className={`w-4 h-4 ${iconColor}`} aria-hidden="true" />
+            <Home className={`w-4 h-4 mr-2 ${iconColor}`} aria-hidden="true" />
             <span>Início</span>
           </Link>
         </li>
@@ -44,13 +44,13 @@ export const Breadcrumbs = ({ items, className = '', theme = 'light' }: Breadcru
             {item.href && index < items.length - 1 ? (
               <Link
                 href={item.href}
-                className={`${hoverColor} transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 rounded px-1 text-gray-100`}
+                className={`${hoverColor} transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 rounded px-1 ${textColor}`}
                 aria-label={`Navegar para ${item.label}`}
               >
                 {item.label}
               </Link>
             ) : (
-              <span className={`${activeColor} font-semibold text-gray-400`} aria-current="page">
+              <span className={`${activeColor} font-semibold ${textColor}`} aria-current="page">
                 {item.label}
               </span>
             )}

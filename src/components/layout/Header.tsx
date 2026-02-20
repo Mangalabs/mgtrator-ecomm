@@ -1,18 +1,20 @@
 'use client'
 
-import { useState, useEffect, useRef, useMemo } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { Menu, X, Phone, MapPin, ShoppingCart, Search } from 'lucide-react'
 import Link from 'next/link'
+import Image from 'next/image'
 import { usePathname, useRouter } from 'next/navigation'
 import { useCart } from '@/contexts/CartContext'
 import { motion, AnimatePresence } from 'motion/react'
-import { products } from '@/data/mockData'
 import { Product } from '@/data/types'
 
 export const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
   const [isScrolled, setIsScrolled] = useState(false)
   const [searchQuery, setSearchQuery] = useState('')
+  const [suggestions, setSuggestions] = useState<Product[]>([])
+  const [isSearching, setIsSearching] = useState(false)
   const searchRef = useRef<HTMLDivElement>(null)
 
   const showSuggestions = searchQuery.trim().length >= 2
@@ -21,26 +23,38 @@ export const Header = () => {
   const router = useRouter()
   const { itemCount } = useCart()
 
-  const filteredProducts = useMemo(() => {
-    if (searchQuery.trim().length < 2) return []
+  useEffect(() => {
+    const controller = new AbortController()
 
-    const query = searchQuery.toLowerCase()
+    const fetchSuggestions = async () => {
+      if (searchQuery.trim().length < 2) {
+        setSuggestions([])
+        return
+      }
 
-    return products
-      .filter((product) => {
-        const checkField = (field: unknown) =>
-          field ? String(field).toLowerCase().includes(query) : false
-
-        return (
-          checkField(product.name) ||
-          checkField(product.sku) ||
-          checkField(product.code) ||
-          checkField(product.brandName) ||
-          checkField(product.compatibility) ||
-          checkField(product.description)
+      try {
+        setIsSearching(true)
+        const response = await fetch(
+          `/api/products?q=${encodeURIComponent(searchQuery.trim())}&limit=5`,
+          { signal: controller.signal },
         )
-      })
-      .slice(0, 5)
+        const data = await response.json()
+        setSuggestions(data?.data?.data || [])
+      } catch (error) {
+        setSuggestions([])
+      } finally {
+        setIsSearching(false)
+      }
+    }
+
+    const timer = setTimeout(() => {
+      fetchSuggestions()
+    }, 300)
+
+    return () => {
+      controller.abort()
+      clearTimeout(timer)
+    }
   }, [searchQuery])
 
   useEffect(() => {
@@ -66,7 +80,7 @@ export const Header = () => {
   const menuItems = [
     { name: 'Início', href: '/', id: 'home' },
     { name: 'Produtos', href: '/produtos', id: 'produtos' },
-    { name: 'Marcas', href: '/marcas', id: 'marcas' },
+    // { name: 'Marcas', href: '/marcas', id: 'marcas' },
     { name: 'Lojas', href: '/lojas', id: 'lojas' },
     { name: 'Contato', href: '/contato', id: 'contato' },
   ]
@@ -85,8 +99,8 @@ export const Header = () => {
   }
 
   const handleProductClick = (product: Product) => {
-    const identifier = product.slug || product.id
-    router.push(`/produtos/${identifier}`)
+    const productId = product.id
+    router.push(`/produtos/${productId}`)
     setSearchQuery('')
   }
 
@@ -104,17 +118,17 @@ export const Header = () => {
   return (
     <>
       <div className='bg-gradient-to-r from-[#213A77] to-[#1a2d5f] text-white hidden md:block'>
-        <div className='max-w-7xl mx-auto px-4 h-10 flex items-center justify-between text-sm'>
+        <div className='max-w-7xl mx-auto h-7 flex items-center justify-between text-sm'>
           <div className='flex items-center gap-6'>
             <div className='flex items-center gap-2'>
               <Phone className='w-4 h-4' />
-              <a href='tel:+553133684500' className='hover:underline'>
+              <a href='tel:+553133684500' className='hover:text-yellow-200 transition-colors'>
                 (31) 3368-4500
               </a>
             </div>
             <div className='flex items-center gap-2'>
               <MapPin className='w-4 h-4' />
-              <span>São Luis/MA e Araguaína/TO</span>
+              <span>São Luis/MA</span>
             </div>
           </div>
           <span>Seg–Sex | 8h–17h</span>
@@ -125,20 +139,20 @@ export const Header = () => {
         className={`sticky top-0 z-50 bg-white transition-all duration-300 ${
           isScrolled ? 'shadow-lg py-2' : 'shadow-sm py-4'
         }`}>
-        <div className='max-w-7xl mx-auto px-4'>
+        <div className='max-w-7xl mx-auto'>
           <div className='flex items-center justify-between'>
-            <Link href='/' className='flex items-center gap-3'>
-              <img
-                src='https://mgtratorpecas.com.br/assets/logo_mgtratorpecas_png_branco-BQx3whQg.png'
-                alt='MG Trator Peças'
-                className='h-12 w-auto'
+            <Link href='/'>
+              <Image
+                src='/logo.png'
+                alt='MG TratorPeças'
+                height={28}
+                width={150}
                 style={{
                   filter:
                     'brightness(0) saturate(100%) invert(15%) sepia(58%) saturate(2786%) hue-rotate(210deg)',
                 }}
               />
             </Link>
-
             <div
               className='hidden lg:flex flex-1 max-w-xl mx-10'
               ref={searchRef}>
@@ -153,31 +167,34 @@ export const Header = () => {
                 />
                 <button
                   type='submit'
-                  className='absolute right-1 top-1/2 -translate-y-1/2 bg-[var(--primary)] text-white px-4 py-1 rounded-full'>
+                  className='absolute right-1 top-1/2 -translate-y-1/2 bg-[var(--primary)] text-white px-4 py-1 rounded-full'
+                >
                   Buscar
                 </button>
 
-                {showSuggestions && filteredProducts.length > 0 && (
-                  <div className='absolute top-full left-0 right-0 mt-2 bg-white rounded-2xl shadow-2xl border-2 border-gray-200 z-50'>
+                {showSuggestions && suggestions.length > 0 && (
+                  <div className='absolute top-full left-0 right-0 mt-2 bg-white rounded-2xl shadow-2xl border-2 border-gray-200 z-50 overflow-hidden'>
                     <div className='p-2'>
-                      {filteredProducts.map((product) => (
+                      {suggestions.map((product) => (
                         <button
                           key={product.id}
+                          type="button"
                           onClick={() => handleProductClick(product)}
-                          className='w-full flex items-center gap-4 p-3 hover:bg-gray-50 rounded-xl text-left'>
-                          <div className='w-16 h-16 bg-gray-100 rounded-lg overflow-hidden'>
+                          className='w-full flex items-center gap-4 p-3 hover:bg-gray-50 rounded-xl text-left transition-colors'
+                        >
+                          <div className='w-12 h-12 bg-gray-100 rounded-lg overflow-hidden flex-shrink-0'>
                             <img
-                              src={product.thumbnail}
+                              src={product.thumbnail || product.images?.[0] || '/placeholder-product.png'}
                               alt={product.name}
-                              className='w-full h-full object-contain p-2'
+                              className='w-full h-full object-contain p-1'
                             />
                           </div>
                           <div className='flex-1 min-w-0'>
-                            <div className='font-bold text-gray-900 truncate'>
+                            <div className='font-bold text-gray-900 truncate text-sm'>
                               {product.name}
                             </div>
                             <div className='text-xs text-gray-500'>
-                              {product.brandName}
+                              {product.brandName || product.code}
                             </div>
                           </div>
                         </button>
@@ -185,8 +202,10 @@ export const Header = () => {
                     </div>
 
                     <button
+                      type="button"
                       onClick={handleViewAllResults}
-                      className='w-full p-3 bg-gray-50 border-t-2 border-gray-200 font-bold text-[var(--primary)] text-sm'>
+                      className='w-full p-3 bg-gray-50 border-t border-gray-100 font-bold text-[var(--primary)] text-xs hover:bg-gray-100 transition-colors'
+                    >
                       Ver todos os resultados
                     </button>
                   </div>
@@ -194,8 +213,9 @@ export const Header = () => {
 
                 {showSuggestions &&
                   searchQuery.trim().length >= 2 &&
-                  filteredProducts.length === 0 && (
-                    <div className='absolute top-full left-0 right-0 mt-2 bg-white rounded-2xl shadow-2xl border-2 border-gray-200 p-6 text-center z-50'>
+                  !isSearching &&
+                  suggestions.length === 0 && (
+                    <div className='absolute top-full left-0 right-0 mt-2 bg-white rounded-2xl shadow-2xl border-2 border-gray-200 p-6 text-center z-50 text-sm text-gray-600'>
                       Nenhum produto encontrado
                     </div>
                   )}
@@ -207,38 +227,40 @@ export const Header = () => {
                 <Link
                   key={item.id}
                   href={item.href}
-                  className={
+                  className={`text-md transition-colors hover:text-[var(--primary)] ${
                     isActive(item.href)
-                      ? 'text-[var(--primary)] font-semibold'
-                      : ''
-                  }>
+                      ? 'text-[var(--primary)] font-bold'
+                      : 'text-gray-600 font-medium'
+                  }`}
+                >
                   {item.name}
                 </Link>
               ))}
             </nav>
-
-            {/* <div className='flex items-center gap-3 ml-4'>
-              <Link href='/carrinho' className='relative p-2'>
-                <ShoppingCart className='w-6 h-6 text-[var(--primary)]' />
+            
+            <div className='flex items-center gap-4 ml-4'>
+               <Link href='/carrinho' className='relative p-2 group'>
+                <ShoppingCart className='w-6 h-6 text-[var(--primary)] group-hover:scale-110 transition-transform' />
                 <AnimatePresence>
                   {itemCount > 0 && (
                     <motion.div
                       initial={{ scale: 0 }}
                       animate={{ scale: 1 }}
                       exit={{ scale: 0 }}
-                      className='absolute -top-1 -right-1 bg-red-500 text-white text-xs font-bold w-5 h-5 rounded-full flex items-center justify-center'>
+                      className='absolute -top-1 -right-1 bg-red-500 text-white text-[10px] font-bold w-5 h-5 rounded-full flex items-center justify-center border-2 border-white'
+                    >
                       {itemCount > 99 ? '99+' : itemCount}
                     </motion.div>
                   )}
                 </AnimatePresence>
               </Link>
-
               <button
                 onClick={() => setIsMenuOpen(!isMenuOpen)}
-                className='lg:hidden p-2'>
+                className='lg:hidden p-2 text-[var(--primary)]'
+              >
                 {isMenuOpen ? <X /> : <Menu />}
               </button>
-            </div> */}
+            </div>
           </div>
         </div>
       </header>
