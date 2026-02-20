@@ -214,15 +214,23 @@ const fetchBackend = async (path: string, params?: URLSearchParams) => {
     throw new Error('Backend URL não configurada')
   }
 
-  const response = await fetch(buildUrl(path, params).toString(), {
-    next: { revalidate: DEFAULT_REVALIDATE },
-  })
+  const controller = new AbortController()
+  const timeoutId = setTimeout(() => controller.abort(), 8000)
 
-  if (!response.ok) {
-    throw new Error(`Erro ao buscar dados (${response.status})`)
+  try {
+    const response = await fetch(buildUrl(path, params).toString(), {
+      next: { revalidate: DEFAULT_REVALIDATE },
+      signal: controller.signal,
+    })
+
+    if (!response.ok) {
+      throw new Error(`Erro ao buscar dados (${response.status})`)
+    }
+
+    return (await response.json()) as BackendListResponse
+  } finally {
+    clearTimeout(timeoutId)
   }
-
-  return (await response.json()) as BackendListResponse
 }
 
 export const hasBackendConfig = () => Boolean(BASE_URL)

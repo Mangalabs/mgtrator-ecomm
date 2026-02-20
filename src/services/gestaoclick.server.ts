@@ -28,6 +28,7 @@ const DEFAULT_REVALIDATE = Number(
 const IN_STOCK_CACHE_TTL_MS = 5 * 60 * 1000
 
 let inStockCache: { products: Product[]; cachedAt: number } | null = null
+let cacheBuildPromise: Promise<void> | null = null
 
 const hasCredentials = Boolean(ACCESS_TOKEN && SECRET_TOKEN)
 
@@ -243,16 +244,24 @@ const fetchGestaoclick = async <T>(path: string, params?: URLSearchParams) => {
     params.forEach((value, key) => url.searchParams.set(key, value))
   }
 
-  const response = await fetch(url.toString(), {
-    headers: buildHeaders(),
-    next: { revalidate: DEFAULT_REVALIDATE },
-  })
+  const controller = new AbortController()
+  const timeoutId = setTimeout(() => controller.abort(), 8000)
 
-  if (!response.ok) {
-    throw new Error(`Erro ao buscar dados (${response.status})`)
+  try {
+    const response = await fetch(url.toString(), {
+      headers: buildHeaders(),
+      next: { revalidate: DEFAULT_REVALIDATE },
+      signal: controller.signal,
+    })
+
+    if (!response.ok) {
+      throw new Error(`Erro ao buscar dados (${response.status})`)
+    }
+
+    return (await response.json()) as T
+  } finally {
+    clearTimeout(timeoutId)
   }
-
-  return (await response.json()) as T
 }
 
 export const hasGestaoclickConfig = () => hasCredentials
@@ -366,24 +375,6 @@ export const getGestaoclickProducts = async (
         : refinedByCategory
     }
 
-    const pause = (ms: number) =>
-      new Promise((resolve) => setTimeout(resolve, ms))
-    const fetchPageWithRetry = async (pageNumber: number) => {
-      for (let attempt = 0; attempt < 3; attempt += 1) {
-        try {
-          const nextParams = new URLSearchParams(params)
-          nextParams.set('pagina', String(pageNumber))
-          return await fetchGestaoclick<
-            GestaoclickListResponse<GestaoclickProduct>
-          >('/api/produtos', nextParams)
-        } catch {
-          if (attempt === 2) return null
-          await pause(300 * (attempt + 1))
-        }
-      }
-      return null
-    }
-
     const totalPagesFromMeta =
       response.meta?.total_paginas ??
       (response.meta?.total_registros
@@ -404,42 +395,72 @@ export const getGestaoclickProducts = async (
       const cacheValid =
         inStockCache && now - inStockCache.cachedAt < IN_STOCK_CACHE_TTL_MS
 
-      if (!cacheValid) {
-        let aggregated = response.data.map(mapProduct)
-        for (
-          let current = basePage + 1;
-          current <= totalPagesFromMeta;
-          current += 1
-        ) {
-          const nextResponse = await fetchPageWithRetry(current)
-          if (!nextResponse) break
-          aggregated = aggregated.concat(nextResponse.data.map(mapProduct))
-        }
+      if (cacheValid && inStockCache) {
+        const refined = inStockCache.products
+        const total = refined.length
+        const totalPages = Math.ceil(total / limit)
+        const pageOffset = (page - 1) * limit
+        const paged = refined.slice(pageOffset, pageOffset + limit)
 
-        const refined = refineProducts(aggregated)
-        inStockCache = { products: refined, cachedAt: now }
-      }
-
-      const refined = inStockCache?.products ?? []
-      const total = refined.length
-      const totalPages = Math.ceil(total / limit)
-      const pageOffset = (page - 1) * limit
-      const paged = refined.slice(pageOffset, pageOffset + limit)
-
-      return {
-        success: true,
-        data: {
-          data: paged,
-          pagination: {
-            page,
-            limit,
-            total,
-            totalPages,
-            hasNext: page < totalPages,
-            hasPrev: page > 1,
+        return {
+          success: true,
+          data: {
+            data: paged,
+            pagination: {
+              page,
+              limit,
+              total,
+              totalPages,
+              hasNext: page < totalPages,
+              hasPrev: page > 1,
+            },
           },
-        },
+        }
       }
+
+      if (!cacheBuildPromise) {
+        const backgroundParams = new URLSearchParams(params.toString())
+        
+        cacheBuildPromise = (async () => {
+          try {
+            let aggregated: Product[] = []
+            const batchSize = 10
+            
+            for (let current = 1; current <= totalPagesFromMeta; current += batchSize) {
+              const batchPromises = []
+              for (let i = 0; i < batchSize && current + i <= totalPagesFromMeta; i += 1) {
+                const attemptFetch = async (pageNum: number) => {
+                  for (let attempt = 0; attempt < 3; attempt++) {
+                    try {
+                      const p = new URLSearchParams(backgroundParams)
+                      p.set('pagina', String(pageNum))
+                      return await fetchGestaoclick<GestaoclickListResponse<GestaoclickProduct>>('/api/produtos', p)
+                    } catch {
+                      if (attempt === 2) return null
+                      await new Promise(r => setTimeout(r, 300 * (attempt + 1)))
+                    }
+                  }
+                  return null
+                }
+                batchPromises.push(attemptFetch(current + i))
+              }
+              const results = await Promise.all(batchPromises)
+              for (const nextResponse of results) {
+                if (nextResponse && nextResponse.data) {
+                  aggregated = aggregated.concat(nextResponse.data.map(mapProduct))
+                }
+              }
+            }
+            const refinedResult = refineProducts(aggregated)
+            inStockCache = { products: refinedResult, cachedAt: Date.now() }
+          } catch (error) {
+            console.error('Erro na construção asíncrona do cache:', error)
+          } finally {
+            cacheBuildPromise = null
+          }
+        })()
+      }
+      
     }
 
     let aggregated = response.data.map(mapProduct)
@@ -459,11 +480,19 @@ export const getGestaoclickProducts = async (
         scannedPages += 1
         const nextParams = new URLSearchParams(params)
         nextParams.set('pagina', String(lastPageFetched))
-        const nextResponse = await fetchGestaoclick<
-          GestaoclickListResponse<GestaoclickProduct>
-        >('/api/produtos', nextParams)
-        aggregated = aggregated.concat(nextResponse.data.map(mapProduct))
-        refined = refineProducts(aggregated)
+        
+        try {
+          const nextResponse = await fetchGestaoclick<
+            GestaoclickListResponse<GestaoclickProduct>
+          >('/api/produtos', nextParams)
+          
+          if (nextResponse && nextResponse.data) {
+            aggregated = aggregated.concat(nextResponse.data.map(mapProduct))
+            refined = refineProducts(aggregated)
+          }
+        } catch (e) {
+          break
+        }
       }
     }
 
@@ -471,6 +500,7 @@ export const getGestaoclickProducts = async (
       filters?.inStock === true &&
       refined.length < targetCount &&
       (lastPageFetched >= totalPagesFromMeta || scannedPages >= maxScanPages)
+      
     const total = filters?.inStock
       ? inStockReachedLimit
         ? refined.length
@@ -480,9 +510,11 @@ export const getGestaoclickProducts = async (
       : shouldUseLocalTotal
         ? refined.length
         : (response.meta?.total_registros ?? refined.length)
+        
     const totalPages = Math.ceil(total / limit)
     const pageOffset = filters?.inStock ? (page - 1) * limit : 0
     const paged = refined.slice(pageOffset, pageOffset + limit)
+    
     return {
       success: true,
       data: {

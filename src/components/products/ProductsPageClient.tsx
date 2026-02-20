@@ -68,6 +68,7 @@ export const ProductsPageClient = ({
   useEffect(() => {
     let isMounted = true
     const controller = new AbortController()
+    const timeoutId = setTimeout(() => controller.abort(), 12000)
 
     const fetchProducts = async () => {
       setLoading(true)
@@ -109,6 +110,7 @@ export const ProductsPageClient = ({
         setProducts([])
         setPagination(null)
       } finally {
+        clearTimeout(timeoutId)
         if (isMounted) setLoading(false)
       }
     }
@@ -117,6 +119,7 @@ export const ProductsPageClient = ({
 
     return () => {
       isMounted = false
+      clearTimeout(timeoutId)
       controller.abort()
     }
   }, [currentPage, searchQuery, selectedCategory, sortBy])
@@ -343,9 +346,11 @@ export const ProductsPageClient = ({
               </div>
 
               {loading && (
-                <div className='text-center py-16 text-[var(--neutral-600)]'>
-                  Carregando produtos...
+                <div>
                 </div>
+                // <div className='text-center py-16 text-[var(--neutral-600)]'>
+                //   // Carregando produtos...
+                // </div>
               )}
 
               {!loading && visibleProducts.length === 0 && (

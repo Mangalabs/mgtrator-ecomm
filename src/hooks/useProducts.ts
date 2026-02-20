@@ -14,6 +14,7 @@ export const useProducts = () => {
 
   useEffect(() => {
     const controller = new AbortController()
+    const timeoutId = setTimeout(() => controller.abort(), 12000)
 
     const loadProducts = async () => {
       try {
@@ -25,13 +26,17 @@ export const useProducts = () => {
       } catch (error) {
         setProducts([])
       } finally {
+        clearTimeout(timeoutId)
         setLoading(false)
       }
     }
 
     loadProducts()
 
-    return () => controller.abort()
+    return () => {
+      clearTimeout(timeoutId)
+      controller.abort()
+    }
   }, [])
 
   return { products, loading }
