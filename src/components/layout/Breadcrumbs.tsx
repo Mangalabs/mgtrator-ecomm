@@ -15,11 +15,10 @@ interface BreadcrumbsProps {
 }
 
 export const Breadcrumbs = ({ items, className = '', theme = 'light' }: BreadcrumbsProps) => {
-  const textColor = theme === 'dark' ? 'text-white/80' : 'text-blue-900'
-  const hoverColor = theme === 'dark' ? 'hover:text-white' : 'hover:text-[#213A77]'
-  const activeColor = theme === 'dark' ? 'text-white' : 'text-[#213A77]'
-  const iconColor = theme === 'dark' ? 'text-white' : 'text-blue-900'
-  
+  const textColor = theme === 'dark' ? 'text-white/80' : 'text-gray-200/80'
+  const hoverColor = theme === 'dark' ? 'hover:text-white' : 'hover:text-gray-200'
+  const activeColor = theme === 'dark' ? 'text-white' : 'text-gray-400'
+  const iconColor = theme === 'dark' ? 'text-white' : 'text-gray-400/80'
   return (
     <nav 
       className={`flex items-center gap-2 text-sm ${textColor} py-4 ${className}`}

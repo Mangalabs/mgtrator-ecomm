@@ -1,93 +1,47 @@
 import { Store } from './types';
 
-export const storesData: Store[] = [
+export type ExtendedStore = Store & {
+  mapEmbed: string;
+  mapsLink: string;
+  features: string[];
+};
+
+export const storesData: ExtendedStore[] = [
   {
-    id: 'store-contagem-centro',
-    name: 'Unidade Centro',
-    slug: 'contagem-centro',
-    
+    id: 'store-sao-luis',
+    name: 'MG Tratorpeças',
+    slug: 'unidade-sao-luis',
+    isActive: true,
     address: {
-      street: 'Av. Industrial',
-      number: '1250',
-      neighborhood: 'Centro',
-      city: 'Contagem',
-      state: 'MG',
-      zipCode: '32040-000',
-      country: 'BR'
+      street: 'Av. Guajajaras',
+      number: '404',
+      complement: 'Tirirical',
+      neighborhood: 'Tirirical',
+      city: 'São Luís',
+      state: 'MA',
+      zipCode: '65055-285',
+      country: 'Brasil',
     },
     
     coordinates: {
-      latitude: -19.9320,
-      longitude: -44.0540
+      latitude: -2.5765194,
+      longitude: -44.239688
     },
     
     contact: {
-      phone: '+553133684500',
-      phoneFormatted: '(31) 3368-4500',
-      whatsapp: '+5531998753200',
-      email: 'contato@mgtratorpecas.com.br'
+      phone: '63999828455',
+      phoneFormatted: '(63) 99982-8455',
+      whatsapp: '(63) 99982-8455',
+      email: 'comercial@mgtratorpecas.com.br'
     },
-    
-    openingHours: [
-      { dayOfWeek: 0, dayName: 'Domingo', opens: '', closes: '', isClosed: true },
-      { dayOfWeek: 1, dayName: 'Segunda-feira', opens: '08:00', closes: '18:00', isClosed: false },
-      { dayOfWeek: 2, dayName: 'Terça-feira', opens: '08:00', closes: '18:00', isClosed: false },
-      { dayOfWeek: 3, dayName: 'Quarta-feira', opens: '08:00', closes: '18:00', isClosed: false },
-      { dayOfWeek: 4, dayName: 'Quinta-feira', opens: '08:00', closes: '18:00', isClosed: false },
-      { dayOfWeek: 5, dayName: 'Sexta-feira', opens: '08:00', closes: '18:00', isClosed: false },
-      { dayOfWeek: 6, dayName: 'Sábado', opens: '08:00', closes: '13:00', isClosed: false }
-    ],
-    
-    image: 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=800',
-    
+    image: '/fachada-saoluis.jpeg',
+    features: ['Estacionamento Próprio', 'Fácil Acesso ', 'Sala de Espera Climatizada', 'Contato Direto com Especialista'],
     isMainStore: true,
-    isActive: true,
     createdAt: '2014-01-15T00:00:00.000Z',
-    updatedAt: new Date().toISOString()
+    updatedAt: new Date().toISOString(),
+    mapEmbed: 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d296.24523649344457!2d-44.23968796725404!3d-2.5765193724946753!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x7f69ab0f5328e97%3A0xaea389787bb7ac44!2sMg%20Tratorpe%C3%A7as!5e0!3m2!1spt-BR!2sbr!4v1771627619764!5m2!1spt-BR!2sbr',
+    mapsLink: 'https://maps.app.goo.gl/mLQSrLrvR9zhW5Kn9',
   },
   
-  {
-    id: 'store-betim-industrial',
-    name: 'Unidade Industrial',
-    slug: 'betim-industrial',
-    
-    address: {
-      street: 'Rua das Máquinas',
-      number: '850',
-      neighborhood: 'Distrito Industrial',
-      city: 'Betim',
-      state: 'MG',
-      zipCode: '32600-000',
-      country: 'BR'
-    },
-    
-    coordinates: {
-      latitude: -19.9678,
-      longitude: -44.1989
-    },
-    
-    contact: {
-      phone: '+553133684600',
-      phoneFormatted: '(31) 3368-4600',
-      whatsapp: '+5531998753200',
-      email: 'vendas@mgtratorpecas.com.br'
-    },
-    
-    openingHours: [
-      { dayOfWeek: 0, dayName: 'Domingo', opens: '', closes: '', isClosed: true },
-      { dayOfWeek: 1, dayName: 'Segunda-feira', opens: '08:00', closes: '18:00', isClosed: false },
-      { dayOfWeek: 2, dayName: 'Terça-feira', opens: '08:00', closes: '18:00', isClosed: false },
-      { dayOfWeek: 3, dayName: 'Quarta-feira', opens: '08:00', closes: '18:00', isClosed: false },
-      { dayOfWeek: 4, dayName: 'Quinta-feira', opens: '08:00', closes: '18:00', isClosed: false },
-      { dayOfWeek: 5, dayName: 'Sexta-feira', opens: '08:00', closes: '18:00', isClosed: false },
-      { dayOfWeek: 6, dayName: 'Sábado', opens: '08:00', closes: '13:00', isClosed: false }
-    ],
-    
-    image: 'https://images.unsplash.com/photo-1565611539019-31102942e5c9?w=800',
-    
-    isMainStore: false,
-    isActive: true,
-    createdAt: '2017-03-20T00:00:00.000Z',
-    updatedAt: new Date().toISOString()
-  }
+  
 ];

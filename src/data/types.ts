@@ -101,13 +101,7 @@ export interface Brand extends BaseEntity, SeoFields {
   isActive: boolean
 }
 
-export interface OpeningHours {
-  dayOfWeek: number
-  dayName: string
-  opens: string
-  closes: string
-  isClosed: boolean
-}
+
 
 export interface Store extends BaseEntity {
   name: string
@@ -123,7 +117,6 @@ export interface Store extends BaseEntity {
     whatsapp?: string
     email: string
   }
-  openingHours: OpeningHours[]
   image?: string
   isMainStore?: boolean
   isActive: boolean

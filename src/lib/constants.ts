@@ -7,12 +7,12 @@ export const COMPANY_INFO = {
 
 export const CONTACTS = {
   whatsapp: {
-    number: '5531998753200',
+    number: '5563999828455',
     formatted: '(31) 9 9875-3200',
-    link: 'https://wa.me/5531998753200',
+    link: 'https://wa.me/5563999828455',
   },
   phone: {
-    main: '31998753200',
+    main: '63999828455',
     formatted: '(31) 9 9875-3200',
   },
   email: {
@@ -36,7 +36,7 @@ export const WHATSAPP_MESSAGES = {
 
 export const HERO_SLIDES = [
   {
-    image: 'https://images.unsplash.com/photo-1665152998573-9ddafb89278f?w=1920&q=80',
+    image: 'https://mgtratorpecas.com.br/assets/volvo3-DL2x94P-.jpg',
     title: 'Escavadeiras Caterpillar',
     tag: 'Premium',
     alt: 'Escavadeira Caterpillar em operação',

@@ -85,8 +85,8 @@ const paymentMethods = [
       icon: Smartphone,
       title: 'WhatsApp',
       description: 'Atendimento personalizado, tire dúvidas técnicas e faça pedidos direto pelo chat',
-      link: 'https://wa.me/5531998753200',
-      linkText: '(31) 99875-3200'
+      link: 'https://wa.me/5563999828455',
+      linkText: '(63) 99982-8455'
     },
     {
       icon: Store,
@@ -371,7 +371,7 @@ const paymentMethods = [
                 <ArrowRight className="w-6 h-6" />
               </Link>
               <a
-                href="https://wa.me/5531998753200"
+                href="https://wa.me/5563999828455"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="inline-flex items-center gap-3 bg-[#25D366] text-white px-10 py-5 rounded-2xl font-black text-lg hover:scale-105 transition-transform shadow-2xl"

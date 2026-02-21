@@ -1,10 +1,17 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 'use client'
 
 import { useState } from 'react'
-import { MapPin, Phone, Mail, Clock, Send, MessageCircle, Zap } from 'lucide-react'
-import { Breadcrumbs } from '@/components/layout/Breadcrumbs'
-import { stores } from '@/data/mockData'
+import {
+  MapPin,
+  Phone,
+  Mail,
+  Clock,
+  Send,
+  MessageCircle,
+  Zap,
+} from 'lucide-react'
+import { storesData } from '@/data/stores'
+import { siteConfig } from '@/data/site'
 import Link from 'next/link'
 import PageHero from '../common/PageHero'
 
@@ -26,7 +33,7 @@ export const ContatoPageClient = () => {
   const handleChange = (
     e: React.ChangeEvent<
       HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
-    >
+    >,
   ) => {
     setFormData({
       ...formData,
@@ -37,13 +44,14 @@ export const ContatoPageClient = () => {
   return (
     <div className='min-h-screen bg-white'>
       <PageHero
-        breadcrumbs={[{
-          label: "Contato",
-          href: ''
-        }]}
-        title="Entre em contato"
-        description="Estamos prontos para atender você. Escolha o canal de sua preferência">
-      </PageHero>
+        breadcrumbs={[
+          {
+            label: 'Contato',
+            href: '',
+          },
+        ]}
+        title='Entre em contato'
+        description='Estamos prontos para atender você. Escolha o canal de sua preferência'></PageHero>
 
       <section className='py-16'>
         <div className='max-w-7xl mx-auto px-4'>
@@ -54,17 +62,14 @@ export const ContatoPageClient = () => {
               </div>
               <h3 className='text-white mb-3'>Telefones</h3>
               <div className='space-y-2 mb-4'>
-                <div>
-                  Unidade Centro:
-                  (31) 3368-4500
-                </div>
-                <div>
-                  Unidade Industrial:
-                  (31) 3368-4600
-                </div>
+                {storesData.map((store) => (
+                  <div key={store.id}>
+                    {store.name}: {store.contact.phoneFormatted}
+                  </div>
+                ))}
               </div>
               <a
-                href='tel:+553133684500'
+                href={`tel:${siteConfig.contact.phone}`}
                 className='inline-block bg-white text-[var(--primary)] px-6 py-2 rounded-lg font-semibold hover:bg-blue-50 transition-colors'>
                 Ligar Agora
               </a>
@@ -76,11 +81,14 @@ export const ContatoPageClient = () => {
               </div>
               <h3 className='text-white mb-3'>WhatsApp</h3>
               <div className='space-y-2 mb-4'>
-                <div>Centro: (31) 99875-3200</div>
-                <div>Industrial: (31) 99875-3201</div>
+                {storesData.map((store) => (
+                  <div key={store.id}>
+                    {store.name}: {store.contact.whatsapp}
+                  </div>
+                ))}
               </div>
               <a
-                href='https://wa.me/5531998753200'
+                href={`https://wa.me/${siteConfig.contact.whatsapp}`}
                 target='_blank'
                 rel='noopener noreferrer'
                 className='inline-block bg-white text-[#25D366] px-6 py-2 rounded-lg font-semibold hover:bg-green-50 transition-colors'>
@@ -94,11 +102,14 @@ export const ContatoPageClient = () => {
               </div>
               <h3 className='mb-3 text-[var(--neutral-900)]'>E-mail</h3>
               <div className='space-y-2 mb-4 text-sm'>
-                <div>contato@mgtratorpecas.com.br</div>
-                <div>vendas@mgtratorpecas.com.br</div>
+                {Array.from(
+                  new Set(storesData.map((s) => s.contact.email)),
+                ).map((email) => (
+                  <div key={email}>{email}</div>
+                ))}
               </div>
               <a
-                href='mailto:contato@mgtratorpecas.com.br'
+                href={`mailto:${siteConfig.contact.email}`}
                 className='inline-block bg-[var(--neutral-900)] text-white px-6 py-2 rounded-lg font-semibold hover:bg-[var(--neutral-800)] transition-colors'>
                 Enviar E-mail
               </a>
@@ -206,39 +217,41 @@ export const ContatoPageClient = () => {
                   <div className='w-12 h-12 bg-[var(--primary)]/10 rounded-lg flex items-center justify-center flex-shrink-0'>
                     <Clock className='w-6 h-6 text-[var(--primary)]' />
                   </div>
-                  <div >
+                  <div>
                     <h3 className='font-semibold'>Horário de Atendimento</h3>
                     <div className='text-[var(--neutral-700)]'>
-                      <div>Segunda a Sexta: 8h às 17h</div>
+                      <div>{siteConfig.businessHours.detailed}</div>
                     </div>
                   </div>
                 </div>
 
-                <div className='flex gap-4 bg-[var(--neutral-50)] rounded-xl p-4'>
+                <div className='flex gap-4 bg-[var(--neutral-50)] rounded-xl p-4 mt-6'>
                   <div className='w-12 h-12 bg-[var(--primary)]/10 rounded-lg flex items-center justify-center flex-shrink-0'>
                     <MapPin className='w-6 h-6 text-[var(--primary)]' />
                   </div>
-                  <div className="flex-1 ">
-                    <h3 className='mb-2 font-semibold'>Nossas Lojas</h3>
+                  <div className='flex-1 '>
+                    <h3 className='mb-2 mt-2 font-semibold'>Nossas Lojas</h3>
                     <div className='text-[var(--neutral-700)] space-y-4'>
-                      {stores.map((store) => (
-                        <div key={store.id} className="pb-3 border-b border-gray-100 last:border-0 last:pb-0">
-                          <div className='font-medium text-[var(--primary)]'>{store.name}</div>
+                      {storesData.map((store) => (
+                        <div
+                          key={store.id}
+                          className='pb-3 border-b border-gray-100 last:border-0 last:pb-0'>
+                          <div className='font-medium text-[var(--primary)]'>
+                            {store.name}
+                          </div>
                           <div className='text-sm'>
-                            {store.address.street}, {store.address.number} - {store.address.neighborhood}, {store.address.city}/{store.address.state}
+                            {store.address.street}, {store.address.number} -{' '}
+                            {store.address.neighborhood}, {store.address.city}/
+                            {store.address.state}
                           </div>
                           <div className='text-sm mt-1 text-[var(--neutral-500)]'>
-                            CEP: {store.address.zipCode} • Tel: {store.contact.phone}
+                            CEP: {store.address.zipCode} • Tel:{' '}
+                            {store.contact.phoneFormatted}
                           </div>
-                          {Array.isArray(store.openingHours) && store.openingHours.map((hour: any, idx: number) => (
-                            <div key={idx} className="text-xs text-gray-400 mt-1">
-                              {typeof hour === 'string' ? hour : (hour.label || hour.day || JSON.stringify(hour))}
-                            </div>
-                          ))}
                         </div>
                       ))}
                     </div>
-                    
+
                     <Link
                       href='/lojas'
                       className='inline-block mt-4 text-[var(--primary)] font-medium hover:text-[var(--secondary)] transition-colors'>
@@ -248,39 +261,44 @@ export const ContatoPageClient = () => {
                 </div>
               </div>
 
-              <div className='bg-[var(--neutral-50)] rounded-xl p-4'>
-                <h3 className='mb-2 font-semibold'>Canais de Atendimento</h3>
-                <div className='space-y-4 text-sm'>
-                  <div className='flex items-center gap-3'>
-                    <div className='w-8 h-8 bg-[var(--primary)] text-white rounded-full flex items-center justify-center flex-shrink-0'>
-                      <Zap className='w-4 h-4' />
-                    </div>
-                    <div>
-                      <div className='font-medium'>WhatsApp</div>
-                      <div className='text-[var(--neutral-600)]'>
-                        Resposta em até 5 minutos
+              <div className='flex gap-4 bg-[var(--neutral-50)] rounded-xl p-4 mt-6'>
+                <div className='w-12 h-12 bg-[var(--primary)]/10 rounded-lg flex items-center justify-center flex-shrink-0'>
+                  <MapPin className='w-6 h-6 text-[var(--primary)]' />
+                </div>
+                <div className='flex-1 '>
+                  <h3 className='mb-6 font-semibold mt-2'>Canais de Atendimento</h3>
+                  <div className='space-y-4 text-sm'>
+                    <div className='flex items-center gap-3'>
+                      <div className='w-8 h-8 bg-[var(--primary)] text-white rounded-full flex items-center justify-center flex-shrink-0'>
+                        <Zap className='w-4 h-4' />
+                      </div>
+                      <div>
+                        <div className='font-medium'>WhatsApp</div>
+                        <div className='text-[var(--neutral-600)]'>
+                          Resposta em até 5 minutos
+                        </div>
                       </div>
                     </div>
-                  </div>
-                  <div className='flex items-center gap-3'>
-                    <div className='w-8 h-8 bg-[var(--primary)] text-white rounded-full flex items-center justify-center flex-shrink-0'>
-                      <Mail className='w-4 h-4' />
-                    </div>
-                    <div>
-                      <div className='font-medium'>E-mail</div>
-                      <div className='text-[var(--neutral-600)]'>
-                        Resposta em até 24 horas
+                    <div className='flex items-center gap-3'>
+                      <div className='w-8 h-8 bg-[var(--primary)] text-white rounded-full flex items-center justify-center flex-shrink-0'>
+                        <Mail className='w-4 h-4' />
+                      </div>
+                      <div>
+                        <div className='font-medium'>E-mail</div>
+                        <div className='text-[var(--neutral-600)]'>
+                          Resposta em até 24 horas
+                        </div>
                       </div>
                     </div>
-                  </div>
-                  <div className='flex items-center gap-3'>
-                    <div className='w-8 h-8 bg-[var(--primary)] text-white rounded-full flex items-center justify-center flex-shrink-0'>
-                      <Phone className='w-4 h-4' />
-                    </div>
-                    <div>
-                      <div className='font-medium'>Telefone</div>
-                      <div className='text-[var(--neutral-600)]'>
-                        Seg a Sex, 8h às 18h
+                    <div className='flex items-center gap-3'>
+                      <div className='w-8 h-8 bg-[var(--primary)] text-white rounded-full flex items-center justify-center flex-shrink-0'>
+                        <Phone className='w-4 h-4' />
+                      </div>
+                      <div>
+                        <div className='font-medium'>Telefone</div>
+                        <div className='text-[var(--neutral-600)]'>
+                          {siteConfig.businessHours.detailed}
+                        </div>
                       </div>
                     </div>
                   </div>

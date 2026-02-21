@@ -58,7 +58,7 @@ export default function Error({
         <div className="mt-12 bg-white rounded-2xl border-2 border-slate-200 p-6">
           <p className="text-slate-700">
             Se o problema persistir, entre em contato conosco pelo{' '}
-            <a href="https://wa.me/5531998753200" className="text-[#213A77] hover:underline font-semibold">
+            <a href="https://wa.me/5563999828455" className="text-[#213A77] hover:underline font-semibold">
               WhatsApp
             </a>
             {' '}ou{' '}
