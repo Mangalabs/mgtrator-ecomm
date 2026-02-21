@@ -22,7 +22,7 @@ export const MarcasPageClient = () => {
     const message = encodeURIComponent(
       'Olá! Gostaria de consultar sobre peças para tratores e máquinas pesadas. Pode me ajudar?',
     )
-    window.open(`https://wa.me/5531998753200?text=${message}`, '_blank')
+    window.open(`https://wa.me/5563999828455?text=${message}`, '_blank')
   }
 
   return (
@@ -113,7 +113,7 @@ export const MarcasPageClient = () => {
                     <motion.a
                       whileHover={{ scale: 1.01 }}
                       whileTap={{ scale: 0.99 }}
-                      href='https://wa.me/5531998753200'
+                      href='https://wa.me/5563999828455'
                       target='_blank'
                       rel='noopener noreferrer'
                       className='w-full bg-gradient-to-r from-[#25D366] to-[#20BD5A] text-white py-3 rounded-xl font-semibold text-xs transition-all flex items-center justify-center gap-2 hover:from-[#20BD5A] hover:to-[#1DA851] shadow-md hover:shadow-lg'

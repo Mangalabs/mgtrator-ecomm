@@ -22,7 +22,7 @@ export const companyData: CompanyInfo = {
   phone: {
     main: '+553133684500',
     secondary: '+553133684600',
-    whatsapp: '+5531998753200'
+    whatsapp: '+5563999828455'
   },
   
   social: {

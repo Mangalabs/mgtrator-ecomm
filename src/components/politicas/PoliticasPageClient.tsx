@@ -49,7 +49,7 @@ export function PoliticasPageClient() {
         },
         {
           subtitle: 'Como Solicitar',
-          content: 'Entre em contato pelo WhatsApp (31) 99875-3200 ou e-mail trocas@mgtratopecas.com.br informando número do pedido e motivo. Enviaremos instruções e código de autorização em até 24 horas.'
+          content: 'Entre em contato pelo WhatsApp (63) 99982-8455 ou e-mail trocas@mgtratopecas.com.br informando número do pedido e motivo. Enviaremos instruções e código de autorização em até 24 horas.'
         },
         {
           subtitle: 'Frete de Devolução',
@@ -293,13 +293,13 @@ export function PoliticasPageClient() {
             </p>
             <div className="flex flex-wrap justify-center gap-4">
               <a
-                href="https://wa.me/5531998753200"
+                href="https://wa.me/5563999828455"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="flex items-center gap-3 bg-white text-[var(--primary)] px-8 py-4 rounded-xl font-black hover:scale-105 transition-transform"
               >
                 <Phone className="w-5 h-5" />
-                WhatsApp: (31) 99875-3200
+                WhatsApp: (63) 99982-8455
               </a>
               <a
                 href="mailto:contato@mgtratopecas.com.br"

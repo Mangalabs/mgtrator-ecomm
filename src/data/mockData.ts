@@ -499,7 +499,7 @@ export const stores: Store[] = [
     contact: {
       phone: '(31) 3368-4500',
       phoneFormatted: '(31) 3368-4500',
-      whatsapp: '(31) 99875-3200',
+      whatsapp: '(63) 99982-8455',
       email: 'centro@mgtratopecas.com.br',
     },
     image: 'https://images.unsplash.com/photo-1731847999830-6f71b78d720e?w=600',
