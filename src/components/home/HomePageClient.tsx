@@ -1,17 +1,15 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { motion, AnimatePresence } from 'motion/react'
+import { motion } from 'motion/react'
 import Link from 'next/link'
 import Image from 'next/image'
 import {
   ShoppingCart,
   Star,
-  TrendingUp,
   Package,
   Truck,
   CreditCard,
-  Shield,
   ArrowRight,
   ChevronLeft,
   ChevronRight,
@@ -19,7 +17,6 @@ import {
 } from 'lucide-react'
 import { ProductCard } from '@/components/products/ProductCard'
 import { QuickViewModal } from '@/components/products/QuickViewModal'
-import { brands } from '@/data/mockData'
 import type { Product } from '@/data/types'
 
 type DeliveryType = 'pronta-entrega' | 'sob-encomenda' | 'importado'
@@ -39,15 +36,6 @@ type HomePageClientProps = {
   featuredProducts: Product[]
   newProducts: Product[]
 }
-
-export const HomePageClient = ({
-  featuredProducts,
-  newProducts,
-}: HomePageClientProps) => {
-  const maxFeatured = 6
-  const maxNew = 8
-  const [selectedProduct, setSelectedProduct] = useState<Product | null>(null)
-  const [currentSlide, setCurrentSlide] = useState(0)
 
 const heroSlides = [
   {
@@ -73,12 +61,19 @@ const heroSlides = [
   },
 ]
 
+export const HomePageClient = ({
+  featuredProducts,
+  newProducts,
+}: HomePageClientProps) => {
+  const [selectedProduct, setSelectedProduct] = useState<Product | null>(null)
+  const [currentSlide, setCurrentSlide] = useState(0)
+
   useEffect(() => {
     const timer = setInterval(() => {
       setCurrentSlide((prev) => (prev + 1) % heroSlides.length)
     }, 5000)
     return () => clearInterval(timer)
-  }, [heroSlides.length])
+  }, [])
 
   const nextSlide = () =>
     setCurrentSlide((prev) => (prev + 1) % heroSlides.length)
@@ -91,59 +86,62 @@ const heroSlides = [
     <div className='min-h-screen bg-[#F5F5F5]'>
       <section className='relative bg-gradient-to-br from-gray-900 to-gray-800 overflow-hidden'>
         <div className='relative h-[450px] lg:h-[550px]'>
-          <AnimatePresence mode='wait'>
-            <motion.div
-              key={currentSlide}
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 0.5 }}
-              className='absolute inset-0'>
-              <div className='absolute inset-0'>
-                <Image
-                  src={heroSlides[currentSlide].image}
-                  alt={heroSlides[currentSlide].title}
-                  fill
-                  className='object-cover'
-                  priority
-                />
-                <div className='absolute inset-0 bg-gradient-to-r from-black/80 via-black/60 to-transparent' />
-              </div>
-
-              <div className='relative h-full max-w-7xl mx-auto px-4 flex items-center'>
-                <div className='max-w-2xl'>
-                  <motion.h1
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: 0.2 }}
-                    className='text-white font-black text-4xl lg:text-6xl mb-4 leading-tight'>
-                    {heroSlides[currentSlide].title}
-                  </motion.h1>
-
-                  <motion.p
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: 0.3 }}
-                    className='text-[var(--secondary)] text-2xl lg:text-3xl font-bold mb-8'>
-                    {heroSlides[currentSlide].subtitle}
-                  </motion.p>
-
-                  <motion.div
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: 0.4 }}>
-                    <Link href={heroSlides[currentSlide].link}>
-                      <button className='bg-[var(--secondary)] hover:bg-[#ffd93d] text-black px-10 py-4 rounded-xl font-black text-lg shadow-2xl hover:scale-105 transition-all inline-flex items-center gap-3'>
-                        <ShoppingCart className='w-6 h-6' />
-                        <span>{heroSlides[currentSlide].cta}</span>
-                        <ArrowRight className='w-5 h-5' />
-                      </button>
-                    </Link>
-                  </motion.div>
+          {heroSlides.map((slide, index) => {
+            const isActive = currentSlide === index
+            return (
+              <motion.div
+                key={index}
+                initial={{ opacity: 0 }}
+                animate={{ opacity: isActive ? 1 : 0 }}
+                transition={{ duration: 0.5 }}
+                className={`absolute inset-0 ${isActive ? 'z-10' : 'z-0 pointer-events-none'}`}>
+                <div className='absolute inset-0'>
+                  <Image
+                    src={slide.image}
+                    alt={slide.title}
+                    fill
+                    sizes="100vw"
+                    className='object-cover'
+                    priority={index === 0}
+                  />
+                  <div className='absolute inset-0 bg-gradient-to-r from-black/80 via-black/60 to-transparent' />
                 </div>
-              </div>
-            </motion.div>
-          </AnimatePresence>
+
+                <div className='relative h-full max-w-7xl mx-auto px-4 flex items-center'>
+                  <div className='max-w-2xl'>
+                    <motion.h1
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={isActive ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
+                      transition={{ delay: 0.2 }}
+                      className='text-white font-black text-4xl lg:text-6xl mb-4 leading-tight'>
+                      {slide.title}
+                    </motion.h1>
+
+                    <motion.p
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={isActive ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
+                      transition={{ delay: 0.3 }}
+                      className='text-[var(--secondary)] text-2xl lg:text-3xl font-bold mb-8'>
+                      {slide.subtitle}
+                    </motion.p>
+
+                    <motion.div
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={isActive ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
+                      transition={{ delay: 0.4 }}>
+                      <Link href={slide.link}>
+                        <button className='bg-[var(--secondary)] hover:bg-[#ffd93d] text-black px-10 py-4 rounded-xl font-black text-lg shadow-2xl hover:scale-105 transition-all inline-flex items-center gap-3'>
+                          <ShoppingCart className='w-6 h-6' />
+                          <span>{slide.cta}</span>
+                          <ArrowRight className='w-5 h-5' />
+                        </button>
+                      </Link>
+                    </motion.div>
+                  </div>
+                </div>
+              </motion.div>
+            )
+          })}
 
           <button
             onClick={prevSlide}
@@ -180,9 +178,7 @@ const heroSlides = [
                 <Truck className='w-6 h-6 text-white' />
               </div>
               <div>
-                <div className='font-bold text-sm text-gray-900'>
-                  Entrega Rápida
-                </div>
+                <div className='font-bold text-sm text-gray-900'>Entrega Rápida</div>
                 <div className='text-xs text-gray-600'>Para todo Brasil</div>
               </div>
             </div>
@@ -192,9 +188,7 @@ const heroSlides = [
                 <Package className='w-6 h-6 text-white' />
               </div>
               <div>
-                <div className='font-bold text-sm text-gray-900'>
-                  Estoque Próprio
-                </div>
+                <div className='font-bold text-sm text-gray-900'>Estoque Próprio</div>
                 <div className='text-xs text-gray-600'>Pronta entrega</div>
               </div>
             </div>
@@ -204,9 +198,7 @@ const heroSlides = [
                 <CreditCard className='w-6 h-6 text-white' />
               </div>
               <div>
-                <div className='font-bold text-sm text-gray-900'>
-                  Parcele em 12x
-                </div>
+                <div className='font-bold text-sm text-gray-900'>Parcele em 12x</div>
                 <div className='text-xs text-gray-600'>No cartão</div>
               </div>
             </div>
@@ -216,9 +208,7 @@ const heroSlides = [
                 <Percent className='w-6 h-6 text-white' />
               </div>
               <div>
-                <div className='font-bold text-sm text-gray-900'>
-                  Desconto no PIX
-                </div>
+                <div className='font-bold text-sm text-gray-900'>Desconto no PIX</div>
                 <div className='text-xs text-gray-600'>À vista</div>
               </div>
             </div>
@@ -234,18 +224,14 @@ const heroSlides = [
                 <Star className='w-6 h-6 text-white fill-white' />
               </div>
               <div>
-                <h2 className='font-black text-3xl text-gray-900'>
-                  Produtos em Destaque
-                </h2>
-                <p className='text-gray-600 text-sm'>
-                  Nossas peças mais procuradas
-                </p>
+                <h2 className='font-black text-3xl text-gray-900'>Produtos em Destaque</h2>
+                <p className='text-gray-600 text-sm'>Nossas peças mais procuradas</p>
               </div>
             </div>
           </div>
 
           <div className='grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6'>
-            {featuredProducts.slice(0, maxFeatured).map((product, index) => {
+            {featuredProducts.map((product, index) => {
               const deliveryType = normalizeDeliveryType(product.deliveryType)
               return (
                 <motion.div
@@ -271,6 +257,15 @@ const heroSlides = [
                 </motion.div>
               )
             })}
+          </div>
+
+          <div className='mt-10 flex justify-center'>
+            <Link href='/produtos'>
+              <button className='bg-[var(--primary)] hover:bg-[#1a2d5e] text-white px-8 py-3 rounded-xl font-bold text-lg shadow-md hover:shadow-lg transition-all flex items-center gap-2'>
+                Ver Todos os Produtos
+                <ArrowRight className='w-5 h-5' />
+              </button>
+            </Link>
           </div>
         </div>
       </section>

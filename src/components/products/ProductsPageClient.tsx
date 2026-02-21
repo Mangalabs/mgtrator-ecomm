@@ -1,7 +1,7 @@
 'use client'
 
-import { useMemo, useState, useEffect } from 'react'
-import { Filter, ChevronDown, Search, X } from 'lucide-react'
+import { useMemo, useState, useEffect, useRef } from 'react'
+import { Filter, ChevronDown, Search, X, Loader2 } from 'lucide-react'
 import { ProductCard } from './ProductCard'
 import { QuickViewModal } from './QuickViewModal'
 import type { Product } from '@/data/types'
@@ -28,10 +28,10 @@ export const ProductsPageClient = ({
   initialProducts,
   initialPagination,
 }: ProductsPageClientProps) => {
+  const isInitialMount = useRef(true)
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null)
   const [products, setProducts] = useState<Product[]>(initialProducts)
   const [selectedCategory, setSelectedCategory] = useState<string>('all')
-  const [priceRange, setPriceRange] = useState<string>('all')
   const [sortBy, setSortBy] = useState<string>('relevance')
   const [showFilters, setShowFilters] = useState(false)
   const [searchInput, setSearchInput] = useState<string>('')
@@ -66,6 +66,11 @@ export const ProductsPageClient = ({
   }, [searchInput, searchQuery])
 
   useEffect(() => {
+    if (isInitialMount.current) {
+      isInitialMount.current = false
+      return
+    }
+
     let isMounted = true
     const controller = new AbortController()
     const timeoutId = setTimeout(() => controller.abort(), 12000)
@@ -76,7 +81,6 @@ export const ProductsPageClient = ({
         const params = new URLSearchParams()
         params.set('page', String(currentPage))
         params.set('limit', String(ITEMS_PER_PAGE))
-        params.set('inStock', 'true')
         params.set('sortBy', sortBy)
         if (searchQuery.trim()) {
           params.set('search', searchQuery.trim())
@@ -139,9 +143,8 @@ export const ProductsPageClient = ({
         return 0
     }
   })
-  const visibleProducts = sortedProducts.filter(
-    (product) => (product.stockQuantity ?? 0) >= 1 || product.inStock,
-  )
+
+  const visibleProducts = sortedProducts
   const totalPages = pagination?.totalPages ?? 1
   const pageItems = useMemo(() => {
     if (totalPages <= 7) {
@@ -166,6 +169,7 @@ export const ProductsPageClient = ({
 
     return items
   }, [currentPage, totalPages])
+  
   const canGoPrev = pagination?.hasPrev ?? currentPage > 1
   const canGoNext = pagination?.hasNext ?? currentPage < totalPages
 
@@ -313,7 +317,6 @@ export const ProductsPageClient = ({
                 <button
                   onClick={() => {
                     setSelectedCategory('all')
-                    setPriceRange('all')
                     setSortBy('relevance')
                     setSearchInput('')
                     setSearchQuery('')
@@ -326,31 +329,34 @@ export const ProductsPageClient = ({
               </div>
             </div>
 
-            <div className='flex-1'>
-              <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 lg:gap-7'>
-                {visibleProducts.map((product) => (
-                  <ProductCard
-                    key={product.id}
-                    id={product.id}
-                    name={product.name}
-                    price={product.price}
-                    image={product.thumbnail}
-                    code={product.code}
-                    partNumber={product.partNumber}
-                    deliveryType={product.deliveryType}
-                    stockQuantity={product.stockQuantity ?? 0}
-                    thumbnail={product.thumbnail}
-                    onQuickView={() => setSelectedProduct(product)}
-                  />
-                ))}
+            <div className='flex-1 relative min-h-[400px]'>
+              <div className={`transition-opacity duration-300 ${loading ? 'opacity-30 pointer-events-none' : 'opacity-100'}`}>
+                <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 lg:gap-7'>
+                  {visibleProducts.map((product) => (
+                    <ProductCard
+                      key={product.id}
+                      id={product.id}
+                      name={product.name}
+                      price={product.price}
+                      image={product.thumbnail}
+                      code={product.code}
+                      partNumber={product.partNumber}
+                      deliveryType={product.deliveryType}
+                      stockQuantity={product.stockQuantity ?? 0}
+                      thumbnail={product.thumbnail}
+                      onQuickView={() => setSelectedProduct(product)}
+                    />
+                  ))}
+                </div>
               </div>
 
               {loading && (
-                <div>
+                <div className='absolute inset-0 flex items-center justify-center z-10'>
+                  <div className='bg-white/90 px-6 py-4 rounded-2xl shadow-xl flex items-center gap-3 backdrop-blur-sm border border-gray-100'>
+                    <Loader2 className='w-6 h-6 text-[var(--primary)] animate-spin' />
+                    <span className='font-bold text-[var(--primary)]'>Carregando produtos...</span>
+                  </div>
                 </div>
-                // <div className='text-center py-16 text-[var(--neutral-600)]'>
-                //   // Carregando produtos...
-                // </div>
               )}
 
               {!loading && visibleProducts.length === 0 && (
@@ -370,7 +376,7 @@ export const ProductsPageClient = ({
                   <button
                     onClick={() => {
                       setSelectedCategory('all')
-                      setPriceRange('all')
+                      setSortBy('relevance')
                       setSearchInput('')
                       setSearchQuery('')
                       setCurrentPage(1)
@@ -387,7 +393,8 @@ export const ProductsPageClient = ({
                   <button
                     onClick={() => handlePageChange(currentPage - 1)}
                     disabled={!canGoPrev || loading}
-                    className='px-5 py-3 border-2 border-[var(--neutral-200)] rounded-xl hover:bg-white hover:border-[var(--primary)] hover:text-[var(--primary)] transition-all font-semibold bg-white/60 backdrop-blur-sm disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:border-[var(--neutral-200)] disabled:hover:text-inherit'>
+                    className='px-5 py-3 border-2 border-[var(--neutral-200)] rounded-xl hover:bg-white hover:border-[var(--primary)] hover:text-[var(--primary)] transition-all font-semibold bg-white/60 backdrop-blur-sm disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:border-[var(--neutral-200)] disabled:hover:text-inherit flex items-center justify-center gap-2'>
+                    {loading && <Loader2 className="w-4 h-4 animate-spin" />}
                     Anterior
                   </button>
 
@@ -395,20 +402,20 @@ export const ProductsPageClient = ({
                     page === '...' ? (
                       <span
                         key={`ellipsis-${index}`}
-                        className='px-4 py-3 text-[var(--neutral-500)] font-semibold'>
+                        className='px-4 py-3 text-[var(--neutral-500)] font-semibold flex items-center justify-center'>
                         ...
                       </span>
                     ) : (
                       <button
                         key={page}
-                        onClick={() => handlePageChange(page)}
+                        onClick={() => handlePageChange(page as number)}
                         disabled={loading}
-                        className={`px-5 py-3 rounded-xl font-bold shadow-sm transition-all ${
+                        className={`px-5 py-3 rounded-xl font-bold shadow-sm transition-all flex items-center justify-center min-w-[3.5rem] ${
                           currentPage === page
                             ? 'bg-gradient-to-r from-[var(--primary)] to-[#1a2d5e] text-white shadow-lg scale-105'
-                            : 'border-2 border-[var(--neutral-200)] bg-white/60 backdrop-blur-sm hover:bg-white hover:border-[var(--primary)] hover:text-[var(--primary)]'
+                            : 'border-2 border-[var(--neutral-200)] bg-white/60 backdrop-blur-sm hover:bg-white hover:border-[var(--primary)] hover:text-[var(--primary)] disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:border-[var(--neutral-200)] disabled:hover:text-inherit'
                         }`}>
-                        {page}
+                        {loading ? <Loader2 className="w-5 h-5 animate-spin" /> : page}
                       </button>
                     ),
                   )}
@@ -416,8 +423,9 @@ export const ProductsPageClient = ({
                   <button
                     onClick={() => handlePageChange(currentPage + 1)}
                     disabled={!canGoNext || loading}
-                    className='px-5 py-3 border-2 border-[var(--neutral-200)] rounded-xl hover:bg-white hover:border-[var(--primary)] hover:text-[var(--primary)] transition-all font-semibold bg-white/60 backdrop-blur-sm disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:border-[var(--neutral-200)] disabled:hover:text-inherit'>
+                    className='px-5 py-3 border-2 border-[var(--neutral-200)] rounded-xl hover:bg-white hover:border-[var(--primary)] hover:text-[var(--primary)] transition-all font-semibold bg-white/60 backdrop-blur-sm disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:border-[var(--neutral-200)] disabled:hover:text-inherit flex items-center justify-center gap-2'>
                     Próxima
+                    {loading && <Loader2 className="w-4 h-4 animate-spin" />}
                   </button>
                 </div>
               )}

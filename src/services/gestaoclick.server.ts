@@ -27,8 +27,8 @@ const DEFAULT_REVALIDATE = Number(
 )
 const IN_STOCK_CACHE_TTL_MS = 5 * 60 * 1000
 
-let inStockCache: { products: Product[]; cachedAt: number } | null = null
-let cacheBuildPromise: Promise<void> | null = null
+// let inStockCache: { products: Product[]; cachedAt: number } | null = null
+// let cacheBuildPromise: Promise<void> | null = null
 
 const hasCredentials = Boolean(ACCESS_TOKEN && SECRET_TOKEN)
 
@@ -322,8 +322,8 @@ export const getGestaoclickProducts = async (
 
     const page = pagination?.page || 1
     const limit = pagination?.limit || 20
-    const basePage = filters?.inStock ? 1 : page
-    params.set('pagina', String(basePage))
+    
+    params.set('pagina', String(page))
     params.set('limite', String(limit))
 
     const response = await fetchGestaoclick<
@@ -331,194 +331,56 @@ export const getGestaoclickProducts = async (
     >('/api/produtos', params)
 
     const refineProducts = (products: Product[]) => {
-      const filteredByStock =
-        filters?.inStock === true
-          ? products.filter(
-              (product) => (product.stockQuantity ?? 0) >= 1 || product.inStock,
-            )
-          : products
-      const deduped = dedupeByCode(filteredByStock)
+      let filtered = dedupeByCode(products)
 
       const search = filters?.search?.toLowerCase()
-      const refinedBySearch = search
-        ? deduped.filter((product) =>
-            [
-              product.name,
-              product.description,
-              product.code,
-              product.brandName,
-              product.categoryName,
-            ]
-              .filter(Boolean)
-              .some((value) => value.toLowerCase().includes(search)),
-          )
-        : deduped
-
-      const refinedByCategory = filters?.categoryId
-        ? refinedBySearch.filter((product) => {
-            const categoryMatch = [
-              product.categoryId.toLowerCase(),
-              product.categoryName.toLowerCase(),
-              slugify(product.categoryName),
-            ]
-            return categoryMatch.includes(filters.categoryId!.toLowerCase())
-          })
-        : refinedBySearch
-
-      return filters?.brandId
-        ? refinedByCategory.filter((product) =>
-            [
-              product.brandId.toLowerCase(),
-              product.brandName.toLowerCase(),
-            ].includes(filters.brandId!.toLowerCase()),
-          )
-        : refinedByCategory
-    }
-
-    const totalPagesFromMeta =
-      response.meta?.total_paginas ??
-      (response.meta?.total_registros
-        ? Math.ceil(response.meta.total_registros / limit)
-        : page)
-
-    const shouldUseLocalTotal = Boolean(
-      filters?.search || filters?.categoryId || filters?.brandId,
-    )
-    const shouldUseInStockCache =
-      filters?.inStock === true &&
-      !filters?.search &&
-      !filters?.categoryId &&
-      !filters?.brandId
-
-    if (shouldUseInStockCache) {
-      const now = Date.now()
-      const cacheValid =
-        inStockCache && now - inStockCache.cachedAt < IN_STOCK_CACHE_TTL_MS
-
-      if (cacheValid && inStockCache) {
-        const refined = inStockCache.products
-        const total = refined.length
-        const totalPages = Math.ceil(total / limit)
-        const pageOffset = (page - 1) * limit
-        const paged = refined.slice(pageOffset, pageOffset + limit)
-
-        return {
-          success: true,
-          data: {
-            data: paged,
-            pagination: {
-              page,
-              limit,
-              total,
-              totalPages,
-              hasNext: page < totalPages,
-              hasPrev: page > 1,
-            },
-          },
-        }
+      if (search) {
+        filtered = filtered.filter((product) =>
+          [
+            product.name,
+            product.description,
+            product.code,
+            product.brandName,
+            product.categoryName,
+          ]
+            .filter(Boolean)
+            .some((value) => value.toLowerCase().includes(search)),
+        )
       }
 
-      if (!cacheBuildPromise) {
-        const backgroundParams = new URLSearchParams(params.toString())
-        
-        cacheBuildPromise = (async () => {
-          try {
-            let aggregated: Product[] = []
-            const batchSize = 10
-            
-            for (let current = 1; current <= totalPagesFromMeta; current += batchSize) {
-              const batchPromises = []
-              for (let i = 0; i < batchSize && current + i <= totalPagesFromMeta; i += 1) {
-                const attemptFetch = async (pageNum: number) => {
-                  for (let attempt = 0; attempt < 3; attempt++) {
-                    try {
-                      const p = new URLSearchParams(backgroundParams)
-                      p.set('pagina', String(pageNum))
-                      return await fetchGestaoclick<GestaoclickListResponse<GestaoclickProduct>>('/api/produtos', p)
-                    } catch {
-                      if (attempt === 2) return null
-                      await new Promise(r => setTimeout(r, 300 * (attempt + 1)))
-                    }
-                  }
-                  return null
-                }
-                batchPromises.push(attemptFetch(current + i))
-              }
-              const results = await Promise.all(batchPromises)
-              for (const nextResponse of results) {
-                if (nextResponse && nextResponse.data) {
-                  aggregated = aggregated.concat(nextResponse.data.map(mapProduct))
-                }
-              }
-            }
-            const refinedResult = refineProducts(aggregated)
-            inStockCache = { products: refinedResult, cachedAt: Date.now() }
-          } catch (error) {
-            console.error('Erro na construção asíncrona do cache:', error)
-          } finally {
-            cacheBuildPromise = null
-          }
-        })()
+      if (filters?.categoryId) {
+        filtered = filtered.filter((product) => {
+          const categoryMatch = [
+            product.categoryId.toLowerCase(),
+            product.categoryName.toLowerCase(),
+            slugify(product.categoryName),
+          ]
+          return categoryMatch.includes(filters.categoryId!.toLowerCase())
+        })
       }
-      
+
+      if (filters?.brandId) {
+        filtered = filtered.filter((product) =>
+          [
+            product.brandId.toLowerCase(),
+            product.brandName.toLowerCase(),
+          ].includes(filters.brandId!.toLowerCase()),
+        )
+      }
+
+      return filtered
     }
 
-    let aggregated = response.data.map(mapProduct)
-    let refined = refineProducts(aggregated)
-    let lastPageFetched = basePage
-    const targetCount = filters?.inStock ? page * limit : limit
-    const maxScanPages = filters?.inStock ? Math.max(5, page + 2) : 0
-    let scannedPages = 0
+    const aggregated = response.data.map(mapProduct)
+    const refined = refineProducts(aggregated)
 
-    if (filters?.inStock === true && refined.length < targetCount) {
-      while (
-        refined.length < targetCount &&
-        lastPageFetched < totalPagesFromMeta &&
-        scannedPages < maxScanPages
-      ) {
-        lastPageFetched += 1
-        scannedPages += 1
-        const nextParams = new URLSearchParams(params)
-        nextParams.set('pagina', String(lastPageFetched))
-        
-        try {
-          const nextResponse = await fetchGestaoclick<
-            GestaoclickListResponse<GestaoclickProduct>
-          >('/api/produtos', nextParams)
-          
-          if (nextResponse && nextResponse.data) {
-            aggregated = aggregated.concat(nextResponse.data.map(mapProduct))
-            refined = refineProducts(aggregated)
-          }
-        } catch (e) {
-          break
-        }
-      }
-    }
+    const total = response.meta?.total_registros ?? refined.length
+    const totalPages = response.meta?.total_paginas ?? Math.ceil(total / limit)
 
-    const inStockReachedLimit =
-      filters?.inStock === true &&
-      refined.length < targetCount &&
-      (lastPageFetched >= totalPagesFromMeta || scannedPages >= maxScanPages)
-      
-    const total = filters?.inStock
-      ? inStockReachedLimit
-        ? refined.length
-        : lastPageFetched < totalPagesFromMeta
-          ? page * limit + 1
-          : refined.length
-      : shouldUseLocalTotal
-        ? refined.length
-        : (response.meta?.total_registros ?? refined.length)
-        
-    const totalPages = Math.ceil(total / limit)
-    const pageOffset = filters?.inStock ? (page - 1) * limit : 0
-    const paged = refined.slice(pageOffset, pageOffset + limit)
-    
     return {
       success: true,
       data: {
-        data: paged,
+        data: refined,
         pagination: {
           page,
           limit,

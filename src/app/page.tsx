@@ -1,42 +1,61 @@
 import { Metadata } from 'next'
 import { HomePageClient } from '@/components/home/HomePageClient'
 import { getFeaturedProducts, getProducts } from '@/services/api'
+import type { Product } from '@/data/types'
 
 export const revalidate = 60
 
 export const metadata: Metadata = {
   title:
-    'MG Trator Peças - Distribuidora de Peças para Tratores e Máquinas Pesadas | Caterpillar, Volvo, Case, JCB',
+    'MG Tratorpeças - Peças para Máquinas Pesadas | Escavadeiras, Tratores e Equipamentos Pesados',
   description:
-    'Distribuidora especializada em peças originais para tratores e máquinas pesadas. Estoque completo Caterpillar, Volvo, Case, JCB. Atendimento em MG. Peças com garantia e pronta entrega.',
+    'Revendedora especializada em peças para máquinas pesadas da linha amarela. Peças originais e alternativas para escavadeiras, carregadeiras, tratores e equipamentos pesados. Faça sua cotação no WhatsApp.',
   keywords: [
-    'peças para tratores',
-    'peças caterpillar',
-    'peças volvo',
-    'peças case',
-    'peças jcb',
-    'distribuidora peças MG',
+    'peças',
     'peças máquinas pesadas',
-    'filtros tratores',
-    'sistema hidráulico',
+    'peças linha amarela',
+    'peças para máquinas pesadas',
+    'peças para escavadeiras',
+    'peças para tratores',
+    'peças para carregadeiras',
+    'peças equipamentos pesados',
+    'peças originais',
+    'peças alternativas',
+    'peças sistema hidráulico',
+    'filtros máquinas pesadas',
+    'cotação de peças',
+    'peças pronta entrega',
+    'peças para caminhões',
   ],
 }
 
+const prioritizeImages = (products: Product[], limit: number) => {
+  const withImages = products.filter((p) => p.thumbnail)
+  const withoutImages = products.filter((p) => !p.thumbnail)
+  return [...withImages, ...withoutImages].slice(0, limit)
+}
+
 export default async function HomePage() {
-  const featuredLimit = 6
-  const newLimit = 8
+  const fetchLimit = 40
+  const displayLimit = 8
+
   const [featuredResponse, productsResponse] = await Promise.all([
-    getFeaturedProducts(featuredLimit),
-    getProducts({ inStock: true }, { page: 1, limit: newLimit }),
+    getFeaturedProducts(fetchLimit),
+    getProducts({}, { page: 1, limit: fetchLimit }),
   ])
-  const fallbackNewProducts = featuredResponse.data?.slice(0, newLimit) || []
-  const newProducts = productsResponse.data?.data?.length
-    ? productsResponse.data.data
-    : fallbackNewProducts
+
+  const rawFeatured = featuredResponse.data || []
+  const featuredProducts = prioritizeImages(rawFeatured, displayLimit)
+
+  const rawNew = productsResponse.data?.data || []
+  const newProducts = prioritizeImages(
+    rawNew.length ? rawNew : rawFeatured,
+    displayLimit,
+  )
 
   return (
     <HomePageClient
-      featuredProducts={featuredResponse.data || []}
+      featuredProducts={featuredProducts}
       newProducts={newProducts}
     />
   )

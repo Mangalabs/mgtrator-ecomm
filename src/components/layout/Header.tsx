@@ -142,7 +142,7 @@ export const Header = () => {
         className={`sticky top-0 z-50 bg-white transition-all duration-300 ${
           isScrolled ? 'shadow-lg py-2' : 'shadow-sm py-4'
         }`}>
-        <div className='max-w-7xl mx-auto'>
+        <div className='max-w-7xl mx-auto px-4'>
           <div className='flex items-center justify-between'>
             <Link href='/'>
               <Image
@@ -181,13 +181,15 @@ export const Header = () => {
                           onClick={() => handleProductClick(product)}
                           className='w-full flex items-center gap-4 p-3 hover:bg-gray-50 rounded-xl text-left transition-colors'>
                           <div className='w-12 h-12 bg-gray-100 rounded-lg overflow-hidden flex-shrink-0'>
-                            <img
+                            <Image
                               src={
                                 product.thumbnail ||
                                 product.images?.[0] ||
                                 siteConfig.images.productPlaceholder
                               }
                               alt={product.name}
+                              width={48}
+                              height={48}
                               className='w-full h-full object-contain p-1'
                             />
                           </div>
@@ -239,7 +241,7 @@ export const Header = () => {
             </nav>
 
             <div className='flex items-center gap-4 ml-4'>
-              <Link href='/carrinho' className='relative p-2 group'>
+              {/* <Link href='/carrinho' className='relative p-2 group'>
                 <ShoppingCart className='w-6 h-6 text-[var(--primary)] group-hover:scale-110 transition-transform' />
                 <AnimatePresence>
                   {itemCount > 0 && (
@@ -252,7 +254,7 @@ export const Header = () => {
                     </motion.div>
                   )}
                 </AnimatePresence>
-              </Link>
+              </Link> */}
               <button
                 onClick={() => setIsMenuOpen(!isMenuOpen)}
                 className='lg:hidden p-2 text-[var(--primary)]'>
@@ -261,6 +263,49 @@ export const Header = () => {
             </div>
           </div>
         </div>
+
+        <AnimatePresence>
+          {isMenuOpen && (
+            <motion.div
+              initial={{ opacity: 0, y: -10 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -10 }}
+              className='lg:hidden absolute top-full left-0 right-0 bg-white shadow-xl border-t border-gray-100 overflow-hidden'>
+              <div className='p-4 space-y-6'>
+                <form
+                  onSubmit={(e) => {
+                    handleSearch(e)
+                    setIsMenuOpen(false)
+                  }}
+                  className='relative w-full'>
+                  <Search className='absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400' />
+                  <input
+                    type='text'
+                    value={searchQuery}
+                    onChange={(e) => handleInputChange(e.target.value)}
+                    placeholder='Buscar por código, marca ou modelo...'
+                    className='w-full h-11 pl-12 pr-4 rounded-full border-2 border-gray-200 focus:border-[var(--primary)] focus:outline-none'
+                  />
+                </form>
+                <nav className='flex flex-col gap-2'>
+                  {menuItems.map((item) => (
+                    <Link
+                      key={item.id}
+                      href={item.href}
+                      onClick={() => setIsMenuOpen(false)}
+                      className={`block px-4 py-3 rounded-xl text-base transition-colors ${
+                        isActive(item.href)
+                          ? 'bg-[var(--primary)]/10 text-[var(--primary)] font-bold'
+                          : 'text-gray-700 font-medium hover:bg-gray-50'
+                      }`}>
+                      {item.name}
+                    </Link>
+                  ))}
+                </nav>
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
       </header>
     </>
   )
