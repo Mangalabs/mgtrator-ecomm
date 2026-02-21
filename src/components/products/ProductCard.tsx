@@ -13,6 +13,7 @@ import { motion } from 'motion/react'
 import { useCart } from '@/contexts/CartContext'
 import { useMemo } from 'react'
 import { getWhatsAppUrl } from '@/lib/whatsapp'
+import { siteConfig } from '@/data/site'
 
 const IS_CATALOG_MODE = true
 
@@ -163,9 +164,12 @@ export function ProductCard({
               />
             </div>
           ) : (
-            <div className='w-full h-full bg-gray-100 flex items-center justify-center text-gray-400 text-xs sm:text-sm rounded-xl'>
-              Sem Imagem
-            </div>
+            <Image
+              src={siteConfig.images.productPlaceholder}
+              alt='Imagem indisponível'
+              fill
+              className='w-full h-full object-contain opacity-50'
+              />
           )}
         </Link>
 

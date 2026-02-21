@@ -8,6 +8,7 @@ import { motion, AnimatePresence } from 'motion/react'
 import { useCart } from '@/contexts/CartContext'
 import type { Product } from '@/data/types'
 import { getWhatsAppUrl } from '@/lib/whatsapp'
+import { siteConfig } from '@/data/site'
 
 const IS_CATALOG_MODE = true
 
@@ -183,15 +184,13 @@ export const QuickViewModal = ({ product, onClose }: QuickViewModalProps) => {
               
               <div>
                 <div className="relative aspect-square bg-gradient-to-br from-slate-50 via-slate-100 to-slate-50 rounded-[24px] overflow-hidden border-2 border-[var(--neutral-200)] shadow-xl group">
-                  {product.thumbnail && (
-                    <Image
-                      src={product.thumbnail}
-                      alt={`${product.name} - ${product.brandName}`}
-                      fill
-                      className="object-cover"
-                      sizes="(max-width: 768px) 100vw, 400px"
-                    />
-                  )}
+                  <Image
+                    src={product.thumbnail || product.images?.[0] || siteConfig.images.productPlaceholder}
+                    alt={`${product.name} - ${product.brandName}`}
+                    fill
+                    className="object-contain p-4"
+                    sizes="(max-width: 768px) 100vw, 400px"
+                  />
 
                   <div className="absolute inset-0 bg-gradient-to-t from-black/10 via-transparent to-transparent pointer-events-none" />
 
@@ -381,7 +380,7 @@ export const QuickViewModal = ({ product, onClose }: QuickViewModalProps) => {
                   <div className="relative h-px bg-gradient-to-r from-transparent via-[var(--neutral-200)] to-transparent" />
 
                   <div className="space-y-2.5">
-                    <Link href={`/produtos/${product.slug}`} onClick={onClose}>
+                    <Link href={`/produtos/${product.slug || product.id}`} onClick={onClose}>
                       <motion.button
                         whileHover={{ scale: 1.01 }}
                         whileTap={{ scale: 0.99 }}
