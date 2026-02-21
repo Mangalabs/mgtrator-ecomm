@@ -33,6 +33,7 @@ import { motion, AnimatePresence } from 'motion/react'
 import { ProductCard } from './ProductCard'
 import Link from 'next/link'
 import { getWhatsAppUrl } from '@/lib/whatsapp'
+import { siteConfig } from '@/data/site'
 
 const IS_CATALOG_MODE = true
 
@@ -58,7 +59,7 @@ export const ProductDetailClient = ({
     new Set(rawImages.filter(Boolean)),
   ) as string[]
   const safeImages =
-    uniqueImages.length === 0 ? ['/placeholder.png'] : uniqueImages
+    uniqueImages.length === 0 ? [siteConfig.images.productPlaceholder] : uniqueImages
 
   const nextImage = () => {
     setSelectedImage((prev) => (prev + 1) % safeImages.length)

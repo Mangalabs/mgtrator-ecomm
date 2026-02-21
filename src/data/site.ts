@@ -8,7 +8,7 @@ export const siteConfig = {
     logoStyle: {
       filter: 'brightness(0) saturate(100%) invert(15%) sepia(58%) saturate(2786%) hue-rotate(210deg)',
     },
-    productPlaceholder: '/placeholder-product.png',
+    productPlaceholder: '/no-image.jpg',
   },
   contact: {
     phone: '63999828455',
@@ -24,7 +24,7 @@ export const siteConfig = {
     city: 'São Luis/MA',
   },
   businessHours: {
-    short: 'Seg–Sex | 8h–17h',
-    detailed: 'Segunda a Sexta: 8h às 17h',
+    short: 'Seg–Sex | 8h–18h',
+    detailed: 'Segunda a Sexta: 8h às 18h',
   },
 }
