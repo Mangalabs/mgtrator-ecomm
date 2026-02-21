@@ -43,7 +43,7 @@ export const Footer = () => {
                   <path d="M13 7h-2v5H7v2h4v2l3-3-3-3v2h2z"/>
                 </svg>
               </div>
-              <div className="text-xs text-[var(--neutral-400)]">Distribuidor</div>
+              <div className="text-xs text-[var(--neutral-400)]">Especialista</div>
               <div className="text-xs font-bold text-white">Caterpillar</div>
             </div>
           </div>
