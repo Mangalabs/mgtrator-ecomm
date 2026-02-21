@@ -49,32 +49,29 @@ export const HomePageClient = ({
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null)
   const [currentSlide, setCurrentSlide] = useState(0)
 
-  const heroSlides = [
-    {
-      image:
-        'https://images.unsplash.com/photo-1665152998573-9ddafb89278f?w=1920&h=600&fit=crop',
-      title: 'Peças Originais Caterpillar',
-      subtitle: 'Entrega Rápida em Todo Brasil',
-      cta: 'Ver Produtos',
-      link: '/produtos?marca=caterpillar',
-    },
-    {
-      image:
-        'https://images.unsplash.com/photo-1581092160562-40aa08e78837?w=1920&h=600&fit=crop',
-      title: 'Sistema Hidráulico Completo',
-      subtitle: 'Peças Genuínas com Garantia',
-      cta: 'Conferir',
-      link: '/categoria/sistema-hidraulico',
-    },
-    {
-      image:
-        'https://images.unsplash.com/photo-1486262715619-67b85e0b08d3?w=1920&h=600&fit=crop',
-      title: 'Filtros de Alta Performance',
-      subtitle: 'Estoque Permanente',
-      cta: 'Comprar Agora',
-      link: '/categoria/filtros',
-    },
-  ]
+const heroSlides = [
+  {
+    image: 'https://mgtratorpecas.com.br/assets/volvo3-DL2x94P-.jpg',
+    title: 'Peças para Máquinas Pesadas',
+    subtitle: 'Escavadeiras • Carregadeiras • Tratores',
+    cta: 'Ver Produtos',
+    link: '/produtos',
+  },
+  {
+    image: 'https://mgtratorpecas.com.br/assets/volvo2-DjyWGx4Y.jpg',
+    title: 'Precisa da Peça Certa?',
+    subtitle: 'Faça Sua Cotação no WhatsApp',
+    cta: 'Falar com Especialista',
+    link: '/contato',
+  },
+  {
+    image: 'https://mgtratorpecas.com.br/assets/cat1-BySj1VOp.jpeg',
+    title: 'Prefere Comprar Presencialmente?',
+    subtitle: 'Visite Nossa Loja Física',
+    cta: 'Ver Endereço',
+    link: '/lojas',
+  },
+]
 
   useEffect(() => {
     const timer = setInterval(() => {

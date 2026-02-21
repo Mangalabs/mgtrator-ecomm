@@ -9,7 +9,7 @@ export type ExtendedStore = Store & {
 export const storesData: ExtendedStore[] = [
   {
     id: 'store-sao-luis',
-    name: 'MG TratorPeças - São Luis',
+    name: 'MG Tratorpeças',
     slug: 'unidade-sao-luis',
     isActive: true,
     address: {
@@ -29,13 +29,13 @@ export const storesData: ExtendedStore[] = [
     },
     
     contact: {
-      phone: '',
-      phoneFormatted: '',
-      whatsapp: '',
-      email: ''
+      phone: '63999828455',
+      phoneFormatted: '(63) 99982-8455',
+      whatsapp: '(63) 99982-8455',
+      email: 'comercial@mgtratorpecas.com.br'
     },
-    image: 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=800',
-    features: ['Estacionamento Próprio', 'Wi-Fi Grátis', 'Sala de Espera Climatizada', 'Showroom'],
+    image: '/fachada-saoluis.jpeg',
+    features: ['Estacionamento Próprio', 'Fácil Acesso ', 'Sala de Espera Climatizada', 'Contato Direto com Especialista'],
     isMainStore: true,
     createdAt: '2014-01-15T00:00:00.000Z',
     updatedAt: new Date().toISOString(),

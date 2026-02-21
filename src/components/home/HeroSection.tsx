@@ -58,7 +58,7 @@ export const HeroSection = () => {
               fill
               className="object-cover"
               priority={currentSlide === 0}
-              sizes="(max-width: 1024px) 100vw, 55vw"
+              sizes="(max-width: 1024px) 50vw, 55vw"
             />
             <div className="absolute inset-0 bg-gradient-to-r from-[#213A77]/60 via-[#213A77]/30 to-transparent"></div>
             <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent"></div>

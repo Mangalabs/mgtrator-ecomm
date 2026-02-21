@@ -11,10 +11,10 @@ export const siteConfig = {
     productPlaceholder: '/placeholder-product.png',
   },
   contact: {
-    phone: '',
-    phoneFormatted: '() ',
-    whatsapp: '5',
-    email: '',
+    phone: '63999828455',
+    phoneFormatted: '(63) 99982-8455',
+    whatsapp: '63999828455',
+    email: 'comercial@mgtratorpecas.com.br',
   },
   social: {
     instagram: 'https://instagram.com/mgtratorpecas',

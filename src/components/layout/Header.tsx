@@ -123,7 +123,9 @@ export const Header = () => {
           <div className='flex items-center gap-6'>
             <div className='flex items-center gap-2'>
               <Phone className='w-4 h-4' />
-              <a href={`tel:${siteConfig.contact.phone}`} className='hover:text-yellow-200 transition-colors'>
+              <a
+                href={`tel:${siteConfig.contact.phone}`}
+                className='hover:text-yellow-200 transition-colors'>
                 {siteConfig.contact.phoneFormatted}
               </a>
             </div>
@@ -165,8 +167,7 @@ export const Header = () => {
                 />
                 <button
                   type='submit'
-                  className='absolute right-1 top-1/2 -translate-y-1/2 bg-[var(--primary)] text-white px-4 py-1 rounded-full'
-                >
+                  className='absolute right-1 top-1/2 -translate-y-1/2 bg-[var(--primary)] text-white px-4 py-1 rounded-full'>
                   Buscar
                 </button>
 
@@ -176,13 +177,16 @@ export const Header = () => {
                       {suggestions.map((product) => (
                         <button
                           key={product.id}
-                          type="button"
+                          type='button'
                           onClick={() => handleProductClick(product)}
-                          className='w-full flex items-center gap-4 p-3 hover:bg-gray-50 rounded-xl text-left transition-colors'
-                        >
+                          className='w-full flex items-center gap-4 p-3 hover:bg-gray-50 rounded-xl text-left transition-colors'>
                           <div className='w-12 h-12 bg-gray-100 rounded-lg overflow-hidden flex-shrink-0'>
                             <img
-                              src={product.thumbnail || product.images?.[0] || siteConfig.images.productPlaceholder}
+                              src={
+                                product.thumbnail ||
+                                product.images?.[0] ||
+                                siteConfig.images.productPlaceholder
+                              }
                               alt={product.name}
                               className='w-full h-full object-contain p-1'
                             />
@@ -200,10 +204,9 @@ export const Header = () => {
                     </div>
 
                     <button
-                      type="button"
+                      type='button'
                       onClick={handleViewAllResults}
-                      className='w-full p-3 bg-gray-50 border-t border-gray-100 font-bold text-[var(--primary)] text-xs hover:bg-gray-100 transition-colors'
-                    >
+                      className='w-full p-3 bg-gray-50 border-t border-gray-100 font-bold text-[var(--primary)] text-xs hover:bg-gray-100 transition-colors'>
                       Ver todos os resultados
                     </button>
                   </div>
@@ -229,15 +232,14 @@ export const Header = () => {
                     isActive(item.href)
                       ? 'text-[var(--primary)] font-bold'
                       : 'text-gray-600 font-medium'
-                  }`}
-                >
+                  }`}>
                   {item.name}
                 </Link>
               ))}
             </nav>
-            
+
             <div className='flex items-center gap-4 ml-4'>
-               <Link href='/carrinho' className='relative p-2 group'>
+              <Link href='/carrinho' className='relative p-2 group'>
                 <ShoppingCart className='w-6 h-6 text-[var(--primary)] group-hover:scale-110 transition-transform' />
                 <AnimatePresence>
                   {itemCount > 0 && (
@@ -245,8 +247,7 @@ export const Header = () => {
                       initial={{ scale: 0 }}
                       animate={{ scale: 1 }}
                       exit={{ scale: 0 }}
-                      className='absolute -top-1 -right-1 bg-red-500 text-white text-[10px] font-bold w-5 h-5 rounded-full flex items-center justify-center border-2 border-white'
-                    >
+                      className='absolute -top-1 -right-1 bg-red-500 text-white text-[10px] font-bold w-5 h-5 rounded-full flex items-center justify-center border-2 border-white'>
                       {itemCount > 99 ? '99+' : itemCount}
                     </motion.div>
                   )}
@@ -254,8 +255,7 @@ export const Header = () => {
               </Link>
               <button
                 onClick={() => setIsMenuOpen(!isMenuOpen)}
-                className='lg:hidden p-2 text-[var(--primary)]'
-              >
+                className='lg:hidden p-2 text-[var(--primary)]'>
                 {isMenuOpen ? <X /> : <Menu />}
               </button>
             </div>

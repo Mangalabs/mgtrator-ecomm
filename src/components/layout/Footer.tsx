@@ -50,34 +50,31 @@ export const Footer = () => {
         </div>
       </div>
 
-      <div className="max-w-7xl mx-auto px-4 py-6">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-6">
-          
-          <div className="lg:col-span-3">
-            <div className="mb-3">
+      <div className="max-w-7xl mx-auto py-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-3">
+      
+          <div className="lg:col-span-4">
+            <div className="mb-2">
               <img 
-                src="https://mgtratorpecas.com.br/assets/logo_mgtratorpecas_png_branco-BQx3whQg.png" 
+                src="/logo.png" 
                 alt={`${siteConfig.name} - Peças para Tratores e Máquinas Pesadas`}
-                className="h-14 w-auto object-contain"
+                className="h-25 w-auto"
                 width={180}
                 height={56}
               />
             </div>
             
-            <p className="text-[var(--neutral-300)] text-xs mb-2 leading-relaxed">
-              Distribuidora especializada em <strong className="text-white">peças originais para máquinas pesadas</strong>.
+            <p className="text-[var(--neutral-300)] text-xs mb-2 leading-relaxed mt-2">
+              Especialistas em <strong className="text-white">peças originais para máquinas pesadas</strong>.
             </p>
 
             <div className="mb-3 pb-3">
               <div className="text-xs text-[var(--neutral-400)] leading-relaxed">
                 <p className="mb-1 text-xs">
-                  <span className="text-[var(--secondary)] font-semibold">Equipamentos:</span> Escavadeiras, Carregadeiras, Tratores e mais.
+                  <span className="text-[var(--secondary)] font-semibold">Peças para:</span> Escavadeiras, Carregadeiras, Motoniveladoras e mais.
                 </p>
                 <p className="mb-1 text-xs">
-                  <span className="text-[var(--secondary)] font-semibold">Marcas:</span> Caterpillar, Volvo, Komatsu e mais.
-                </p>
-                <p>
-                  <span className="text-[var(--secondary)] font-semibold">Segmentos:</span> Construção Civil, Mineração e Terraplanagem.
+                  <span className="text-[var(--secondary)] font-semibold">Marcas:</span> Caterpillar, Volvo e mais.
                 </p>
               </div>
             </div>
@@ -90,7 +87,7 @@ export const Footer = () => {
               Links Rápidos
             </h4>
             <nav aria-labelledby="quick-links-heading">
-              <ul className="space-y-1.5">
+              <ul className="space-y-5 mt-4">
                 {[
                   { name: 'Home', href: '/' },
                   { name: 'Produtos', href: '/produtos' },
@@ -180,7 +177,7 @@ export const Footer = () => {
             </a>
           </div>
 
-          <div className="lg:col-span-4">
+          <div className="lg:col-span-3">
             <h4 className="text-white font-bold text-base mb-3 flex items-center gap-2">
               <div className="w-1 h-4 bg-[var(--secondary)] rounded-full"></div>
               Nossas Lojas

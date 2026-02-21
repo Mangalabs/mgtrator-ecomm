@@ -36,7 +36,7 @@ export const WHATSAPP_MESSAGES = {
 
 export const HERO_SLIDES = [
   {
-    image: 'https://images.unsplash.com/photo-1665152998573-9ddafb89278f?w=1920&q=80',
+    image: 'https://mgtratorpecas.com.br/assets/volvo3-DL2x94P-.jpg',
     title: 'Escavadeiras Caterpillar',
     tag: 'Premium',
     alt: 'Escavadeira Caterpillar em operação',

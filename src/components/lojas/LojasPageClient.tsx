@@ -47,7 +47,7 @@ export const LojasPageClient = () => {
                     <div className="absolute top-6 left-6 z-10">
                       <div className="inline-flex items-center gap-2 bg-white/95 backdrop-blur-xl border-2 border-white/60 px-4 py-2 rounded-2xl shadow-xl">
                         <StoreIcon className="w-5 h-5 text-[var(--primary)]" />
-                        <span className="font-black text-[var(--primary)] uppercase tracking-wide">Unidade {index + 1}</span>
+                        <span className="font-black text-[var(--primary)] uppercase tracking-wide"> {store.address.city}</span>
                       </div>
                     </div>
 
@@ -145,6 +145,7 @@ export const LojasPageClient = () => {
 
                     <div className="grid grid-cols-2 gap-3 mt-auto">
                       <button
+                      
                         onClick={() => handleWhatsApp(store.contact.whatsapp)}
                         className="flex items-center justify-center gap-2 bg-gradient-to-br from-[#25D366] to-[#20BD5A] text-white py-4 px-5 rounded-2xl font-black hover:shadow-xl hover:scale-[1.02] transition-all duration-300"
                       >
