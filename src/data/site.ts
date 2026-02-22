@@ -1,5 +1,5 @@
 export const siteConfig = {
-  name: 'MG Trator Peças',
+  name: 'MG Tratorpeças',
   url: 'https://mgtratorpecas.com.br',
   images: {
     logo: '/logo.png',

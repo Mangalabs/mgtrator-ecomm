@@ -136,7 +136,7 @@ const paymentMethods = [
             </div>
             <h1 className="text-white mb-4">Como Comprar</h1>
             <p className="text-xl text-blue-100 max-w-3xl mx-auto mb-8">
-              Comprar peças para tratores e máquinas pesadas nunca foi tão fácil e seguro
+              Comprar peças para maquinas pesadas e máquinas pesadas nunca foi tão fácil e seguro
             </p>
             <div className="flex flex-wrap justify-center gap-4">
               <div className="flex items-center gap-2 bg-white/10 backdrop-blur-sm px-6 py-3 rounded-xl border border-white/20">

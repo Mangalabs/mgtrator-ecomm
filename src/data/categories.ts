@@ -14,7 +14,7 @@ export const categoriesData: Category[] = [
     order: 1,
     isActive: true,
     
-    seoTitle: 'Peças para Escavadeiras Hidráulicas | MG Trator Peças',
+    seoTitle: 'Peças para Escavadeiras Hidráulicas | MG Tratorpeças',
     seoDescription: 'Peças originais para escavadeiras Caterpillar, Volvo, Komatsu. Estoque completo de filtros, motores, sistemas hidráulicos e mais.',
     
     createdAt: '2014-01-15T00:00:00.000Z',
@@ -34,7 +34,7 @@ export const categoriesData: Category[] = [
     order: 2,
     isActive: true,
     
-    seoTitle: 'Peças para Carregadeiras | MG Trator Peças',
+    seoTitle: 'Peças para Carregadeiras | MG Tratorpeças',
     seoDescription: 'Peças originais para carregadeiras de rodas. Sistemas de transmissão, freios, hidráulicos e mais com pronta entrega.',
     
     createdAt: '2014-01-15T00:00:00.000Z',
@@ -54,7 +54,7 @@ export const categoriesData: Category[] = [
     order: 3,
     isActive: true,
     
-    seoTitle: 'Peças para Retroescavadeiras | MG Trator Peças',
+    seoTitle: 'Peças para Retroescavadeiras | MG Tratorpeças',
     seoDescription: 'Peças originais para retroescavadeiras Case e JCB. Caçambas, cilindros, componentes hidráulicos e motores.',
     
     createdAt: '2014-01-15T00:00:00.000Z',
@@ -62,10 +62,10 @@ export const categoriesData: Category[] = [
   },
   
   {
-    id: 'cat-tratores',
-    name: 'Tratores de Esteira',
-    slug: 'tratores-esteira',
-    description: 'Peças para tratores de esteira Caterpillar, Komatsu e John Deere',
+    id: 'cat-maquinas pesadas',
+    name: 'maquinas pesadas de Esteira',
+    slug: 'maquinas pesadas-esteira',
+    description: 'Peças para maquinas pesadas de esteira Caterpillar, Komatsu e John Deere',
     
     image: 'https://images.unsplash.com/photo-1587019158091-1a103c5dd17f?w=800',
     icon: 'Cog',
@@ -74,8 +74,8 @@ export const categoriesData: Category[] = [
     order: 4,
     isActive: true,
     
-    seoTitle: 'Peças para Tratores de Esteira | MG Trator Peças',
-    seoDescription: 'Peças originais para tratores de esteira. Esteiras, motores, transmissão e componentes para mineração e terraplanagem.',
+    seoTitle: 'Peças para maquinas pesadas de Esteira | MG Tratorpeças',
+    seoDescription: 'Peças originais para maquinas pesadas de esteira. Esteiras, motores, transmissão e componentes para mineração e terraplanagem.',
     
     createdAt: '2014-01-15T00:00:00.000Z',
     updatedAt: new Date().toISOString()
@@ -94,8 +94,8 @@ export const categoriesData: Category[] = [
     order: 5,
     isActive: true,
     
-    seoTitle: 'Motores Diesel e Componentes | MG Trator Peças',
-    seoDescription: 'Motores diesel originais e componentes para tratores e máquinas pesadas. Caterpillar, Volvo, Komatsu e mais.',
+    seoTitle: 'Motores Diesel e Componentes | MG Tratorpeças',
+    seoDescription: 'Motores diesel originais e componentes para maquinas pesadas e máquinas pesadas. Caterpillar, Volvo, Komatsu e mais.',
     
     createdAt: '2014-01-15T00:00:00.000Z',
     updatedAt: new Date().toISOString()
@@ -114,7 +114,7 @@ export const categoriesData: Category[] = [
     order: 6,
     isActive: true,
     
-    seoTitle: 'Filtros Originais para Máquinas Pesadas | MG Trator Peças',
+    seoTitle: 'Filtros Originais para Máquinas Pesadas | MG Tratorpeças',
     seoDescription: 'Filtros originais de óleo, ar, combustível e hidráulicos. Maior estoque de Minas Gerais com pronta entrega.',
     
     createdAt: '2014-01-15T00:00:00.000Z',
@@ -134,7 +134,7 @@ export const categoriesData: Category[] = [
     order: 7,
     isActive: true,
     
-    seoTitle: 'Sistemas Hidráulicos para Máquinas Pesadas | MG Trator Peças',
+    seoTitle: 'Sistemas Hidráulicos para Máquinas Pesadas | MG Tratorpeças',
     seoDescription: 'Bombas, cilindros, válvulas e componentes hidráulicos originais. Atendimento especializado em MG.',
     
     createdAt: '2014-01-15T00:00:00.000Z',
@@ -154,7 +154,7 @@ export const categoriesData: Category[] = [
     order: 8,
     isActive: true,
     
-    seoTitle: 'Transmissão para Máquinas Pesadas | MG Trator Peças',
+    seoTitle: 'Transmissão para Máquinas Pesadas | MG Tratorpeças',
     seoDescription: 'Componentes de transmissão originais. Embreagens, diferenciais, eixos e mais com garantia de fábrica.',
     
     createdAt: '2014-01-15T00:00:00.000Z',

@@ -41,7 +41,7 @@ const heroSlides = [
   {
     image: 'https://mgtratorpecas.com.br/assets/volvo3-DL2x94P-.jpg',
     title: 'Peças para Máquinas Pesadas',
-    subtitle: 'Escavadeiras • Carregadeiras • Tratores',
+    subtitle: 'Escavadeiras • Carregadeiras • maquinas pesadas',
     cta: 'Ver Produtos',
     link: '/produtos',
   },

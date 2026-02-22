@@ -7,16 +7,16 @@ export const revalidate = 60
 
 export const metadata: Metadata = {
   title:
-    'MG Tratorpeças - Peças para Máquinas Pesadas | Escavadeiras, Tratores e Equipamentos Pesados',
+    'MG Tratorpeças - Peças para Máquinas Pesadas | Escavadeiras, maquinas pesadas e Equipamentos Pesados',
   description:
-    'Revendedora especializada em peças para máquinas pesadas da linha amarela. Peças originais e alternativas para escavadeiras, carregadeiras, tratores e equipamentos pesados. Faça sua cotação no WhatsApp.',
+    'Revendedora especializada em peças para máquinas pesadas da linha amarela. Peças originais e alternativas para escavadeiras, carregadeiras, maquinas pesadas e equipamentos pesados. Faça sua cotação.',
   keywords: [
     'peças',
     'peças máquinas pesadas',
     'peças linha amarela',
     'peças para máquinas pesadas',
     'peças para escavadeiras',
-    'peças para tratores',
+    'peças para maquinas pesadas',
     'peças para carregadeiras',
     'peças equipamentos pesados',
     'peças originais',
@@ -27,12 +27,45 @@ export const metadata: Metadata = {
     'peças pronta entrega',
     'peças para caminhões',
   ],
+  openGraph: {
+    title:
+      'MG Tratorpeças - Peças para Máquinas Pesadas | Escavadeiras, maquinas pesadas e Equipamentos Pesados',
+    description:
+      'Revendedora especializada em peças para máquinas pesadas da linha amarela. Peças originais e alternativas para escavadeiras, carregadeiras, maquinas pesadas e equipamentos pesados. Faça sua cotação.',
+    url: 'https://mgtratorpecas.com.br',
+    siteName: 'MG Tratorpeças',
+    locale: 'pt_BR',
+    type: 'website',
+  },
+  alternates: {
+    canonical: 'https://mgtratorpecas.com.br',
+  },
 }
 
 const prioritizeImages = (products: Product[], limit: number) => {
-  const withImages = products.filter((p) => p.thumbnail)
-  const withoutImages = products.filter((p) => !p.thumbnail)
-  return [...withImages, ...withoutImages].slice(0, limit)
+  const withImages: Product[] = []
+  const withoutImages: Product[] = []
+
+  for (const p of products) {
+    if (p.thumbnail) {
+      withImages.push(p)
+    } else {
+      withoutImages.push(p)
+    }
+  }
+
+  const result: Product[] = []
+  for (let i = 0; i < limit; i++) {
+    if (i < withImages.length) {
+      result.push(withImages[i])
+    } else if (i - withImages.length < withoutImages.length) {
+      result.push(withoutImages[i - withImages.length])
+    } else {
+      break
+    }
+  }
+
+  return result
 }
 
 export default async function HomePage() {

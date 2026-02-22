@@ -2,15 +2,15 @@ import { CompanyInfo } from './types';
 
 export const companyData: CompanyInfo = {
   id: 'mg-trator-pecas',
-  name: 'MG Trator Peças',
-  legalName: 'MG Trator Peças Ltda.',
+  name: 'MG Tratorpeças',
+  legalName: 'MG Tratorpeças Ltda.',
   cnpj: '12.345.678/0001-90',
   
   logo: 'https://mgtratorpecas.com.br/assets/logo_mgtratorpecas_png_branco-BQx3whQg.png',
   logoWhite: 'https://mgtratorpecas.com.br/assets/logo_mgtratorpecas_png_branco-BQx3whQg.png',
   
-  tagline: 'Peças Originais para Tratores e Máquinas Pesadas',
-  description: 'Distribuidora especializada em peças originais para tratores e máquinas pesadas em Contagem e Betim/MG.',
+  tagline: 'Peças Originais para maquinas pesadas e Máquinas Pesadas',
+  description: 'Distribuidora especializada em peças originais para maquinas pesadas e máquinas pesadas em Contagem e Betim/MG.',
   foundedYear: 2014,
   
   email: {
@@ -50,7 +50,7 @@ export const companyData: CompanyInfo = {
       'Escavadeiras',
       'Carregadeiras',
       'Retroescavadeiras',
-      'Tratores'
+      'maquinas pesadas'
     ],
     brands: [
       'Caterpillar',

@@ -177,7 +177,7 @@ export function PoliticasPageClient() {
         },
         {
           subtitle: 'Propriedade Intelectual',
-          content: 'Todo conteúdo deste site (textos, imagens, logos, códigos) é protegido por direitos autorais e propriedade da MG Trator Peças ou licenciado. É proibida reprodução sem autorização expressa.'
+          content: 'Todo conteúdo deste site (textos, imagens, logos, códigos) é protegido por direitos autorais e propriedade da MG Tratorpeças ou licenciado. É proibida reprodução sem autorização expressa.'
         },
         {
           subtitle: 'Limitação de Responsabilidade',
