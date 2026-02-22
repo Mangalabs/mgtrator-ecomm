@@ -17,14 +17,14 @@ export const brandsData: Brand[] = [
     establishedYear: 1925,
     
     productCount: 150,
-    categories: ['escavadeiras', 'carregadeiras', 'tratores'],
+    categories: ['escavadeiras', 'carregadeiras', 'maquinas pesadas'],
     
     isFeatured: true,
     order: 1,
     isActive: true,
     
-    seoTitle: 'Peças Originais Caterpillar | MG Trator Peças',
-    seoDescription: 'Peças originais Caterpillar para escavadeiras, carregadeiras e tratores. Estoque completo e pronta entrega em MG.',
+    seoTitle: 'Peças Originais Caterpillar | MG Tratorpeças',
+    seoDescription: 'Peças originais Caterpillar para escavadeiras, carregadeiras e maquinas pesadas. Estoque completo e pronta entrega em MG.',
     
     createdAt: '2014-01-15T00:00:00.000Z',
     updatedAt: new Date().toISOString()
@@ -52,7 +52,7 @@ export const brandsData: Brand[] = [
     order: 2,
     isActive: true,
     
-    seoTitle: 'Peças Originais Volvo | MG Trator Peças',
+    seoTitle: 'Peças Originais Volvo | MG Tratorpeças',
     seoDescription: 'Peças originais Volvo para equipamentos de construção e mineração. Distribuidor autorizado em Contagem e Betim/MG.',
     
     createdAt: '2014-01-15T00:00:00.000Z',
@@ -75,14 +75,14 @@ export const brandsData: Brand[] = [
     establishedYear: 1921,
     
     productCount: 95,
-    categories: ['escavadeiras', 'carregadeiras', 'tratores'],
+    categories: ['escavadeiras', 'carregadeiras', 'maquinas pesadas'],
     
     isFeatured: true,
     order: 3,
     isActive: true,
     
-    seoTitle: 'Peças Originais Komatsu | MG Trator Peças',
-    seoDescription: 'Peças originais Komatsu para equipamentos de mineração. Estoque completo para escavadeiras, carregadeiras e tratores.',
+    seoTitle: 'Peças Originais Komatsu | MG Tratorpeças',
+    seoDescription: 'Peças originais Komatsu para equipamentos de mineração. Estoque completo para escavadeiras, carregadeiras e maquinas pesadas.',
     
     createdAt: '2014-01-15T00:00:00.000Z',
     updatedAt: new Date().toISOString()
@@ -110,7 +110,7 @@ export const brandsData: Brand[] = [
     order: 4,
     isActive: true,
     
-    seoTitle: 'Peças Originais Case | MG Trator Peças',
+    seoTitle: 'Peças Originais Case | MG Tratorpeças',
     seoDescription: 'Peças originais Case para retroescavadeiras e carregadeiras. Distribuidor autorizado em MG com pronta entrega.',
     
     createdAt: '2015-06-10T00:00:00.000Z',
@@ -139,7 +139,7 @@ export const brandsData: Brand[] = [
     order: 5,
     isActive: true,
     
-    seoTitle: 'Peças Originais JCB | MG Trator Peças',
+    seoTitle: 'Peças Originais JCB | MG Tratorpeças',
     seoDescription: 'Peças originais JCB para equipamentos de construção. Estoque para retroescavadeiras e carregadeiras em MG.',
     
     createdAt: '2016-02-18T00:00:00.000Z',
@@ -154,22 +154,22 @@ export const brandsData: Brand[] = [
     logo: 'https://images.unsplash.com/photo-1574943320219-553eb213f72d?w=400',
     logoDark: 'https://images.unsplash.com/photo-1574943320219-553eb213f72d?w=400',
     
-    description: 'Tradição em tratores e equipamentos agrícolas/florestais',
-    fullDescription: 'A John Deere é líder mundial em equipamentos agrícolas e florestais, com vasta experiência também em tratores para construção e terraplanagem.',
+    description: 'Tradição em maquinas pesadas e equipamentos agrícolas/florestais',
+    fullDescription: 'A John Deere é líder mundial em equipamentos agrícolas e florestais, com vasta experiência também em maquinas pesadas para construção e terraplanagem.',
     
     website: 'https://www.deere.com.br',
     countryOfOrigin: 'Estados Unidos',
     establishedYear: 1837,
     
     productCount: 65,
-    categories: ['tratores', 'carregadeiras', 'motoniveladoras'],
+    categories: ['maquinas pesadas', 'carregadeiras', 'motoniveladoras'],
     
     isFeatured: false,
     order: 6,
     isActive: true,
     
-    seoTitle: 'Peças Originais John Deere | MG Trator Peças',
-    seoDescription: 'Peças originais John Deere para tratores e equipamentos pesados. Distribuidor autorizado em Contagem e Betim/MG.',
+    seoTitle: 'Peças Originais John Deere | MG Tratorpeças',
+    seoDescription: 'Peças originais John Deere para maquinas pesadas e equipamentos pesados. Distribuidor autorizado em Contagem e Betim/MG.',
     
     createdAt: '2016-08-25T00:00:00.000Z',
     updatedAt: new Date().toISOString()

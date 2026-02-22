@@ -18,12 +18,12 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   
   if (!data) {
     return {
-      title: 'Não encontrado | MG Trator Peças'
+      title: 'Não encontrado | MG Tratorpeças'
     }
   }
   
   return {
-    title: data.seoTitle || `${data.name} - Peças Originais | MG Trator Peças`,
+    title: data.seoTitle || `${data.name} - Peças Originais | MG Tratorpeças`,
     description: data.seoDescription || data.description,
     openGraph: {
       title: data.name,

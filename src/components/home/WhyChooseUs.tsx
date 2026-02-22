@@ -12,7 +12,7 @@ export const WhyChooseUs = () => {
       <div className="relative max-w-6xl mx-auto px-4">
         <div className="text-center mb-16">
           <h2 className="font-black text-4xl md:text-5xl text-slate-900 mb-5">
-            Por Que Escolher a MG Trator Peças?
+            Por Que Escolher a MG Tratorpeças?
           </h2>
           <p className="text-xl text-slate-600 max-w-3xl mx-auto">
             Experiência e confiabilidade que garantem a continuidade das suas operações

@@ -1,6 +1,6 @@
 export const COMPANY_INFO = {
-  name: 'MG Trator Peças',
-  legalName: 'MG Trator Peças Ltda',
+  name: 'MG Tratorpeças',
+  legalName: 'MG Tratorpeças Ltda',
   tagline: 'Especialistas em Peças para Máquinas Pesadas',
   foundedYear: 2013,
 } as const
@@ -75,8 +75,8 @@ export const EQUIPMENT_TYPES = {
   excavators: 'Escavadeiras',
   loaders: 'Carregadeiras',
   backhoes: 'Retroescavadeiras',
-  tractors: 'Tratores',
-  bulldozers: 'Tratores de Esteira',
+  tractors: 'maquinas pesadas',
+  bulldozers: 'maquinas pesadas de Esteira',
   graders: 'Motoniveladoras',
 } as const
 
@@ -189,9 +189,9 @@ export const ROUTES = {
 } as const
 
 export const SEO_DEFAULTS = {
-  siteName: 'MG Trator Peças',
-  titleTemplate: '%s | MG Trator Peças',
-  description: 'Distribuidora especializada em peças originais para tratores e máquinas pesadas. Estoque completo Caterpillar, Volvo, Case, JCB.',
+  siteName: 'MG Tratorpeças',
+  titleTemplate: '%s | MG Tratorpeças',
+  description: 'Distribuidora especializada em peças originais para maquinas pesadas e máquinas pesadas. Estoque completo Caterpillar, Volvo, Case, JCB.',
   siteUrl: process.env.NEXT_PUBLIC_SITE_URL || 'https://mgtratorpecas.com.br',
   twitterHandle: '@mgtratorpecas',
   ogImage: '/og-image.jpg',

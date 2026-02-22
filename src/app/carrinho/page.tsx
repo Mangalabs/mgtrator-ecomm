@@ -3,8 +3,8 @@ import { CarrinhoPageClient } from '@/components/carrinho/CarrinhoPageClient'
 import { Link } from 'lucide-react'
 
 export const metadata: Metadata = {
-  title: 'Carrinho de Compras | MG Trator Peças',
-  description: 'Revise seu carrinho de compras. Peças originais para tratores e máquinas pesadas com entrega rápida para Contagem e Betim.',
+  title: 'Carrinho de Compras | MG Tratorpeças',
+  description: 'Revise seu carrinho de compras. Peças originais para maquinas pesadas e máquinas pesadas com entrega rápida para Contagem e Betim.',
   robots: 'noindex, nofollow'
 }
 

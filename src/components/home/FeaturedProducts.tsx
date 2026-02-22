@@ -24,7 +24,7 @@ export const FeaturedProducts = () => {
               Produtos em Destaque
             </h2>
             <p className="text-xl text-slate-600 max-w-3xl mx-auto">
-              Confira nossa seleção de peças mais procuradas para tratores e máquinas pesadas
+              Confira nossa seleção de peças mais procuradas para maquinas pesadas e máquinas pesadas
             </p>
           </div>
 

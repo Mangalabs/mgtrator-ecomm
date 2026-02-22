@@ -411,7 +411,7 @@ export const testimonials = [
     company: 'Construtora Alicerce',
     role: 'Gerente de Manutenção',
     image: 'https://images.unsplash.com/photo-1753161023962-665967602405?w=150',
-    text: 'Trabalho com a MG Trator Peças há mais de 5 anos. Sempre encontro as peças que preciso com qualidade e entrega rápida. Equipe muito atenciosa e profissional.',
+    text: 'Trabalho com a MG Tratorpeças há mais de 5 anos. Sempre encontro as peças que preciso com qualidade e entrega rápida. Equipe muito atenciosa e profissional.',
     rating: 5,
   },
   {
@@ -428,7 +428,7 @@ export const testimonials = [
     name: 'Ana Paula Costa',
     company: 'Mineração Serra Grande',
     role: 'Coordenadora de Suprimentos',
-    text: 'Excelente atendimento e variedade de produtos. Conseguimos reduzir o tempo de parada das nossas máquinas graças ao estoque completo da MG Trator Peças.',
+    text: 'Excelente atendimento e variedade de produtos. Conseguimos reduzir o tempo de parada das nossas máquinas graças ao estoque completo da MG Tratorpeças.',
     image: 'https://images.unsplash.com/photo-1753161023962-665967602405?w=150',
     rating: 5,
   },
@@ -523,8 +523,8 @@ export const blogPosts = [
   },
   {
     id: 2,
-    title: 'Manutenção Preventiva em Tratores: Cronograma Essencial',
-    slug: 'manutencao-preventiva-tratores',
+    title: 'Manutenção Preventiva em maquinas pesadas: Cronograma Essencial',
+    slug: 'manutencao-preventiva-maquinas pesadas',
     excerpt:
       'Descubra o cronograma ideal de manutenção preventiva para aumentar a vida útil do seu trator e evitar paradas inesperadas.',
     image: 'https://images.unsplash.com/photo-1624280341680-5dee2199bce3?w=800',

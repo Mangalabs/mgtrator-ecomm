@@ -3,8 +3,8 @@ import { CheckoutPageClient } from '@/components/checkout/CheckoutPageClient'
 import { Link } from 'lucide-react'
 
 export const metadata: Metadata = {
-  title: 'Checkout - Finalizar Compra | MG Trator Peças',
-  description: 'Finalize sua compra de peças para tratores e máquinas pesadas com segurança. Entregas para Contagem, Betim e região metropolitana de Belo Horizonte.',
+  title: 'Checkout - Finalizar Compra | MG Tratorpeças',
+  description: 'Finalize sua compra de peças para maquinas pesadas e máquinas pesadas com segurança. Entregas para Contagem, Betim e região metropolitana de Belo Horizonte.',
   robots: 'noindex, nofollow'
 }
 

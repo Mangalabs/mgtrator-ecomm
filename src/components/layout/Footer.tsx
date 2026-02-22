@@ -104,7 +104,7 @@ export const Footer = () => {
             <div className='mb-4'>
               <Image
                 src='/logo.png'
-                alt={`${siteConfig.name} - Peças para Tratores e Máquinas Pesadas`}
+                alt={`${siteConfig.name} - Peças para maquinas pesadas e Máquinas Pesadas`}
                 className='h-20 sm:h-16 w-auto object-contain'
                 width={180}
                 height={56}

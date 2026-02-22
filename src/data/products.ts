@@ -6,7 +6,7 @@ export const productsData: Product[] = [
     name: 'Filtro de Óleo Caterpillar 1R-0739',
     slug: 'filtro-oleo-caterpillar-1r-0739',
     description: 'Filtro de óleo original Caterpillar para motores C15, C18 e 3406E',
-    fullDescription: 'Filtro de óleo hidráulico original Caterpillar 1R-0739. Garante máxima proteção e eficiência do motor, removendo impurezas e partículas. Compatível com diversos modelos de escavadeiras, carregadeiras e tratores de esteira Caterpillar.',
+    fullDescription: 'Filtro de óleo hidráulico original Caterpillar 1R-0739. Garante máxima proteção e eficiência do motor, removendo impurezas e partículas. Compatível com diversos modelos de escavadeiras, carregadeiras e maquinas pesadas de esteira Caterpillar.',
 
     price: 285.90,
     originalPrice: 320.00,
@@ -119,13 +119,13 @@ export const productsData: Product[] = [
     id: 'prod-003',
     name: 'Esteira Komatsu 208-32-00300',
     slug: 'esteira-komatsu-208-32-00300',
-    description: 'Link de esteira original Komatsu para tratores D65 e D85',
+    description: 'Link de esteira original Komatsu para maquinas pesadas D65 e D85',
     fullDescription: 'Link de esteira original Komatsu 208-32-00300 fabricado em aço temperado de alta resistência. Projetado para oferecer máxima durabilidade em aplicações severas de mineração e terraplanagem.',
 
     price: 385.00,
 
-    categoryId: 'cat-tratores',
-    categoryName: 'Tratores de Esteira',
+    categoryId: 'cat-maquinas pesadas',
+    categoryName: 'maquinas pesadas de Esteira',
     brandId: 'brand-komatsu',
     brandName: 'Komatsu',
 
@@ -342,8 +342,8 @@ export const productsData: Product[] = [
     id: 'prod-007',
     name: 'Kit Embreagem John Deere AT347450',
     slug: 'kit-embreagem-john-deere-at347450',
-    description: 'Kit de embreagem completo original John Deere para tratores série 6',
-    fullDescription: 'Kit de embreagem original John Deere AT347450 incluindo disco, platô e rolamento. Garante transmissão suave de potência e longa vida útil, essencial para tratores em operação intensiva.',
+    description: 'Kit de embreagem completo original John Deere para maquinas pesadas série 6',
+    fullDescription: 'Kit de embreagem original John Deere AT347450 incluindo disco, platô e rolamento. Garante transmissão suave de potência e longa vida útil, essencial para maquinas pesadas em operação intensiva.',
 
     price: 3850.00,
 
@@ -754,7 +754,7 @@ export const productsData: Product[] = [
     name: 'Turbocompressor John Deere RE508857',
     slug: 'turbocompressor-john-deere-re508857',
     description: 'Turbo original John Deere para motores série 6068',
-    fullDescription: 'Turbocompressor original John Deere RE508857 para motores 6068. Aumenta a potência e eficiência do motor, essencial para tratores em operações pesadas.',
+    fullDescription: 'Turbocompressor original John Deere RE508857 para motores 6068. Aumenta a potência e eficiência do motor, essencial para maquinas pesadas em operações pesadas.',
 
     price: 6850.00,
     originalPrice: 7500.00,
@@ -848,12 +848,12 @@ export const productsData: Product[] = [
     name: 'Corrente Esteira Caterpillar 8E-5378',
     slug: 'corrente-esteira-caterpillar-8e-5378',
     description: 'Link de corrente para esteiras Caterpillar D6',
-    fullDescription: 'Link de corrente de esteira original Caterpillar 8E-5378 para tratores D6. Aço temperado de alta resistência para operações severas.',
+    fullDescription: 'Link de corrente de esteira original Caterpillar 8E-5378 para maquinas pesadas D6. Aço temperado de alta resistência para operações severas.',
 
     price: 425.00,
 
-    categoryId: 'cat-tratores',
-    categoryName: 'Tratores de Esteira',
+    categoryId: 'cat-maquinas pesadas',
+    categoryName: 'maquinas pesadas de Esteira',
     brandId: 'brand-caterpillar',
     brandName: 'Caterpillar',
 
@@ -1128,12 +1128,12 @@ export const productsData: Product[] = [
     name: 'Tensor Esteira John Deere AT189228',
     slug: 'tensor-esteira-john-deere-at189228',
     description: 'Tensor de esteira original John Deere',
-    fullDescription: 'Tensor de esteira original John Deere AT189228 para tratores de esteira. Sistema de ajuste hidráulico automático para tensão ideal.',
+    fullDescription: 'Tensor de esteira original John Deere AT189228 para maquinas pesadas de esteira. Sistema de ajuste hidráulico automático para tensão ideal.',
 
     price: 4250.00,
 
-    categoryId: 'cat-tratores',
-    categoryName: 'Tratores de Esteira',
+    categoryId: 'cat-maquinas pesadas',
+    categoryName: 'maquinas pesadas de Esteira',
     brandId: 'brand-john-deere',
     brandName: 'John Deere',
 
@@ -1320,8 +1320,8 @@ export const productsData: Product[] = [
 
     price: 685.00,
 
-    categoryId: 'cat-tratores',
-    categoryName: 'Tratores de Esteira',
+    categoryId: 'cat-maquinas pesadas',
+    categoryName: 'maquinas pesadas de Esteira',
     brandId: 'brand-komatsu',
     brandName: 'Komatsu',
 

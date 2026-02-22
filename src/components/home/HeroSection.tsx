@@ -125,7 +125,7 @@ export const HeroSection = () => {
           </motion.div>
 
           <motion.p initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.7, delay: 0.8 }} className="text-sm md:text-base lg:text-lg xl:text-xl text-white/80 leading-relaxed mb-6 md:mb-8 lg:mb-10 max-w-xl backdrop-blur-sm">
-            <strong className="text-white">Distribuidora especializada</strong> em <strong className="text-[#FDCC19]">peças para tratores</strong>, escavadeiras e equipamentos <strong className="text-[#FDCC19]">Caterpillar, Volvo, Case e JCB</strong>. <span className="text-white/90">Estoque completo em <strong>Minas Gerais</strong> com entrega para todo Brasil.</span>
+            <strong className="text-white">Distribuidora especializada</strong> em <strong className="text-[#FDCC19]">peças para maquinas pesadas</strong>, escavadeiras e equipamentos <strong className="text-[#FDCC19]">Caterpillar, Volvo, Case e JCB</strong>. <span className="text-white/90">Estoque completo em <strong>Minas Gerais</strong> com entrega para todo Brasil.</span>
           </motion.p>
 
           <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.7, delay: 0.9 }} className="flex flex-col sm:flex-row gap-3 md:gap-4 mb-6 md:mb-10 lg:mb-12">

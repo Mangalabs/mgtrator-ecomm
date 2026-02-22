@@ -20,7 +20,7 @@ import PageHero from '../common/PageHero'
 export const MarcasPageClient = () => {
   const handleWhatsApp = () => {
     const message = encodeURIComponent(
-      'Olá! Gostaria de consultar sobre peças para tratores e máquinas pesadas. Pode me ajudar?',
+      'Olá! Gostaria de consultar sobre peças para maquinas pesadas e máquinas pesadas. Pode me ajudar?',
     )
     window.open(`https://wa.me/5563999828455?text=${message}`, '_blank')
   }
@@ -35,7 +35,7 @@ export const MarcasPageClient = () => {
           },
         ]}
         title='Marcas Atendidas'
-        description='Trabalhamos com as principais marcas de tratores e máquinas pesadas do mundo.'
+        description='Trabalhamos com as principais marcas de maquinas pesadas e máquinas pesadas do mundo.'
       />
 
       <section className='py-20 bg-gradient-to-br from-slate-50 via-white to-blue-50/30 relative overflow-hidden'>

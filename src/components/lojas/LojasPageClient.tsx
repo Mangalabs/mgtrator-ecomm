@@ -10,7 +10,7 @@ import PageHero from '../common/PageHero'
 export const LojasPageClient = () => {
   const handleWhatsApp = (storeWhatsapp?: string) => {
     const phone = storeWhatsapp ? storeWhatsapp.replace(/\D/g, '') : siteConfig.contact.whatsapp
-    const message = encodeURIComponent('Olá! Gostaria de consultar sobre peças para tratores e máquinas pesadas. Pode me ajudar?')
+    const message = encodeURIComponent('Olá! Gostaria de consultar sobre peças para maquinas pesadas e máquinas pesadas. Pode me ajudar?')
     window.open(`https://wa.me/${phone}?text=${message}`, '_blank')
   }
 
