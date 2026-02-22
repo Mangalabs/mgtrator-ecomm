@@ -7,6 +7,7 @@ import { Footer } from '@/components/layout/Footer'
 import { WhatsAppFloating } from '@/components/layout/WhatsAppFloating'
 import { CartProvider } from '@/contexts/CartContext'
 
+const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://mgtratorpecas.com.br'),
@@ -43,8 +44,8 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang='pt-BR'>
-      <body>
+    <html lang='pt-BR' suppressHydrationWarning>
+      <body className={inter.className} suppressHydrationWarning>
         <CartProvider>
           <Header />
           <main>{children}</main>
