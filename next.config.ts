@@ -1,13 +1,12 @@
-/** @type {import('next').NextConfig} */
-const nextConfig = {
+import type { NextConfig } from 'next'
+
+const nextConfig: NextConfig = {
   images: {
-    domains: [
-      'mgtratorpecas.com.br',
-      'images.unsplash.com',
-      'res.cloudinary.com',
-      'firebasestorage.googleapis.com',
-    ],
     remotePatterns: [
+      { protocol: 'https', hostname: 'mgtratorpecas.com.br' },
+      { protocol: 'https', hostname: 'images.unsplash.com' },
+      { protocol: 'https', hostname: 'res.cloudinary.com' },
+      { protocol: 'https', hostname: 'firebasestorage.googleapis.com' },
       {
         protocol: 'https',
         hostname: '**.gestaoclick.com',
@@ -73,4 +72,4 @@ const nextConfig = {
   },
 }
 
-module.exports = nextConfig
+export default nextConfig
