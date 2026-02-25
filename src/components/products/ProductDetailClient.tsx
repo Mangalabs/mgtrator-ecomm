@@ -250,6 +250,7 @@ export const ProductDetailClient = ({
     <div className='min-h-screen bg-white'>
       <div className='max-w-7xl mx-auto px-4 py-8'>
         <Breadcrumbs
+          theme='blue'
           items={[
             { label: 'Catálogo', href: '/produtos' },
             { label: product.categoryName || 'Peças', href: '/produtos' },

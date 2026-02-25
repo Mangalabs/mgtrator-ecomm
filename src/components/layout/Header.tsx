@@ -119,7 +119,7 @@ export const Header = () => {
   return (
     <>
       <div className='bg-gradient-to-r from-[#213A77] to-[#1a2d5f] text-white hidden md:block'>
-        <div className='max-w-7xl mx-auto h-7 flex items-center justify-between text-sm'>
+        <div className='max-w-7xl mx-auto h-7 flex items-center justify-between text-sm px-4 lg:px-8'>
           <div className='flex items-center gap-6'>
             <div className='flex items-center gap-2'>
               <Phone className='w-4 h-4' />
@@ -140,9 +140,9 @@ export const Header = () => {
 
       <header
         className={`sticky top-0 z-50 bg-white transition-all duration-300 ${
-          isScrolled ? 'shadow-lg py-2' : 'shadow-sm py-4'
+          isScrolled ? 'shadow-lg py-2' : 'shadow-sm py-1'
         }`}>
-        <div className='max-w-7xl mx-auto px-4'>
+        <div className='max-w-9/10 mx-auto px-4'>
           <div className='flex items-center justify-between'>
             <Link href='/'>
               <Image
@@ -153,8 +153,9 @@ export const Header = () => {
                 style={siteConfig.images.logoStyle}
               />
             </Link>
+
             <div
-              className='hidden lg:flex flex-1 max-w-xl mx-10'
+              className='hidden lg:flex flex-1 max-w-xl md:max-w-md xl:max-w-2xl mx-10'
               ref={searchRef}>
               <form onSubmit={handleSearch} className='relative w-full'>
                 <Search className='absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400' />
@@ -167,7 +168,7 @@ export const Header = () => {
                 />
                 <button
                   type='submit'
-                  className='absolute right-1 top-1/2 -translate-y-1/2 bg-[var(--primary)] text-white px-4 py-1 rounded-full'>
+                  className='absolute right-1 top-1/2 -translate-y-1/2 bg-[var(--primary)] text-white px-4 py-1.5 rounded-full text-sm font-semibold hover:bg-[#1a2d5f] transition-colors'>
                   Buscar
                 </button>
 
@@ -225,12 +226,12 @@ export const Header = () => {
               </form>
             </div>
 
-            <nav className='hidden lg:flex items-center gap-6'>
+            <nav className='hidden lg:flex items-center gap-4 xl:gap-8 flex-shrink-0 mr-6'>
               {menuItems.map((item) => (
                 <Link
                   key={item.id}
                   href={item.href}
-                  className={`text-md transition-colors hover:text-[var(--primary)] ${
+                  className={`text-sm xl:text-base whitespace-nowrap transition-colors hover:text-[var(--primary)] ${
                     isActive(item.href)
                       ? 'text-[var(--primary)] font-bold'
                       : 'text-gray-600 font-medium'
@@ -240,7 +241,7 @@ export const Header = () => {
               ))}
             </nav>
 
-            <div className='flex items-center gap-4 ml-4'>
+            <div className='flex items-center gap-2 sm:gap-4 flex-shrink-0'>
               {/* <Link href='/carrinho' className='relative p-2 group'>
                 <ShoppingCart className='w-6 h-6 text-[var(--primary)] group-hover:scale-110 transition-transform' />
                 <AnimatePresence>
@@ -255,10 +256,34 @@ export const Header = () => {
                   )}
                 </AnimatePresence>
               </Link> */}
+              <div className='hidden lg:flex items-center gap-2 lg:gap-3 xl:gap-4 opacity-70 ml-2 xl:ml-4 ml-4'>
+                <div className='relative h-22 w-28'>
+                  <Image
+                    src='/volvo-logo.png'
+                    alt='Volvo Logo'
+                    fill
+                    className='object-contain'
+                  />
+                </div>
+                <div className='h-4 w-px bg-gray-300'></div>
+                <div className='relative h-12 w-20'>
+                  <Image
+                    src='/cat-logo.png'
+                    alt='Caterpillar Logo'
+                    fill
+                    className='object-contain'
+                  />
+                </div>
+              </div>
+
               <button
                 onClick={() => setIsMenuOpen(!isMenuOpen)}
-                className='lg:hidden p-2 text-[var(--primary)]'>
-                {isMenuOpen ? <X /> : <Menu />}
+                className='lg:hidden p-2 text-[var(--primary)] hover:bg-gray-100 rounded-lg transition-colors ml-auto relative z-10'>
+                {isMenuOpen ? (
+                  <X className='w-6 h-6 sm:w-7 sm:h-7' />
+                ) : (
+                  <Menu className='w-6 h-6 sm:w-7 sm:h-7' />
+                )}
               </button>
             </div>
           </div>
@@ -272,6 +297,25 @@ export const Header = () => {
               exit={{ opacity: 0, y: -10 }}
               className='lg:hidden absolute top-full left-0 right-0 bg-white shadow-xl border-t border-gray-100 overflow-hidden'>
               <div className='p-4 space-y-6'>
+                <div className='flex items-center justify-center gap-6 py-2 border-b border-gray-100 opacity-80'>
+                  <div className='relative h-6 w-16'>
+                    <Image
+                      src='https://download.logo.wine/logo/Volvo/Volvo-Logo.wine.png'
+                      alt='Volvo Logo'
+                      fill
+                      className='object-contain'
+                    />
+                  </div>
+                  <div className='relative h-6 w-16'>
+                    <Image
+                      src='https://brandlogos.net/wp-content/uploads/2022/09/cat-logo_brandlogos.net_tl5q3-512x512.png'
+                      alt='Caterpillar Logo'
+                      fill
+                      className='object-contain'
+                    />
+                  </div>
+                </div>
+
                 <form
                   onSubmit={(e) => {
                     handleSearch(e)
@@ -283,17 +327,18 @@ export const Header = () => {
                     type='text'
                     value={searchQuery}
                     onChange={(e) => handleInputChange(e.target.value)}
-                    placeholder='Buscar por código, marca ou modelo...'
-                    className='w-full h-11 pl-12 pr-4 rounded-full border-2 border-gray-200 focus:border-[var(--primary)] focus:outline-none'
+                    placeholder='Buscar produtos...'
+                    className='w-full h-12 pl-12 pr-4 rounded-xl border-2 border-gray-200 focus:border-[var(--primary)] focus:outline-none text-base'
                   />
                 </form>
+
                 <nav className='flex flex-col gap-2'>
                   {menuItems.map((item) => (
                     <Link
                       key={item.id}
                       href={item.href}
                       onClick={() => setIsMenuOpen(false)}
-                      className={`block px-4 py-3 rounded-xl text-base transition-colors ${
+                      className={`block px-5 py-4 rounded-xl text-lg sm:text-base transition-colors ${
                         isActive(item.href)
                           ? 'bg-[var(--primary)]/10 text-[var(--primary)] font-bold'
                           : 'text-gray-700 font-medium hover:bg-gray-50'

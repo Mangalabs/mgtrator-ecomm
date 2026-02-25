@@ -3,8 +3,8 @@ export const siteConfig = {
   url: 'https://mgtratorpecas.com.br',
   images: {
     logo: '/logo.png',
-    logoWidth: 150,
-    logoHeight: 28,
+    logoWidth: 200,
+    logoHeight: 32,
     logoStyle: {
       filter: 'brightness(0) saturate(100%) invert(15%) sepia(58%) saturate(2786%) hue-rotate(210deg)',
     },

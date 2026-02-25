@@ -70,7 +70,7 @@ const prioritizeImages = (products: Product[], limit: number) => {
 
 export default async function HomePage() {
   const fetchLimit = 40
-  const displayLimit = 8
+  const displayLimit = 10
 
   const [featuredResponse, productsResponse] = await Promise.all([
     getFeaturedProducts(fetchLimit),

@@ -7,13 +7,15 @@ import Image from 'next/image'
 import {
   ShoppingCart,
   Star,
-  Package,
   Truck,
+  Warehouse,
   CreditCard,
+  QrCode,
   ArrowRight,
   ChevronLeft,
   ChevronRight,
-  Percent,
+  MapPin,
+  MessageCircle,
 } from 'lucide-react'
 import { ProductCard } from '@/components/products/ProductCard'
 import { QuickViewModal } from '@/components/products/QuickViewModal'
@@ -37,13 +39,38 @@ type HomePageClientProps = {
   newProducts: Product[]
 }
 
-const heroSlides = [
+const buttonStyles = {
+  products: {
+    bg: 'bg-gradient-to-r from-[var(--secondary)] to-[#ffd93d] text-black hover:scale-105',
+    Icon: ShoppingCart,
+  },
+  quote: {
+    bg: 'bg-gradient-to-r from-[#25D366] to-[#128C7E] text-white hover:scale-105',
+    Icon: MessageCircle,
+  },
+  location: {
+    bg: 'bg-gradient-to-r from-[#0f0f62] to-[#12128c] text-white hover:scale-105',
+    Icon: MapPin,
+  },
+} as const
+
+type SlideType = keyof typeof buttonStyles
+
+const heroSlides: Array<{
+  image: string
+  title: string
+  subtitle: string
+  cta: string
+  link: string
+  type: SlideType
+}> = [
   {
     image: 'https://mgtratorpecas.com.br/assets/volvo3-DL2x94P-.jpg',
     title: 'Peças para Máquinas Pesadas',
     subtitle: 'Escavadeiras • Carregadeiras • maquinas pesadas',
     cta: 'Ver Produtos',
     link: '/produtos',
+    type: 'products',
   },
   {
     image: 'https://mgtratorpecas.com.br/assets/volvo2-DjyWGx4Y.jpg',
@@ -51,6 +78,7 @@ const heroSlides = [
     subtitle: 'Faça Sua Cotação no WhatsApp',
     cta: 'Falar com Especialista',
     link: '/contato',
+    type: 'quote',
   },
   {
     image: 'https://mgtratorpecas.com.br/assets/cat1-BySj1VOp.jpeg',
@@ -58,8 +86,83 @@ const heroSlides = [
     subtitle: 'Visite Nossa Loja Física',
     cta: 'Ver Endereço',
     link: '/lojas',
+    type: 'location',
   },
 ]
+
+export function Highlights() {
+  const features = [
+    {
+      icon: <Truck className='w-8 h-8' />,
+      title: 'Entrega Rápida',
+      description: 'Para todo Brasil',
+      iconBg: 'bg-yellow-400',
+      iconColor: 'text-blue-900',
+      accentColor: 'bg-yellow-400',
+    },
+    {
+      icon: <Warehouse className='w-8 h-8' />,
+      title: 'Estoque Próprio',
+      description: 'Pronta entrega',
+      iconBg: 'bg-blue-600',
+      iconColor: 'text-white',
+      accentColor: 'bg-blue-600',
+    },
+    {
+      icon: <CreditCard className='w-8 h-8' />,
+      title: 'Parcele em 12x',
+      description: 'No cartão',
+      iconBg: 'bg-yellow-400',
+      iconColor: 'text-blue-900',
+      accentColor: 'bg-yellow-400',
+    },
+    {
+      icon: <QrCode className='w-8 h-8' />,
+      title: 'Desconto no PIX',
+      description: 'À vista',
+      iconBg: 'bg-blue-600',
+      iconColor: 'text-white',
+      accentColor: 'bg-blue-600',
+    },
+  ]
+
+  return (
+    <section className='relative bg-slate-50 overflow-hidden'>
+      <div className=' max-w-9/10 mx-auto  relative z-10'>
+        <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6'>
+          {features.map((feature, index) => (
+            <motion.div
+              key={index}
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.4, delay: index * 0.1 }}
+              whileHover={{ y: -5, scale: 1.02 }}
+              className='flex items-center gap-5 p-6 rounded-xl bg-white shadow-md border border-slate-200 hover:border-blue-300 hover:shadow-lg transition-all duration-300 group cursor-default relative overflow-hidden'>
+              <div
+                className={`absolute left-0 top-0 bottom-0 w-2 ${feature.accentColor}`}></div>
+
+              <div
+                className={`p-4 rounded-lg ${feature.iconBg} ${feature.iconColor} shadow-sm group-hover:scale-110 transition-transform duration-300 flex-shrink-0`}>
+                {feature.icon}
+              </div>
+
+              <div className='flex flex-col gap-1'>
+                <h3 className='text-slate-900 font-bold text-xl leading-snug group-hover:text-blue-900 transition-colors'>
+                  {feature.title}
+                </h3>
+
+                <p className='text-slate-600 font-medium text-base leading-normal'>
+                  {feature.description}
+                </p>
+              </div>
+            </motion.div>
+          ))}
+        </div>
+      </div>
+    </section>
+  )
+}
 
 export const HomePageClient = ({
   featuredProducts,
@@ -84,10 +187,20 @@ export const HomePageClient = ({
 
   return (
     <div className='min-h-screen bg-[#F5F5F5]'>
-      <section className='relative bg-gradient-to-br from-gray-900 to-gray-800 overflow-hidden'>
-        <div className='relative h-[450px] lg:h-[550px]'>
+      <section className='relative bg-linear-to-br from-[#1a2d5e] to-[#0c162d] overflow-hidden min-h-[calc(100vh-100px)] flex flex-col justify-center py-32 md:py-40 lg:py-48'>
+        <div
+          className='absolute inset-0 bg-[url("/icon.png")] bg-repeat opacity-8 bg-[length:80px_80px] pointer-events-none'
+          style={{
+            WebkitMaskImage:
+              'linear-gradient(to right, black 0%, transparent 90%)',
+            maskImage: 'linear-gradient(to right, black 0%, transparent 90%)',
+          }}
+        />
+        <div className='relative w-full h-[500px] md:h-[450px] lg:h-[550px]'>
           {heroSlides.map((slide, index) => {
             const isActive = currentSlide === index
+            const { bg, Icon } = buttonStyles[slide.type]
+
             return (
               <motion.div
                 key={index}
@@ -100,40 +213,47 @@ export const HomePageClient = ({
                     src={slide.image}
                     alt={slide.title}
                     fill
-                    sizes="100vw"
+                    sizes='100vw'
                     className='object-cover'
                     priority={index === 0}
                   />
                   <div className='absolute inset-0 bg-gradient-to-r from-black/80 via-black/60 to-transparent' />
                 </div>
 
-                <div className='relative h-full max-w-7xl mx-auto px-4 flex items-center'>
+                <div className='relative h-full max-w-9/10 mx-auto px-6 md:px-20 lg:px-24 flex items-center'>
                   <div className='max-w-2xl'>
                     <motion.h1
                       initial={{ opacity: 0, y: 20 }}
-                      animate={isActive ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
+                      animate={
+                        isActive ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }
+                      }
                       transition={{ delay: 0.2 }}
-                      className='text-white font-black text-4xl lg:text-6xl mb-4 leading-tight'>
+                      className='text-white font-black text-3xl md:text-5xl lg:text-6xl mb-4 md:mb-6 leading-tight'>
                       {slide.title}
                     </motion.h1>
 
                     <motion.p
                       initial={{ opacity: 0, y: 20 }}
-                      animate={isActive ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
+                      animate={
+                        isActive ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }
+                      }
                       transition={{ delay: 0.3 }}
-                      className='text-[var(--secondary)] text-2xl lg:text-3xl font-bold mb-8'>
+                      className='text-[var(--secondary)] text-lg md:text-2xl lg:text-3xl font-bold mb-8 md:mb-10'>
                       {slide.subtitle}
                     </motion.p>
 
                     <motion.div
                       initial={{ opacity: 0, y: 20 }}
-                      animate={isActive ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
+                      animate={
+                        isActive ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }
+                      }
                       transition={{ delay: 0.4 }}>
                       <Link href={slide.link}>
-                        <button className='bg-[var(--secondary)] hover:bg-[#ffd93d] text-black px-10 py-4 rounded-xl font-black text-lg shadow-2xl hover:scale-105 transition-all inline-flex items-center gap-3'>
-                          <ShoppingCart className='w-6 h-6' />
+                        <button
+                          className={`${bg} px-8 py-3 md:px-10 md:py-4 rounded-xl font-black text-base md:text-lg shadow-2xl hover:scale-105 transition-all inline-flex items-center gap-3`}>
+                          <Icon className='w-5 h-5 md:w-6 md:h-6' />
                           <span>{slide.cta}</span>
-                          <ArrowRight className='w-5 h-5' />
+                          <ArrowRight className='w-4 h-4 md:w-5 md:h-5' />
                         </button>
                       </Link>
                     </motion.div>
@@ -145,12 +265,12 @@ export const HomePageClient = ({
 
           <button
             onClick={prevSlide}
-            className='absolute left-6 top-1/2 -translate-y-1/2 w-12 h-12 bg-white/10 backdrop-blur-md hover:bg-white/20 rounded-full flex items-center justify-center transition-all z-20 border border-white/20'>
+            className='hidden md:flex absolute left-4 lg:left-8 top-1/2 -translate-y-1/2 w-12 h-12 bg-white/10 backdrop-blur-md hover:bg-white/20 rounded-full items-center justify-center transition-all z-20 border border-white/20'>
             <ChevronLeft className='w-6 h-6 text-white' />
           </button>
           <button
             onClick={nextSlide}
-            className='absolute right-6 top-1/2 -translate-y-1/2 w-12 h-12 bg-white/10 backdrop-blur-md hover:bg-white/20 rounded-full flex items-center justify-center transition-all z-20 border border-white/20'>
+            className='hidden md:flex absolute right-4 lg:right-8 top-1/2 -translate-y-1/2 w-12 h-12 bg-white/10 backdrop-blur-md hover:bg-white/20 rounded-full items-center justify-center transition-all z-20 border border-white/20'>
             <ChevronRight className='w-6 h-6 text-white' />
           </button>
 
@@ -159,7 +279,7 @@ export const HomePageClient = ({
               <button
                 key={index}
                 onClick={() => setCurrentSlide(index)}
-                className={`h-1 rounded-full transition-all ${
+                className={`h-1.5 md:h-1 rounded-full transition-all ${
                   index === currentSlide
                     ? 'bg-[var(--secondary)] w-8'
                     : 'bg-white/50 w-6 hover:bg-white/70'
@@ -170,67 +290,22 @@ export const HomePageClient = ({
         </div>
       </section>
 
-      <section className='bg-white border-b border-gray-200 py-4'>
-        <div className='max-w-7xl mx-auto px-4'>
-          <div className='grid grid-cols-2 lg:grid-cols-4 gap-4'>
-            <div className='flex items-center gap-3 p-3 rounded-lg hover:bg-gray-50 transition-colors'>
-              <div className='w-12 h-12 bg-gradient-to-br from-blue-600 to-blue-700 rounded-lg flex items-center justify-center flex-shrink-0 shadow-md'>
-                <Truck className='w-6 h-6 text-white' />
-              </div>
-              <div>
-                <div className='font-bold text-sm text-gray-900'>Entrega Rápida</div>
-                <div className='text-xs text-gray-600'>Para todo Brasil</div>
-              </div>
-            </div>
-
-            <div className='flex items-center gap-3 p-3 rounded-lg hover:bg-gray-50 transition-colors'>
-              <div className='w-12 h-12 bg-gradient-to-br from-emerald-600 to-emerald-700 rounded-lg flex items-center justify-center flex-shrink-0 shadow-md'>
-                <Package className='w-6 h-6 text-white' />
-              </div>
-              <div>
-                <div className='font-bold text-sm text-gray-900'>Estoque Próprio</div>
-                <div className='text-xs text-gray-600'>Pronta entrega</div>
-              </div>
-            </div>
-
-            <div className='flex items-center gap-3 p-3 rounded-lg hover:bg-gray-50 transition-colors'>
-              <div className='w-12 h-12 bg-gradient-to-br from-purple-600 to-purple-700 rounded-lg flex items-center justify-center flex-shrink-0 shadow-md'>
-                <CreditCard className='w-6 h-6 text-white' />
-              </div>
-              <div>
-                <div className='font-bold text-sm text-gray-900'>Parcele em 12x</div>
-                <div className='text-xs text-gray-600'>No cartão</div>
-              </div>
-            </div>
-
-            <div className='flex items-center gap-3 p-3 rounded-lg hover:bg-gray-50 transition-colors'>
-              <div className='w-12 h-12 bg-gradient-to-br from-amber-600 to-amber-700 rounded-lg flex items-center justify-center flex-shrink-0 shadow-md'>
-                <Percent className='w-6 h-6 text-white' />
-              </div>
-              <div>
-                <div className='font-bold text-sm text-gray-900'>Desconto no PIX</div>
-                <div className='text-xs text-gray-600'>À vista</div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
+      <Highlights />
 
       <section className='py-12 bg-[#F5F5F5]'>
-        <div className='max-w-7xl mx-auto px-4'>
+        <div className='w-full max-w-9/10 mx-auto px-4'>
           <div className='flex items-center justify-between mb-8'>
             <div className='flex items-center gap-3'>
-              <div className='w-12 h-12 bg-gradient-to-br from-blue-600 to-blue-700 rounded-xl flex items-center justify-center shadow-lg'>
-                <Star className='w-6 h-6 text-white fill-white' />
-              </div>
               <div>
-                <h2 className='font-black text-3xl text-gray-900'>Produtos em Destaque</h2>
-                <p className='text-gray-600 text-sm'>Nossas peças mais procuradas</p>
+                <h2 className='font-black text-3xl text-blue-900 uppercase font-bold'>
+                  Produtos em Destaque
+                </h2>
+                <div className='h-2 md:w-72  rounded-full bg-linear-to-r from-blue-900 to-blue-200/5'></div>
               </div>
             </div>
           </div>
 
-          <div className='grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6'>
+          <div className='grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4'>
             {featuredProducts.map((product, index) => {
               const deliveryType = normalizeDeliveryType(product.deliveryType)
               return (
@@ -261,7 +336,7 @@ export const HomePageClient = ({
 
           <div className='mt-10 flex justify-center'>
             <Link href='/produtos'>
-              <button className='bg-[var(--primary)] hover:bg-[#1a2d5e] text-white px-8 py-3 rounded-xl font-bold text-lg shadow-md hover:shadow-lg transition-all flex items-center gap-2'>
+              <button className='bg-gradient-to-r from-[#0f0f62] to-[#12128c] text-white px-8 py-3 rounded-xl font-bold text-lg shadow-md hover:shadow-lg transition-all flex items-center gap-2'>
                 Ver Todos os Produtos
                 <ArrowRight className='w-5 h-5' />
               </button>

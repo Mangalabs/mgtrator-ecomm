@@ -11,20 +11,33 @@ interface BreadcrumbItem {
 interface BreadcrumbsProps {
   items: BreadcrumbItem[]
   className?: string
-  theme?: 'light' | 'dark'
+  theme?: 'light' | 'dark' | 'blue'
 }
 
 export const Breadcrumbs = ({ items, className = '', theme = 'light' }: BreadcrumbsProps) => {
-  const textColor = theme === 'dark' ? 'text-white/80' : 'text-gray-200/80'
-  const hoverColor = theme === 'dark' ? 'hover:text-white' : 'hover:text-gray-200'
-  const activeColor = theme === 'dark' ? 'text-white' : 'text-gray-400'
-  const iconColor = theme === 'dark' ? 'text-white' : 'text-gray-400/80'
+  let textColor = 'text-yellow-200'
+  let hoverColor = 'hover:text-yellow-200/70'
+  let activeColor = 'text-yellow-400'
+  let iconColor = 'text-yellow-400/80'
+
+  if (theme === 'dark') {
+    textColor = 'text-white/80'
+    hoverColor = 'hover:text-white'
+    activeColor = 'text-white'
+    iconColor = 'text-white'
+  } else if (theme === 'blue') {
+    textColor = 'text-blue-700'
+    hoverColor = 'hover:text-[var(--primary)]'
+    activeColor = 'text-blue-900'
+    iconColor = 'text-blue-700'
+  }
+
   return (
     <nav 
       className={`flex items-center gap-2 text-sm ${textColor} py-4 ${className}`}
       aria-label="Navegação por breadcrumb"
     >
-      <ol className="flex items-center gap-2">
+      <ol className="flex items-center gap-2 flex-wrap">
         <li>
           <Link
             href="/"

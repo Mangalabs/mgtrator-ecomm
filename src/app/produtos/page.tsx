@@ -35,7 +35,7 @@ export const metadata: Metadata = {
 export default async function ProdutosPage() {
   const productsResponse = await getProducts(
     { inStock: true },
-    { page: 1, limit: 6 },
+    { page: 1, limit: 10 },
   )
 
   return (
