@@ -36,15 +36,15 @@ export const companyData: CompanyInfo = {
   marketplaces: {
     mercadoLivre: 'https://www.mercadolivre.com.br/perfil/MGTRATORPECAS',
   },
-
   address: {
-    street: 'Av. Industrial',
-    number: '1250',
-    neighborhood: 'Centro',
-    city: 'Contagem',
-    state: 'MG',
-    zipCode: '32040-000',
-    country: 'BR',
+    street: 'Av. Guajajaras',
+    number: '404',
+    complement: 'Tirirical',
+    neighborhood: 'Tirirical',
+    city: 'São Luís',
+    state: 'MA',
+    zipCode: '65055-285',
+    country: 'Brasil',
   },
 
   specialties: {
