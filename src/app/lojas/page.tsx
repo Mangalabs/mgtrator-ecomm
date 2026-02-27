@@ -8,13 +8,13 @@ export const metadata: Metadata = {
   openGraph: {
     title: 'Nossas Lojas - São Luis - MA | Peças para maquinas pesadas | MG Tratorpeças',
     description: 'Visite nossas lojas físicas em São Luis - MA. Atendimento presencial especializado, estoque completo de peças para máquinas pesadas. Horário estendido.',
-    url: 'https://mgtratorpecas.com.br/lojas',
+    url: 'https://www.mgtratorpecas.com.br/lojas',
     siteName: 'MG Tratorpeças',
     locale: 'pt_BR',
     type: 'website',
   },
   alternates: {
-    canonical: 'https://mgtratorpecas.com.br/lojas',
+    canonical: 'https://www.mgtratorpecas.com.br/lojas',
   },
 }
 

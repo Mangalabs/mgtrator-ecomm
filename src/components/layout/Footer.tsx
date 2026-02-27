@@ -18,20 +18,20 @@ import { getWhatsAppUrl } from '@/lib/whatsapp'
 export const Footer = () => {
   return (
     <footer
-      className='bg-gradient-to-b from-[var(--neutral-900)] to-[#0f1419] text-white'
+      className='bg-linear-to-b from-[#0c162d] to-[#0f1419] text-white p-4'
       role='contentinfo'>
-      <div className='border-b border-[var(--neutral-800)]'>
-        <div className='max-w-7xl mx-auto px-4 py-6 sm:py-8'>
+      <div className='border-b border-(--neutral-800)'>
+        <div className='max-w-9/10 mx-auto sm:py-2'>
           <div className='grid grid-cols-2 md:grid-cols-4 gap-6 sm:gap-8'>
             <div className='flex flex-col items-center text-center gap-2 group'>
-              <div className='w-12 h-12 sm:w-14 sm:h-14 bg-gradient-to-br from-[var(--primary)] to-[var(--primary)]/50 rounded-2xl flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform duration-300'>
+              <div className='w-12 h-12 sm:w-14 sm:h-14 bg-linear-to-br from-(--primary) to-(--primary)/50 rounded-2xl flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform duration-300'>
                 <Shield
-                  className='w-6 h-6 text-[var(--secondary)]'
+                  className='w-6 h-6 text-(--secondary)'
                   aria-hidden='true'
                 />
               </div>
               <div>
-                <div className='text-[10px] sm:text-xs text-[var(--neutral-400)] uppercase tracking-wider mb-0.5'>
+                <div className='text-[10px] sm:text-xs text-(--neutral-400) uppercase tracking-wider mb-0.5'>
                   Peças Originais
                 </div>
                 <div className='text-xs sm:text-sm font-bold text-white'>
@@ -41,14 +41,14 @@ export const Footer = () => {
             </div>
 
             <div className='flex flex-col items-center text-center gap-2 group'>
-              <div className='w-12 h-12 sm:w-14 sm:h-14 bg-gradient-to-br from-[var(--primary)] to-[var(--primary)]/50 rounded-2xl flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform duration-300'>
+              <div className='w-12 h-12 sm:w-14 sm:h-14 bg-linear-to-br from-(--primary) to-(--primary)/50 rounded-2xl flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform duration-300'>
                 <Award
-                  className='w-6 h-6 text-[var(--secondary)]'
+                  className='w-6 h-6 text-(--secondary)'
                   aria-hidden='true'
                 />
               </div>
               <div>
-                <div className='text-[10px] sm:text-xs text-[var(--neutral-400)] uppercase tracking-wider mb-0.5'>
+                <div className='text-[10px] sm:text-xs text-(--neutral-400) uppercase tracking-wider mb-0.5'>
                   Certificação
                 </div>
                 <div className='text-xs sm:text-sm font-bold text-white'>
@@ -58,14 +58,14 @@ export const Footer = () => {
             </div>
 
             <div className='flex flex-col items-center text-center gap-2 group'>
-              <div className='w-12 h-12 sm:w-14 sm:h-14 bg-gradient-to-br from-[var(--primary)] to-[var(--primary)]/50 rounded-2xl flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform duration-300'>
+              <div className='w-12 h-12 sm:w-14 sm:h-14 bg-linear-to-br from-(--primary) to-(--primary)/50 rounded-2xl flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform duration-300'>
                 <Clock
-                  className='w-6 h-6 text-[var(--secondary)]'
+                  className='w-6 h-6 text-(--secondary)'
                   aria-hidden='true'
                 />
               </div>
               <div>
-                <div className='text-[10px] sm:text-xs text-[var(--neutral-400)] uppercase tracking-wider mb-0.5'>
+                <div className='text-[10px] sm:text-xs text-(--neutral-400) uppercase tracking-wider mb-0.5'>
                   Experiência
                 </div>
                 <div className='text-xs sm:text-sm font-bold text-white'>
@@ -75,9 +75,9 @@ export const Footer = () => {
             </div>
 
             <div className='flex flex-col items-center text-center gap-2 group'>
-              <div className='w-12 h-12 sm:w-14 sm:h-14 bg-gradient-to-br from-[var(--primary)] to-[var(--primary)]/50 rounded-2xl flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform duration-300'>
+              <div className='w-12 h-12 sm:w-14 sm:h-14 bg-linear-to-br from-(--primary) to-(--primary)/50 rounded-2xl flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform duration-300'>
                 <svg
-                  className='w-6 h-6 text-[var(--secondary)]'
+                  className='w-6 h-6 text-(--secondary)'
                   fill='currentColor'
                   viewBox='0 0 24 24'
                   aria-hidden='true'>
@@ -98,20 +98,20 @@ export const Footer = () => {
         </div>
       </div>
 
-      <div className='max-w-7xl mx-auto px-4 py-10 sm:py-12 lg:py-16'>
+      <div className='max-w-9/10 mx-auto py-10 sm:py-4 lg:py-4'>
         <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-12 gap-10 lg:gap-8'>
           <div className='sm:col-span-2 lg:col-span-3 flex flex-col items-center sm:items-start text-center sm:text-left'>
-            <div className='mb-4'>
+            <div className='mb-1'>
               <Image
                 src='/logo.png'
                 alt={`${siteConfig.name} - Peças para maquinas pesadas e Máquinas Pesadas`}
-                className='h-20 sm:h-16 w-auto object-contain'
-                width={180}
-                height={56}
+                className='object-contain'
+                width={220}
+                height={100}
               />
             </div>
 
-            <p className='text-[var(--neutral-300)] text-sm mb-4 leading-relaxed max-w-sm'>
+            <p className='text-(--neutral-300) text-sm mb-2 leading-relaxed max-w-sm'>
               Especialistas em{' '}
               <strong className='text-white'>
                 peças originais para máquinas pesadas
@@ -125,7 +125,7 @@ export const Footer = () => {
                   <span className='text-[var(--secondary)] font-semibold block sm:inline'>
                     Peças para:
                   </span>{' '}
-                  Escavadeiras, Carregadeiras, Motoniveladoras e mais.
+                  Escavadeiras, Carregadeiras e mais.
                 </p>
                 <p>
                   <span className='text-[var(--secondary)] font-semibold block sm:inline'>
@@ -143,7 +143,7 @@ export const Footer = () => {
               Links Rápidos
             </h4>
             <nav aria-labelledby='quick-links-heading'>
-              <ul className='space-y-3'>
+              <ul className='space-y-2'>
                 {[
                   { name: 'Home', href: '/' },
                   { name: 'Produtos', href: '/produtos' },
@@ -154,7 +154,7 @@ export const Footer = () => {
                   <li key={link.name}>
                     <Link
                       href={link.href}
-                      className='text-[var(--neutral-300)] hover:text-[var(--secondary)] transition-colors text-sm flex items-center gap-3 group py-1 w-fit'
+                      className='text-[var(--neutral-300)] hover:text-[var(--secondary)] transition-colors text-md flex items-center gap-3 group py-1 w-fit'
                       aria-label={`Ir para página ${link.name}`}>
                       <span className='w-1.5 h-1.5 rounded-full bg-[var(--neutral-600)] group-hover:bg-[var(--secondary)] group-hover:scale-125 transition-all'></span>
                       {link.name}
@@ -173,14 +173,14 @@ export const Footer = () => {
 
             <div className='space-y-4 mb-6'>
               <div className='flex items-start gap-3 group'>
-                <div className='w-10 h-10 bg-[var(--primary)]/10 rounded-xl flex items-center justify-center flex-shrink-0 group-hover:bg-[var(--primary)]/20 transition-colors'>
+                <div className='w-12 h-12 bg-[var(--primary)]/10 rounded-xl flex items-center justify-center flex-shrink-0 group-hover:bg-[var(--primary)]/20 transition-colors'>
                   <Phone
-                    className='w-5 h-5 text-[var(--secondary)]'
+                    className='w-7 h-7 text-[var(--secondary)]'
                     aria-hidden='true'
                   />
                 </div>
                 <div className='flex-1 pt-0.5'>
-                  <div className='text-xs text-[var(--neutral-400)] mb-0.5 tracking-wide uppercase'>
+                  <div className='text-md text-[var(--neutral-400)] mb-1 tracking-wide uppercase'>
                     WhatsApp
                   </div>
                   <a
@@ -195,14 +195,14 @@ export const Footer = () => {
               </div>
 
               <div className='flex items-start gap-3 group'>
-                <div className='w-10 h-10 bg-[var(--primary)]/10 rounded-xl flex items-center justify-center flex-shrink-0 group-hover:bg-[var(--primary)]/20 transition-colors'>
+                <div className='w-12 h-12 bg-[var(--primary)]/10 rounded-xl flex items-center justify-center flex-shrink-0 group-hover:bg-[var(--primary)]/20 transition-colors'>
                   <Mail
-                    className='w-5 h-5 text-[var(--secondary)]'
+                    className='w-7 h-7 text-[var(--secondary)]'
                     aria-hidden='true'
                   />
                 </div>
                 <div className='flex-1 pt-0.5'>
-                  <div className='text-xs text-[var(--neutral-400)] mb-0.5 tracking-wide uppercase'>
+                  <div className='text-md text-[var(--neutral-400)] mb-1 tracking-wide uppercase'>
                     E-mail
                   </div>
                   <a
@@ -215,14 +215,14 @@ export const Footer = () => {
               </div>
             </div>
 
-            <div className='flex flex-col sm:flex-row lg:flex-col xl:flex-row gap-3'>
+            <div className='flex flex-col sm:flex-row lg:flex-col xl:flex-row gap-6'>
               <a
                 href={getWhatsAppUrl()}
                 target='_blank'
                 rel='noopener noreferrer'
-                className='flex-1 inline-flex justify-center items-center gap-2 bg-gradient-to-r from-[#25D366] to-[#20BD5A] hover:from-[#20BD5A] hover:to-[#1DA851] text-white px-4 py-3.5 rounded-xl font-bold text-sm transition-all shadow-lg hover:shadow-xl hover:scale-[1.02] active:scale-[0.98]'
+                className='flex-1 inline-flex justify-center items-center gap-2 bg-gradient-to-r from-[#25D366] to-[#20BD5A] hover:from-[#20BD5A] hover:to-[#1DA851] text-white  py-2 rounded-xl font-bold text-md transition-all shadow-lg hover:shadow-xl hover:scale-[1.02] active:scale-[0.98]'
                 aria-label='Solicitar orçamento via WhatsApp'>
-                <Phone className='w-4 h-4' aria-hidden='true' />
+                <Phone className='w-6 h-6' aria-hidden='true' />
                 Cotação
               </a>
 
@@ -230,25 +230,25 @@ export const Footer = () => {
                 href={siteConfig.social.instagram}
                 target='_blank'
                 rel='noopener noreferrer'
-                className='flex-1 inline-flex justify-center items-center gap-2 text-white px-4 py-3.5 rounded-xl font-bold text-sm transition-all shadow-lg hover:shadow-xl hover:scale-[1.02] active:scale-[0.98] bg-[var(--neutral-800)] hover:bg-[var(--neutral-700)] border border-[var(--neutral-700)]'
+                className='flex-1 inline-flex justify-center items-center gap-2 text-white py-1 rounded-xl font-bold text-md transition-all shadow-lg hover:shadow-xl hover:scale-[1.02] py-2 active:scale-[0.98] bg-[var(--neutral-800)] hover:bg-[var(--neutral-700)] border border-[var(--neutral-700)]'
                 aria-label='Siga-nos no Instagram'>
-                <Instagram className='w-4 h-4' aria-hidden='true' />
+                <Instagram className='w-6 h-6' aria-hidden='true' />
                 Instagram
               </a>
             </div>
           </div>
 
           <div className='sm:col-span-2 lg:col-span-3'>
-            <h4 className='text-white font-bold text-lg mb-5 flex items-center gap-3'>
+            <h4 className='text-white font-bold text-lg mb-4 flex items-center gap-3'>
               <div className='w-1.5 h-5 bg-[var(--secondary)] rounded-full'></div>
               Nossas Lojas
             </h4>
 
-            <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-1 gap-3'>
+            <div className='grid grid-cols-1 lg:grid-cols-1 gap-3'>
               {storesData.map((store) => (
                 <div
                   key={store.id}
-                  className='bg-[var(--neutral-800)]/40 border border-[var(--neutral-700)] rounded-2xl p-4 hover:border-[var(--primary)]/50 transition-all group'>
+                  className='bg-[var(--neutral-800)]/40 border border-[var(--neutral-700)] rounded-2xl p-4 hover:border-[var(--primary)]/50 transition-all'>
                   <div className='flex items-start gap-3'>
                     <div className='w-10 h-10 bg-[var(--primary)]/10 rounded-xl flex items-center justify-center flex-shrink-0 group-hover:bg-[var(--primary)]/20 transition-colors'>
                       <MapPin
@@ -261,16 +261,17 @@ export const Footer = () => {
                         {store.name}
                       </div>
                       <p className='text-xs text-[var(--neutral-400)] leading-relaxed'>
-                        {store.address.street}, {store.address.number}
-                        <br />
+                        {store.address.street}, {store.address.number},
                         {store.address.neighborhood}
+                        <br />
+                        {store.address.city}/{store.address.state}
                       </p>
                     </div>
                   </div>
                 </div>
               ))}
 
-              <div className='sm:col-span-2 lg:col-span-1 bg-gradient-to-br from-[var(--primary)]/10 to-[var(--primary)]/5 border border-[var(--primary)]/20 rounded-2xl p-4 mt-2'>
+              <div className=' bg-gradient-to-br from-[var(--primary)]/10 to-[var(--primary)]/5 border border-[var(--primary)]/20 rounded-2xl p-4 mt-2'>
                 <div className='text-xs sm:text-sm text-[var(--neutral-300)] flex items-center gap-3'>
                   <span className='w-2 h-2 rounded-full bg-[var(--secondary)] animate-pulse shadow-[0_0_8px_var(--secondary)]'></span>
                   <p>
@@ -288,13 +289,32 @@ export const Footer = () => {
       </div>
 
       <div className='border-t border-[var(--neutral-800)]/60 bg-[var(--neutral-900)]/50'>
-        <div className='max-w-7xl mx-auto px-4 py-6'>
+        <div className='max-w-9/10 mx-auto py-2'>
           <div className='flex flex-col lg:flex-row justify-between items-center gap-4 lg:gap-6'>
             <div className='text-xs text-[var(--neutral-500)] text-center lg:text-left font-medium'>
               © {new Date().getFullYear()} {siteConfig.name}. Todos os direitos
               reservados.
+              <span className='bold ml-1'>
+                Desenvolvido com{' '}
+                <Image
+                  src='/icon-copyright.png'
+                  alt='amor'
+                  className='h-4 w-4 inline mx-1'
+                  width={16}
+                  height={16}
+                />{' '}
+                pela equipe{' '}
+                <b>
+                  <Link
+                    href='https://www.mangalab.io'
+                    target='_blank'
+                    className='text-amber-300 hover:text-green-700 underline'>
+                    MangaLab
+                  </Link>
+                </b>
+              </span>
             </div>
-            <div className='flex flex-wrap justify-center items-center gap-x-6 gap-y-3 text-xs text-[var(--neutral-400)] font-medium'>
+            <div className='flex flex-wrap justify-center items-center gap-x-6 gap-y-1 text-xs text-[var(--neutral-400)] font-medium'>
               <Link
                 href='/como-comprar'
                 className='hover:text-[var(--secondary)] transition-colors py-1'>

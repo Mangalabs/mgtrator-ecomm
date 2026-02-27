@@ -32,13 +32,13 @@ export const metadata: Metadata = {
       'MG Tratorpeças - Peças para Máquinas Pesadas | Escavadeiras, maquinas pesadas e Equipamentos Pesados',
     description:
       'Revendedora especializada em peças para máquinas pesadas da linha amarela. Peças originais e alternativas para escavadeiras, carregadeiras, maquinas pesadas e equipamentos pesados. Faça sua cotação.',
-    url: 'https://mgtratorpecas.com.br',
+    url: 'https://www.mgtratorpecas.com.br',
     siteName: 'MG Tratorpeças',
     locale: 'pt_BR',
     type: 'website',
   },
   alternates: {
-    canonical: 'https://mgtratorpecas.com.br',
+    canonical: 'https://www.mgtratorpecas.com.br',
   },
 }
 
@@ -70,7 +70,7 @@ const prioritizeImages = (products: Product[], limit: number) => {
 
 export default async function HomePage() {
   const fetchLimit = 40
-  const displayLimit = 8
+  const displayLimit = 10
 
   const [featuredResponse, productsResponse] = await Promise.all([
     getFeaturedProducts(fetchLimit),

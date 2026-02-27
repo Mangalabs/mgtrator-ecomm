@@ -8,7 +8,7 @@ import type { Product } from '@/data/types'
 import PageHero from '../common/PageHero'
 
 const IS_CATALOG_MODE = true
-const ITEMS_PER_PAGE = 6
+const ITEMS_PER_PAGE = 10
 
 type PaginationInfo = {
   page: number
@@ -169,7 +169,7 @@ export const ProductsPageClient = ({
 
     return items
   }, [currentPage, totalPages])
-  
+
   const canGoPrev = pagination?.hasPrev ?? currentPage > 1
   const canGoNext = pagination?.hasNext ?? currentPage < totalPages
 
@@ -201,13 +201,13 @@ export const ProductsPageClient = ({
 
       <section
         id='products-grid'
-        className='py-16 bg-gradient-to-br from-slate-50 via-white to-blue-50/30 relative overflow-hidden'>
+        className='bg-gradient-to-br from-slate-50 via-white to-blue-50/30 relative overflow-hidden'>
         <div className='absolute inset-0 opacity-40' aria-hidden='true'>
           <div className='absolute top-20 right-0 w-[500px] h-[500px] bg-[var(--primary)]/5 rounded-full blur-[120px]' />
           <div className='absolute bottom-0 left-0 w-[600px] h-[600px] bg-[var(--secondary)]/5 rounded-full blur-[100px]' />
         </div>
 
-        <div className='relative max-w-7xl mx-auto px-4'>
+        <div className='relative max-w-9/10 mx-auto'>
           <div className='mb-12'>
             <div className='relative max-w-4xl mx-auto'>
               <div className='relative'>
@@ -240,7 +240,7 @@ export const ProductsPageClient = ({
             </div>
 
             {searchQuery && (
-              <div className='text-center mt-5'>
+              <div className='text-center'>
                 <div className='inline-flex items-center gap-2 bg-gradient-to-r from-[var(--primary)] to-[#1a2d5e] text-white px-5 py-2.5 rounded-2xl font-bold shadow-lg'>
                   <Search className='w-5 h-5' aria-hidden='true' />
                   <span>
@@ -253,7 +253,7 @@ export const ProductsPageClient = ({
           </div>
 
           <div className='flex flex-col lg:flex-row gap-8'>
-            <div className='lg:w-72 flex-shrink-0'>
+            {/* <div className='lg:w-72 flex-shrink-0'>
               <div className='lg:hidden mb-4'>
                 <button
                   onClick={() => setShowFilters(!showFilters)}
@@ -327,11 +327,12 @@ export const ProductsPageClient = ({
                   Limpar Filtros
                 </button>
               </div>
-            </div>
+            </div> */}
 
             <div className='flex-1 relative min-h-[400px]'>
-              <div className={`transition-opacity duration-300 ${loading ? 'opacity-30 pointer-events-none' : 'opacity-100'}`}>
-                <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 lg:gap-7'>
+              <div
+                className={`transition-opacity duration-300 ${loading ? 'opacity-30 pointer-events-none' : 'opacity-100'}`}>
+                <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-4 lg:gap-6'>
                   {visibleProducts.map((product) => (
                     <ProductCard
                       key={product.id}
@@ -354,7 +355,9 @@ export const ProductsPageClient = ({
                 <div className='absolute inset-0 flex items-center justify-center z-10'>
                   <div className='bg-white/90 px-6 py-4 rounded-2xl shadow-xl flex items-center gap-3 backdrop-blur-sm border border-gray-100'>
                     <Loader2 className='w-6 h-6 text-[var(--primary)] animate-spin' />
-                    <span className='font-bold text-[var(--primary)]'>Carregando produtos...</span>
+                    <span className='font-bold text-[var(--primary)]'>
+                      Carregando produtos...
+                    </span>
                   </div>
                 </div>
               )}
@@ -394,7 +397,7 @@ export const ProductsPageClient = ({
                     onClick={() => handlePageChange(currentPage - 1)}
                     disabled={!canGoPrev || loading}
                     className='px-5 py-3 border-2 border-[var(--neutral-200)] rounded-xl hover:bg-white hover:border-[var(--primary)] hover:text-[var(--primary)] transition-all font-semibold bg-white/60 backdrop-blur-sm disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:border-[var(--neutral-200)] disabled:hover:text-inherit flex items-center justify-center gap-2'>
-                    {loading && <Loader2 className="w-4 h-4 animate-spin" />}
+                    {loading && <Loader2 className='w-4 h-4 animate-spin' />}
                     Anterior
                   </button>
 
@@ -415,7 +418,11 @@ export const ProductsPageClient = ({
                             ? 'bg-gradient-to-r from-[var(--primary)] to-[#1a2d5e] text-white shadow-lg scale-105'
                             : 'border-2 border-[var(--neutral-200)] bg-white/60 backdrop-blur-sm hover:bg-white hover:border-[var(--primary)] hover:text-[var(--primary)] disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:border-[var(--neutral-200)] disabled:hover:text-inherit'
                         }`}>
-                        {loading ? <Loader2 className="w-5 h-5 animate-spin" /> : page}
+                        {loading ? (
+                          <Loader2 className='w-5 h-5 animate-spin' />
+                        ) : (
+                          page
+                        )}
                       </button>
                     ),
                   )}
@@ -425,7 +432,7 @@ export const ProductsPageClient = ({
                     disabled={!canGoNext || loading}
                     className='px-5 py-3 border-2 border-[var(--neutral-200)] rounded-xl hover:bg-white hover:border-[var(--primary)] hover:text-[var(--primary)] transition-all font-semibold bg-white/60 backdrop-blur-sm disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:border-[var(--neutral-200)] disabled:hover:text-inherit flex items-center justify-center gap-2'>
                     Próxima
-                    {loading && <Loader2 className="w-4 h-4 animate-spin" />}
+                    {loading && <Loader2 className='w-4 h-4 animate-spin' />}
                   </button>
                 </div>
               )}

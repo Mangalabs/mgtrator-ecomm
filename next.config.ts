@@ -3,6 +3,7 @@ const nextConfig = {
   images: {
     domains: [
       'mgtratorpecas.com.br',
+      'www.mgtratorpecas.com.br',
       'images.unsplash.com',
       'res.cloudinary.com',
       'firebasestorage.googleapis.com',
@@ -15,6 +16,14 @@ const nextConfig = {
       {
         protocol: 'https',
         hostname: 'upload-arquivos.s3-sa-east-1.amazonaws.com',
+      },
+      {
+        protocol: 'https',
+        hostname: 'download.logo.wine',
+      },
+      {
+        protocol: 'https',
+        hostname: 'brandlogos.net', 
       },
     ],
     formats: ['image/avif', 'image/webp'],
