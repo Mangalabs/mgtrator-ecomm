@@ -380,7 +380,7 @@ export const QuickViewModal = ({ product, onClose }: QuickViewModalProps) => {
                   <div className="relative h-px bg-gradient-to-r from-transparent via-[var(--neutral-200)] to-transparent" />
 
                   <div className="space-y-2.5">
-                    <Link href={`/produtos/${product.slug || product.id}`} onClick={onClose}>
+                    <Link href={`/produtos/${product.id}`} onClick={onClose}>
                       <motion.button
                         whileHover={{ scale: 1.01 }}
                         whileTap={{ scale: 0.99 }}
