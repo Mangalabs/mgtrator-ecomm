@@ -6,7 +6,8 @@ export const siteConfig = {
     logoWidth: 200,
     logoHeight: 32,
     logoStyle: {
-      filter: 'brightness(0) saturate(100%) invert(15%) sepia(58%) saturate(2786%) hue-rotate(210deg)',
+      filter:
+        'brightness(0) saturate(100%) invert(15%) sepia(58%) saturate(2786%) hue-rotate(210deg)',
     },
     productPlaceholder: '/no-image.jpg',
   },
@@ -17,7 +18,7 @@ export const siteConfig = {
     email: 'comercial@mgtratorpecas.com.br',
   },
   social: {
-    instagram: 'https://instagram.com/mgtratorpecas',
+    instagram: 'https://www.instagram.com/mg_tratorpecas_/',
     instagramHandle: '@mgtratorpecas',
   },
   location: {
