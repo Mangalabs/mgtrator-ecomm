@@ -59,7 +59,9 @@ export const ProductDetailClient = ({
     new Set(rawImages.filter(Boolean)),
   ) as string[]
   const safeImages =
-    uniqueImages.length === 0 ? [siteConfig.images.productPlaceholder] : uniqueImages
+    uniqueImages.length === 0
+      ? [siteConfig.images.productPlaceholder]
+      : uniqueImages
 
   const nextImage = () => {
     setSelectedImage((prev) => (prev + 1) % safeImages.length)
@@ -213,7 +215,13 @@ export const ProductDetailClient = ({
   }
 
   const handleWhatsApp = () => {
-    window.open(getWhatsAppUrl(product.name, product.sku || product.partNumber || product.code), '_blank')
+    window.open(
+      getWhatsAppUrl(
+        product.name,
+        product.sku || product.partNumber || product.code,
+      ),
+      '_blank',
+    )
   }
 
   const faqs = [
@@ -545,11 +553,13 @@ export const ProductDetailClient = ({
               <h2 className='mb-6 text-2xl'>Descrição do Produto</h2>
               <div className='prose max-w-none text-[var(--neutral-700)] leading-relaxed space-y-4'>
                 <p className='text-base'>
-                  {product.description ||
-                    'Peça de alta qualidade para equipamentos pesados.'}
+                  {product.name} para máquinas pesadas. Peça de reposição
+                  indicada para manutenção preventiva e corretiva em
+                  equipamentos de construção e linha amarela, garantindo
+                  desempenho, resistência e durabilidade.
                 </p>
                 <p className='text-base'>
-                  Esta peça {product.brandName} é ideal para manutenção
+                  Esta peça é ideal para manutenção
                   preventiva e corretiva de equipamentos pesados. Entre em
                   contato para verificar a aplicação exata.
                 </p>

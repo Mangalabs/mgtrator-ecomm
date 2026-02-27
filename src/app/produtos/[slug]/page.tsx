@@ -64,8 +64,9 @@ export default async function ProductPage({ params }: Props) {
       product.thumbnail ||
       product.images?.[0] ||
       'https://www.mgtratorpecas.com.br/no-image.jpg',
-    description:
-      product.description || `${product.name} para máquinas pesadas.`,
+    description: `
+      ${product.name} para máquinas pesadas. Peça de reposição desenvolvida para aplicações em equipamentos de construção e linha amarela. Ideal para manutenção preventiva e corretiva, garantindo desempenho, resistência e confiabilidade.
+      `.trim(),
     sku: product.sku || product.code || product.partNumber,
     mpn: product.partNumber,
     brand: {
