@@ -66,7 +66,7 @@ const heroSlides: Array<{
   type: SlideType
 }> = [
   {
-    image: 'https://mgtratorpecas.com.br/assets/volvo3-DL2x94P-.jpg',
+    image: '/escavadeira-cat.jpg',
     title: 'Peças para Máquinas Pesadas',
     subtitle:
       'Especialistas em peças originais Volvo e Caterpillar para todo o Brasil',
@@ -78,8 +78,8 @@ const heroSlides: Array<{
     link: '/produtos',
     type: 'products',
   },
-  {
-    image: 'https://mgtratorpecas.com.br/assets/volvo2-DjyWGx4Y.jpg',
+  { 
+    image: '/retroescavadeira-cat.jpg',
     title: 'Precisa da Peça Certa?',
     subtitle: 'Faça sua cotação diretamente com nossos especialistas',
     description: [
@@ -91,7 +91,7 @@ const heroSlides: Array<{
     type: 'quote',
   },
   {
-    image: 'https://mgtratorpecas.com.br/assets/cat1-BySj1VOp.jpeg',
+    image: '/carregadeira-volvo.jpg',
     title: 'Prefere Comprar Presencialmente?',
     subtitle: 'Visite nossa loja física e veja o estoque de perto',
     description: [
