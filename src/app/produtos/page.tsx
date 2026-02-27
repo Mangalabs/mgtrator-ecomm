@@ -5,27 +5,37 @@ import { getProducts } from '@/services/api'
 export const revalidate = 60
 
 export const metadata: Metadata = {
-  title: 'Catálogo de Peças para maquinas pesadas e Máquinas Pesadas | MG Tratorpeças',
+  title: 'Catálogo de Peças para Máquinas Pesadas | MG Tratorpeças',
   description:
-    'Encontre peças genuínas e compatíveis para maquinas pesadas e máquinas pesadas das marcas Caterpillar, Volvo, Case, JCB, John Deere e Komatsu. Entrega rápida e garantia. Mais de 1.500 peças em estoque.',
+    'Encontre peças para máquinas pesadas da linha amarela. Entrega rápida, garantia e amplo estoque para escavadeiras e carregadeiras.',
   keywords: [
-    'peças para maquinas pesadas',
     'peças para máquinas pesadas',
-    'peças Caterpillar',
-    'peças Volvo',
-    'peças Case',
-    'peças JCB',
-    'filtros',
+    'catálogo peças linha amarela',
+    'peças escavadeiras',
+    'peças carregadeiras',
+    'filtros máquinas pesadas',
     'sistema hidráulico',
   ],
+  robots: {
+    index: true,
+    follow: true,
+  },
   openGraph: {
     title: 'Catálogo de Peças para Máquinas Pesadas | MG Tratorpeças',
     description:
-      'Encontre peças genuínas e compatíveis para maquinas pesadas e máquinas pesadas das marcas Caterpillar, Volvo, Case, JCB, John Deere e Komatsu. Entrega rápida e garantia. Mais de 1.500 peças em estoque.',
+      'Encontre peças para máquinas pesadas da linha amarela. Entrega rápida, garantia e amplo estoque.',
     url: 'https://www.mgtratorpecas.com.br/produtos',
     siteName: 'MG Tratorpeças',
     locale: 'pt_BR',
     type: 'website',
+    images: [
+      {
+        url: 'https://www.mgtratorpecas.com.br/logo-azul.png',
+        width: 1200,
+        height: 630,
+        alt: 'Catálogo de Peças - MG Tratorpeças',
+      },
+    ],
   },
   alternates: {
     canonical: 'https://www.mgtratorpecas.com.br/produtos',

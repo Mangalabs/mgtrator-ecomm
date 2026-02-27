@@ -6,36 +6,50 @@ import type { Product } from '@/data/types'
 export const revalidate = 60
 
 export const metadata: Metadata = {
-  title:
-    'MG Tratorpeças - Peças para Máquinas Pesadas | Escavadeiras, maquinas pesadas e Equipamentos Pesados',
+  title: 'MG Tratorpeças | Peças para Máquinas e Equipamentos Pesados',
   description:
-    'Revendedora especializada em peças para máquinas pesadas da linha amarela. Peças originais e alternativas para escavadeiras, carregadeiras, maquinas pesadas e equipamentos pesados. Faça sua cotação.',
+    'Especialistas em peças originais e alternativas para linha amarela, escavadeiras e carregadeiras. Solicite sua cotação na MG Tratorpeças!',
   keywords: [
-    'peças',
     'peças máquinas pesadas',
     'peças linha amarela',
-    'peças para máquinas pesadas',
-    'peças para escavadeiras',
-    'peças para maquinas pesadas',
-    'peças para carregadeiras',
-    'peças equipamentos pesados',
-    'peças originais',
-    'peças alternativas',
+    'peças escavadeiras',
+    'peças carregadeiras',
+    'peças originais trator',
     'peças sistema hidráulico',
-    'filtros máquinas pesadas',
-    'cotação de peças',
-    'peças pronta entrega',
-    'peças para caminhões',
+    'cotação peças linha amarela',
   ],
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      'max-video-preview': -1,
+      'max-image-preview': 'large',
+      'max-snippet': -1,
+    },
+  },
   openGraph: {
-    title:
-      'MG Tratorpeças - Peças para Máquinas Pesadas | Escavadeiras, maquinas pesadas e Equipamentos Pesados',
+    title: 'MG Tratorpeças | Peças para Máquinas e Equipamentos Pesados',
     description:
-      'Revendedora especializada em peças para máquinas pesadas da linha amarela. Peças originais e alternativas para escavadeiras, carregadeiras, maquinas pesadas e equipamentos pesados. Faça sua cotação.',
+      'Especialistas em peças originais e alternativas para linha amarela. Encontre tudo para escavadeiras e carregadeiras.',
     url: 'https://www.mgtratorpecas.com.br',
     siteName: 'MG Tratorpeças',
     locale: 'pt_BR',
     type: 'website',
+    images: [
+      {
+        url: '/logo-azul.png',
+        width: 1200,
+        height: 630,
+        alt: 'MG Tratorpeças - Loja Especialista em Peças para Linha Amarela',
+      },
+    ],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'MG Tratorpeças | Peças para Máquinas Pesadas',
+    description: 'Especialistas em peças originais e alternativas para linha amarela.',
   },
   alternates: {
     canonical: 'https://www.mgtratorpecas.com.br',
@@ -86,10 +100,33 @@ export default async function HomePage() {
     displayLimit,
   )
 
+  const jsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'AutoPartsStore', 
+    name: 'MG Tratorpeças',
+    url: 'https://www.mgtratorpecas.com.br',
+    description: 'Especialistas em peças originais e alternativas para máquinas pesadas da linha amarela.',
+    image: 'https://www.mgtratorpecas.com.br/logo-azul.png',
+    address: {
+      '@type': 'PostalAddress',
+      streetAddress: 'Av. Guajajaras, 404 - Tirirical',
+      addressLocality: 'São Luís',
+      addressRegion: 'MA',
+      postalCode: '65055-285',
+      addressCountry: 'BR'
+    }
+  }
+
   return (
-    <HomePageClient
-      featuredProducts={featuredProducts}
-      newProducts={newProducts}
-    />
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
+      <HomePageClient
+        featuredProducts={featuredProducts}
+        newProducts={newProducts}
+      />
+    </>
   )
 }

@@ -23,22 +23,40 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
   const product = productResponse.data
   const productCode = product.partNumber || product.sku || product.code || ''
-  const brandName = product.brandName || ''
+  
+  const pageTitle = `${product.name}${productCode ? ` - Cód: ${productCode}` : ''} | MG Tratorpeças`
+  const pageDescription = `Faça a cotação de ${product.name}${productCode ? ` (Código: ${productCode})` : ''} para máquinas pesadas da linha amarela na MG Tratorpeças.`
+  const productImage = product.thumbnail || product.images?.[0] || 'https://www.mgtratorpecas.com.br/logo-azul.png'
 
   return {
-    title: `${product.name} | Código ${productCode} | Peças Linha Amarela - MG Tratorpeças`,
-    description: `${product.name} - Código ${productCode}. Peça original ${brandName} para máquinas pesadas da linha amarela. Consulte disponibilidade e faça sua cotação na MG Tratorpeças.`,
+    title: pageTitle,
+    description: pageDescription,
     keywords: [
       product.name,
       productCode,
-      brandName,
       'peças linha amarela',
       'peças máquinas pesadas',
-      'peças para escavadeiras',
-      'peças para maquinas pesadas',
-      'peças para carregadeiras',
+      'peças reposição trator',
       'mg tratorpeças',
     ].filter(Boolean),
+    robots: {
+      index: true,
+      follow: true,
+    },
+    openGraph: {
+      title: pageTitle,
+      description: pageDescription,
+      url: `https://www.mgtratorpecas.com.br/produtos/${slug}`,
+      siteName: 'MG Tratorpeças',
+      images: [
+        {
+          url: productImage.startsWith('http') ? productImage : `https://www.mgtratorpecas.com.br${productImage}`,
+          width: 800,
+          height: 800,
+          alt: product.name,
+        },
+      ],
+    },
     alternates: {
       canonical: `https://www.mgtratorpecas.com.br/produtos/${slug}`,
     },
@@ -55,6 +73,8 @@ export default async function ProductPage({ params }: Props) {
 
   const product = productResponse.data
   const relatedResponse = await getRelatedProducts(product.id)
+  
+  const productCode = product.partNumber || product.sku || product.code
 
   const jsonLd = {
     '@context': 'https://schema.org',
@@ -63,21 +83,13 @@ export default async function ProductPage({ params }: Props) {
     image:
       product.thumbnail ||
       product.images?.[0] ||
-      'https://www.mgtratorpecas.com.br/no-image.jpg',
-    description: `
-      ${product.name} para máquinas pesadas. Peça de reposição desenvolvida para aplicações em equipamentos de construção e linha amarela. Ideal para manutenção preventiva e corretiva, garantindo desempenho, resistência e confiabilidade.
-      `.trim(),
-    sku: product.sku || product.code || product.partNumber,
-    mpn: product.partNumber,
-    brand: {
-      '@type': 'Brand',
-      name: product.brandName || 'Genérica',
-    },
+      'https://www.mgtratorpecas.com.br/logo-azul.png',
+    description: `Peça de reposição: ${product.name}. Desenvolvida para aplicações em equipamentos de maquinas pesadas. Faça sua cotação.`,
+    sku: productCode || undefined,
+    mpn: product.partNumber || undefined,
     offers: {
       '@type': 'Offer',
       url: `https://www.mgtratorpecas.com.br/produtos/${slug}`,
-      priceCurrency: 'BRL',
-      price: product.price,
       availability: product.inStock
         ? 'https://schema.org/InStock'
         : 'https://schema.org/OutOfStock',
@@ -88,7 +100,7 @@ export default async function ProductPage({ params }: Props) {
   return (
     <>
       <script
-        type='application/ld+json'
+        type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
       <ProductDetailClient
