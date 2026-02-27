@@ -60,6 +60,7 @@ const heroSlides: Array<{
   image: string
   title: string
   subtitle: string
+  description: string[]
   cta: string
   link: string
   type: SlideType
@@ -67,7 +68,12 @@ const heroSlides: Array<{
   {
     image: 'https://mgtratorpecas.com.br/assets/volvo3-DL2x94P-.jpg',
     title: 'Peças para Máquinas Pesadas',
-    subtitle: 'Escavadeiras • Carregadeiras • maquinas pesadas',
+    subtitle:
+      'Especialistas em peças originais Volvo e Caterpillar para todo o Brasil',
+    description: [
+      'Referência nacional na venda de peças para linha amarela — escavadeiras, carregadeiras, motoniveladoras, retroescavadeiras e outros equipamentos pesados.',
+      'Peças originais e componentes de reposição para motor, sistema hidráulico, transmissão, material rodante e demais sistemas essenciais.',
+    ],
     cta: 'Ver Produtos',
     link: '/produtos',
     type: 'products',
@@ -75,7 +81,11 @@ const heroSlides: Array<{
   {
     image: 'https://mgtratorpecas.com.br/assets/volvo2-DjyWGx4Y.jpg',
     title: 'Precisa da Peça Certa?',
-    subtitle: 'Faça Sua Cotação no WhatsApp',
+    subtitle: 'Faça sua cotação diretamente com nossos especialistas',
+    description: [
+      'Nossa equipe técnica identifica a peça correta pelo código, modelo da máquina ou número de série — evitando compras erradas e tempo parado.',
+      'Atendimento ágil pelo WhatsApp com orçamento sem compromisso.',
+    ],
     cta: 'Falar com Especialista',
     link: '/contato',
     type: 'quote',
@@ -83,7 +93,11 @@ const heroSlides: Array<{
   {
     image: 'https://mgtratorpecas.com.br/assets/cat1-BySj1VOp.jpeg',
     title: 'Prefere Comprar Presencialmente?',
-    subtitle: 'Visite Nossa Loja Física',
+    subtitle: 'Visite nossa loja física e veja o estoque de perto',
+    description: [
+      'Temos loja física com estoque disponível para retirada imediata. Nossos consultores estão prontos para te atender e encontrar a peça ideal.',
+      'Funcionamos de segunda a sexta das 8h às 18h. Venha nos visitar!',
+    ],
     cta: 'Ver Endereço',
     link: '/lojas',
     type: 'location',
@@ -174,7 +188,7 @@ export const HomePageClient = ({
   useEffect(() => {
     const timer = setInterval(() => {
       setCurrentSlide((prev) => (prev + 1) % heroSlides.length)
-    }, 5000)
+    }, 8000)
     return () => clearInterval(timer)
   }, [])
 
@@ -238,9 +252,25 @@ export const HomePageClient = ({
                         isActive ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }
                       }
                       transition={{ delay: 0.3 }}
-                      className='text-[var(--secondary)] text-lg md:text-2xl lg:text-3xl font-bold mb-8 md:mb-10'>
+                      className='text-[var(--secondary)] text-lg md:text-2xl lg:text-3xl font-bold mb-4 md:mb-6'>
                       {slide.subtitle}
                     </motion.p>
+
+                    <motion.div
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={
+                        isActive ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }
+                      }
+                      transition={{ delay: 0.35 }}
+                      className='mb-8 md:mb-10 space-y-2 hidden sm:block'>
+                      {slide.description.map((line, i) => (
+                        <p
+                          key={i}
+                          className='text-white/80 text-sm md:text-base leading-relaxed'>
+                          {line}
+                        </p>
+                      ))}
+                    </motion.div>
 
                     <motion.div
                       initial={{ opacity: 0, y: 20 }}
