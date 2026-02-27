@@ -1,5 +1,3 @@
-import 'server-only'
-
 import type {
   ApiResponse,
   PaginatedResponse,
@@ -25,10 +23,6 @@ const STORE_ID =
 const DEFAULT_REVALIDATE = Number(
   process.env.GESTAOCLICK_REVALIDATE_SECONDS || 60,
 )
-const IN_STOCK_CACHE_TTL_MS = 5 * 60 * 1000
-
-// let inStockCache: { products: Product[]; cachedAt: number } | null = null
-// let cacheBuildPromise: Promise<void> | null = null
 
 const hasCredentials = Boolean(ACCESS_TOKEN && SECRET_TOKEN)
 
@@ -206,7 +200,7 @@ const mapProduct = (data: GestaoclickProduct): Product => {
     ? ncmCode || cestCode || ''
     : fallbackCategory
   const brandName =
-    getString(data.marca) || getString(data.fabricante) || 'MG Trator'
+    getString(data.marca) || getString(data.fabricante) || 'MG Tratorpeças'
 
   return {
     id,
@@ -217,7 +211,7 @@ const mapProduct = (data: GestaoclickProduct): Product => {
     price,
     categoryId,
     categoryName,
-    brandId: slugify(brandName) || 'mg-trator',
+    brandId: slugify(brandName) || 'mg-tratorpeças',
     brandName,
     images,
     thumbnail,
@@ -330,49 +324,8 @@ export const getGestaoclickProducts = async (
       GestaoclickListResponse<GestaoclickProduct>
     >('/api/produtos', params)
 
-    const refineProducts = (products: Product[]) => {
-      let filtered = dedupeByCode(products)
-
-      const search = filters?.search?.toLowerCase()
-      if (search) {
-        filtered = filtered.filter((product) =>
-          [
-            product.name,
-            product.description,
-            product.code,
-            product.brandName,
-            product.categoryName,
-          ]
-            .filter(Boolean)
-            .some((value) => value.toLowerCase().includes(search)),
-        )
-      }
-
-      if (filters?.categoryId) {
-        filtered = filtered.filter((product) => {
-          const categoryMatch = [
-            product.categoryId.toLowerCase(),
-            product.categoryName.toLowerCase(),
-            slugify(product.categoryName),
-          ]
-          return categoryMatch.includes(filters.categoryId!.toLowerCase())
-        })
-      }
-
-      if (filters?.brandId) {
-        filtered = filtered.filter((product) =>
-          [
-            product.brandId.toLowerCase(),
-            product.brandName.toLowerCase(),
-          ].includes(filters.brandId!.toLowerCase()),
-        )
-      }
-
-      return filtered
-    }
-
     const aggregated = response.data.map(mapProduct)
-    const refined = refineProducts(aggregated)
+    const refined = dedupeByCode(aggregated)
 
     const total = response.meta?.total_registros ?? refined.length
     const totalPages = response.meta?.total_paginas ?? Math.ceil(total / limit)

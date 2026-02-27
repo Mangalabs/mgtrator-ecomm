@@ -35,8 +35,12 @@ export const Header = () => {
 
       try {
         setIsSearching(true)
+        const params = new URLSearchParams()
+        params.set('search', searchQuery.trim())
+        params.set('limit', '5')
+        
         const response = await fetch(
-          `/api/products?q=${encodeURIComponent(searchQuery.trim())}&limit=5`,
+          `/api/products?${params.toString().replace(/\+/g, '%20')}`,
           { signal: controller.signal },
         )
         const data = await response.json()
@@ -70,7 +74,7 @@ export const Header = () => {
         searchRef.current &&
         !searchRef.current.contains(event.target as Node)
       ) {
-        setSearchQuery('')
+        setSuggestions([])
       }
     }
 
@@ -81,7 +85,6 @@ export const Header = () => {
   const menuItems = [
     { name: 'Início', href: '/', id: 'home' },
     { name: 'Produtos', href: '/produtos', id: 'produtos' },
-    // { name: 'Marcas', href: '/marcas', id: 'marcas' },
     { name: 'Lojas', href: '/lojas', id: 'lojas' },
     { name: 'Contato', href: '/contato', id: 'contato' },
   ]
@@ -94,21 +97,23 @@ export const Header = () => {
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault()
     if (searchQuery.trim()) {
-      router.push(`/busca?q=${encodeURIComponent(searchQuery.trim())}`)
+      router.push(`/busca?search=${searchQuery.trim()}`)
       setSearchQuery('')
+      setSuggestions([])
     }
   }
 
   const handleProductClick = (product: Product) => {
-    const productId = product.id
-    router.push(`/produtos/${productId}`)
+    router.push(`/produtos/${product.id}`)
     setSearchQuery('')
+    setSuggestions([])
   }
 
   const handleViewAllResults = () => {
     if (searchQuery.trim()) {
-      router.push(`/busca?q=${encodeURIComponent(searchQuery.trim())}`)
+      router.push(`/busca?search=${searchQuery.trim()}`)
       setSearchQuery('')
+      setSuggestions([])
     }
   }
 
