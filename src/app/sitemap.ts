@@ -2,7 +2,7 @@ import { MetadataRoute } from 'next'
 import { getProducts } from '@/services/api'
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const baseUrl = 'https://mgtratorpecas.com.br'
+  const baseUrl = 'https://www.mgtratorpecas.com.br'
 
   const staticRoutes: MetadataRoute.Sitemap = [
     '',

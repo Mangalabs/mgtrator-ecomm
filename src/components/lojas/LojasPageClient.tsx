@@ -51,12 +51,15 @@ export const LojasPageClient = () => {
                       </div>
                     </div>
 
-                    <div className="aspect-video lg:aspect-[4/3] overflow-hidden">
-                      <ImageWithFallback
-                        src={store.image}
-                        alt={`Loja ${store.name} da ${siteConfig.name} - ${store.address.street} em ${store.address.city}`}
-                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
-                      />
+                    <div className="aspect-video lg:aspect-[4/3] overflow-hidden relative">
+                      {store.image && (
+                        <ImageWithFallback
+                          src={store.image.startsWith('/') ? store.image : `/${store.image}`}
+                          alt={`Loja ${store.name} da ${siteConfig.name} - ${store.address.street} em ${store.address.city}`}
+                          sizes="(max-width: 1024px) 100vw, 50vw"
+                          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
+                        />
+                      )}
                     </div>
                     
                     <div className="h-64 overflow-hidden border-t-2 border-[var(--neutral-200)]">
@@ -145,7 +148,6 @@ export const LojasPageClient = () => {
 
                     <div className="grid grid-cols-2 gap-3 mt-auto">
                       <button
-                      
                         onClick={() => handleWhatsApp(store.contact.whatsapp)}
                         className="flex items-center justify-center gap-2 bg-gradient-to-br from-[#25D366] to-[#20BD5A] text-white py-4 px-5 rounded-2xl font-black hover:shadow-xl hover:scale-[1.02] transition-all duration-300"
                       >
