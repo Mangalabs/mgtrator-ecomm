@@ -40,7 +40,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       'mg tratorpeças',
     ].filter(Boolean),
     alternates: {
-      canonical: `https://mgtratorpecas.com.br/produtos/${slug}`,
+      canonical: `https://www.mgtratorpecas.com.br/produtos/${slug}`,
     },
   }
 }
@@ -63,7 +63,7 @@ export default async function ProductPage({ params }: Props) {
     image:
       product.thumbnail ||
       product.images?.[0] ||
-      'https://mgtratorpecas.com.br/no-image.jpg',
+      'https://www.mgtratorpecas.com.br/no-image.jpg',
     description:
       product.description || `${product.name} para máquinas pesadas.`,
     sku: product.sku || product.code || product.partNumber,
@@ -74,7 +74,7 @@ export default async function ProductPage({ params }: Props) {
     },
     offers: {
       '@type': 'Offer',
-      url: `https://mgtratorpecas.com.br/produtos/${slug}`,
+      url: `https://www.mgtratorpecas.com.br/produtos/${slug}`,
       priceCurrency: 'BRL',
       price: product.price,
       availability: product.inStock

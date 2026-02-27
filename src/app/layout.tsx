@@ -10,7 +10,7 @@ import { CartProvider } from '@/contexts/CartContext'
 const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
-  metadataBase: new URL('https://mgtratorpecas.com.br'),
+  metadataBase: new URL('https://www.mgtratorpecas.com.br'),
   title: {
     default: 'MG Tratorpeças - E-commerce de Peças para Máquinas Pesadas',
     template: '%s | MG Tratorpeças',

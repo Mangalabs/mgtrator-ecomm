@@ -203,7 +203,7 @@ export const SEO_DEFAULTS = {
   titleTemplate: '%s | MG Tratorpeças',
   description:
     'Distribuidora especializada em peças originais para maquinas pesadas e máquinas pesadas. Estoque completo Caterpillar, Volvo, Case, JCB.',
-  siteUrl: process.env.NEXT_PUBLIC_SITE_URL || 'https://mgtratorpecas.com.br',
+  siteUrl: process.env.NEXT_PUBLIC_SITE_URL || 'https://www.mgtratorpecas.com.br',
   twitterHandle: '@mgtratorpecas',
   ogImage: '/og-image.jpg',
   locale: 'pt_BR',

@@ -8,13 +8,13 @@ export const metadata: Metadata = {
   openGraph: {
     title: 'Como Comprar - Passo a Passo para Pedidos Online | MG Tratorpeças',
     description: 'Aprenda a comprar peças para maquinas pesadas online de forma fácil e segura. Veja o passo a passo, formas de pagamento, prazos de entrega e canais de atendimento.',
-    url: 'https://mgtratorpecas.com.br/como-comprar',
+    url: 'https://www.mgtratorpecas.com.br/como-comprar',
     siteName: 'MG Tratorpeças',
     locale: 'pt_BR',
     type: 'website',
   },
   alternates: {
-    canonical: 'https://mgtratorpecas.com.br/como-comprar',
+    canonical: 'https://www.mgtratorpecas.com.br/como-comprar',
   },
 }
 
