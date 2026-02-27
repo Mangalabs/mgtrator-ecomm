@@ -78,13 +78,14 @@ const heroSlides: Array<{
     link: '/produtos',
     type: 'products',
   },
-  { 
+  {
     image: '/retroescavadeira-cat.jpg',
-    title: 'Precisa da Peça Certa?',
-    subtitle: 'Faça sua cotação diretamente com nossos especialistas',
+    title: 'Precisa da Peça Certa para sua Máquina Pesada?',
+    subtitle:
+      'Solicite sua cotação com especialistas em peças para linha amarela',
     description: [
-      'Nossa equipe técnica identifica a peça correta pelo código, modelo da máquina ou número de série — evitando compras erradas e tempo parado.',
-      'Atendimento ágil pelo WhatsApp com orçamento sem compromisso.',
+      'Nossa equipe técnica identifica a peça correta pelo código, modelo da máquina ou número de série, evitando compras erradas e máquinas paradas.',
+      'Atendimento ágil pelo WhatsApp com orçamento sem compromisso para equipamentos de construção.',
     ],
     cta: 'Falar com Especialista',
     link: '/contato',
@@ -95,7 +96,7 @@ const heroSlides: Array<{
     title: 'Prefere Comprar Presencialmente?',
     subtitle: 'Visite nossa loja física e veja o estoque de perto',
     description: [
-      'Temos loja física com estoque disponível para retirada imediata. Nossos consultores estão prontos para te atender e encontrar a peça ideal.',
+      'Temos loja física com estoque disponível para retirada imediata. Nossos consultores estão prontos para te atender.',
       'Funcionamos de segunda a sexta das 8h às 18h. Venha nos visitar!',
     ],
     cta: 'Ver Endereço',

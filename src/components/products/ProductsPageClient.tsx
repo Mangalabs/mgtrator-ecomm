@@ -196,7 +196,7 @@ export const ProductsPageClient = ({
           },
         ]}
         title='Catálogo de Peças'
-        description='Encontre a peça ideal para seu trator ou máquina pesada'
+        description='Encontre a peça ideal para sua máquina pesada'
       />
 
       <section
