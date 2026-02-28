@@ -24,8 +24,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const product = productResponse.data
   const productCode = product.partNumber || product.sku || product.code || ''
   
-  const pageTitle = `${product.name}${productCode ? ` - Cód: ${productCode}` : ''} | MG Tratorpeças`
-  const pageDescription = `Faça a cotação de ${product.name}${productCode ? ` (Código: ${productCode})` : ''} para máquinas pesadas da linha amarela na MG Tratorpeças.`
+  const pageTitle = `${product.name}${productCode ? ` | Código: ${productCode}` : ''} `
+  const pageDescription = `Faça a cotação de ${product.name} | ${productCode ? ` (Código: ${productCode})` : ''} para máquinas pesadas da linha amarela na MG Tratorpeças.`
   const productImage = product.thumbnail || product.images?.[0] || 'https://www.mgtratorpecas.com.br/logo-azul.png'
 
   return {
