@@ -226,11 +226,6 @@ export const ProductDetailClient = ({
 
   const faqs = [
     {
-      question: 'Esta peça é original ou compatível?',
-      answer:
-        'Trabalhamos com peças 100% originais de fábrica. Todas nossas peças possuem certificado de autenticidade e garantia do fabricante.',
-    },
-    {
       question: 'Como faço para comprar?',
       answer:
         'Como atuamos com peças técnicas, preferimos um atendimento consultivo. Clique no botão de WhatsApp para falar com um especialista que confirmará a aplicação correta e passará os valores atualizados.',
