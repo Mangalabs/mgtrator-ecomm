@@ -125,8 +125,8 @@ export function Highlights() {
     },
     {
       icon: <CreditCard className='w-8 h-8' />,
-      title: 'Parcele em 12x',
-      description: 'No cartão',
+      title: 'Pagamento parcelado',
+      description: 'no cartão',
       iconBg: 'bg-yellow-400',
       iconColor: 'text-blue-900',
       accentColor: 'bg-yellow-400',
