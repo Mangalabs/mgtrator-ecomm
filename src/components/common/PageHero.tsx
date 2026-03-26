@@ -20,7 +20,7 @@ const PageHero = ({
       <div
         className="
           absolute inset-0
-          bg-[url('/icon.png')]
+          bg-[url('/icon-branco.png')]
           bg-repeat
           opacity-[0.06]
           bg-[length:80px_80px]

@@ -204,7 +204,7 @@ export const HomePageClient = ({
     <div className='min-h-screen bg-[#F5F5F5]'>
       <section className='relative bg-linear-to-br from-[#1a2d5e] to-[#0c162d] overflow-hidden min-h-[calc(100vh-100px)] flex flex-col justify-center py-32 md:py-40 lg:py-48'>
         <div
-          className='absolute inset-0 bg-[url("/icon.png")] bg-repeat opacity-8 bg-[length:80px_80px] pointer-events-none'
+          className='absolute inset-0 bg-[url("/icon-branco.png")] bg-repeat opacity-8 bg-[length:80px_80px] pointer-events-none'
           style={{
             WebkitMaskImage:
               'linear-gradient(to right, black 0%, transparent 90%)',
