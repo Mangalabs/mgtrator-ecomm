@@ -226,11 +226,6 @@ export const ProductDetailClient = ({
 
   const faqs = [
     {
-      question: 'Esta peça é original ou compatível?',
-      answer:
-        'Trabalhamos com peças 100% originais de fábrica. Todas nossas peças possuem certificado de autenticidade e garantia do fabricante.',
-    },
-    {
       question: 'Como faço para comprar?',
       answer:
         'Como atuamos com peças técnicas, preferimos um atendimento consultivo. Clique no botão de WhatsApp para falar com um especialista que confirmará a aplicação correta e passará os valores atualizados.',
@@ -559,9 +554,9 @@ export const ProductDetailClient = ({
                   desempenho, resistência e durabilidade.
                 </p>
                 <p className='text-base'>
-                  Esta peça é ideal para manutenção
-                  preventiva e corretiva de equipamentos pesados. Entre em
-                  contato para verificar a aplicação exata.
+                  Esta peça é ideal para manutenção preventiva e corretiva de
+                  equipamentos pesados. Entre em contato para verificar a
+                  aplicação exata.
                 </p>
               </div>
             </div>
@@ -573,14 +568,6 @@ export const ProductDetailClient = ({
                   Especificações Técnicas
                 </h3>
                 <dl className='space-y-3'>
-                  <div className='bg-white rounded-xl p-3 border border-[var(--neutral-200)] shadow-sm'>
-                    <dt className='text-xs text-[var(--neutral-600)] uppercase tracking-wider font-bold mb-1'>
-                      Marca
-                    </dt>
-                    <dd className='font-black text-[var(--primary)]'>
-                      {product.brandName}
-                    </dd>
-                  </div>
                   <div className='bg-white rounded-xl p-3 border border-[var(--neutral-200)] shadow-sm'>
                     <dt className='text-xs text-[var(--neutral-600)] uppercase tracking-wider font-bold mb-1'>
                       Código

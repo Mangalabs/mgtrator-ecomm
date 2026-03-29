@@ -90,7 +90,7 @@ export const Footer = () => {
                   Especialista
                 </div>
                 <div className='text-xs sm:text-sm font-bold text-white'>
-                  Volvo
+                  Volvo & Caterpillar
                 </div>
               </div>
             </div>
@@ -114,7 +114,7 @@ export const Footer = () => {
             <p className='text-(--neutral-300) text-sm mb-2 leading-relaxed max-w-sm'>
               Especialistas em{' '}
               <strong className='text-white'>
-                peças originais para máquinas pesadas
+                peças originais e de primeira linha para máquinas pesadas
               </strong>
               .
             </p>
