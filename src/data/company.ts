@@ -22,9 +22,9 @@ export const companyData: CompanyInfo = {
   },
 
   phone: {
-    main: '+553133684500',
-    secondary: '+553133684600',
-    whatsapp: '+5563999828455',
+    main: '+5585991911540',
+    secondary: '+5585991911540',
+    whatsapp: '+5585991911540',
   },
 
   social: {

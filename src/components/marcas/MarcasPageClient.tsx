@@ -19,10 +19,10 @@ import PageHero from '../common/PageHero'
 
 export const MarcasPageClient = () => {
   const handleWhatsApp = () => {
-    const message = encodeURIComponent(
-      'Olá! Gostaria de consultar sobre peças para maquinas pesadas e máquinas pesadas. Pode me ajudar?',
+    window.open(
+      'https://tintim.link/whatsapp/d6ae85fb-b33f-4b08-b29b-e9b0ee72942a/135f8540-2a5d-4573-b52f-338b7b4d4d39',
+      '_blank',
     )
-    window.open(`https://wa.me/5563999828455?text=${message}`, '_blank')
   }
 
   return (
@@ -113,7 +113,7 @@ export const MarcasPageClient = () => {
                     <motion.a
                       whileHover={{ scale: 1.01 }}
                       whileTap={{ scale: 0.99 }}
-                      href='https://wa.me/5563999828455'
+                      href='https://tintim.link/whatsapp/d6ae85fb-b33f-4b08-b29b-e9b0ee72942a/135f8540-2a5d-4573-b52f-338b7b4d4d39'
                       target='_blank'
                       rel='noopener noreferrer'
                       className='w-full bg-gradient-to-r from-[#25D366] to-[#20BD5A] text-white py-3 rounded-xl font-semibold text-xs transition-all flex items-center justify-center gap-2 hover:from-[#20BD5A] hover:to-[#1DA851] shadow-md hover:shadow-lg'

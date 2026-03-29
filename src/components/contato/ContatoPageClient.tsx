@@ -88,7 +88,7 @@ export const ContatoPageClient = () => {
                 ))}
               </div>
               <a
-                href={`https://wa.me/${siteConfig.contact.whatsapp}`}
+                href={siteConfig.contact.whatsappLink}
                 target='_blank'
                 rel='noopener noreferrer'
                 className='inline-block bg-white text-[#25D366] px-6 py-2 rounded-lg font-semibold hover:bg-green-50 transition-colors'>
@@ -266,7 +266,9 @@ export const ContatoPageClient = () => {
                   <MapPin className='w-6 h-6 text-[var(--primary)]' />
                 </div>
                 <div className='flex-1 '>
-                  <h3 className='mb-6 font-semibold mt-2'>Canais de Atendimento</h3>
+                  <h3 className='mb-6 font-semibold mt-2'>
+                    Canais de Atendimento
+                  </h3>
                   <div className='space-y-4 text-sm'>
                     <div className='flex items-center gap-3'>
                       <div className='w-8 h-8 bg-[var(--primary)] text-white rounded-full flex items-center justify-center flex-shrink-0'>
