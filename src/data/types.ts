@@ -101,8 +101,6 @@ export interface Brand extends BaseEntity, SeoFields {
   isActive: boolean
 }
 
-
-
 export interface Store extends BaseEntity {
   name: string
   slug: string
@@ -246,9 +244,14 @@ export interface OrderItem {
   total: number
 }
 
-export type PaymentMethod = 'pix' | 'credit_card' | 'debit_card' | 'bank_slip' | 'cash'
+export type PaymentMethod =
+  | 'pix'
+  | 'credit_card'
+  | 'debit_card'
+  | 'bank_slip'
+  | 'cash'
 
-export type PaymentStatus = 
+export type PaymentStatus =
   | 'pending'
   | 'processing'
   | 'paid'
@@ -256,7 +259,7 @@ export type PaymentStatus =
   | 'refunded'
   | 'cancelled'
 
-export type OrderStatus = 
+export type OrderStatus =
   | 'pending'
   | 'confirmed'
   | 'processing'
@@ -342,6 +345,7 @@ export interface PaginatedResponse<T> {
     totalPages: number
     hasNext: boolean
     hasPrev: boolean
+    isExact?: boolean
   }
 }
 

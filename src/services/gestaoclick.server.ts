@@ -342,7 +342,7 @@ export const getGestaoclickProducts = async (
     while (
       collected.length < neededAccumulated + virtualLimit &&
       apiPage <= apiTotalPages &&
-      apiPage <= MAX_API_CALLS * virtualPage
+      apiPage <= Math.max(MAX_API_CALLS * virtualPage, MAX_API_CALLS * 2)
     ) {
       // Busca o mesmo lote em paralelo para todas as lojas
       const responses = await Promise.all(
@@ -380,26 +380,36 @@ export const getGestaoclickProducts = async (
       apiPage++
     }
 
-    const startIndex = (virtualPage - 1) * virtualLimit
-    const pageData = collected.slice(startIndex, startIndex + virtualLimit)
+    const exhaustedApi = apiPage > apiTotalPages
 
+    const startIndex = (virtualPage - 1) * virtualLimit
+    const actualTotalPages = Math.ceil(collected.length / virtualLimit) || 1
+    const effectivePage =
+      exhaustedApi && startIndex >= collected.length
+        ? actualTotalPages
+        : virtualPage
+    const effectiveStart = (effectivePage - 1) * virtualLimit
+    const pageData = collected.slice(
+      effectiveStart,
+      effectiveStart + virtualLimit,
+    )
     const fetchedApiItems = (apiPage - 1) * API_BATCH
     const ratio =
       fetchedApiItems > 0 && applyStockFilter
         ? collected.length / fetchedApiItems
         : 1
-    const estimatedTotal = Math.max(
-      collected.length,
-      Math.round(apiTotalItems * ratio),
-    )
+    const estimatedTotal = exhaustedApi
+      ? collected.length
+      : Math.max(collected.length, Math.round(apiTotalItems * ratio))
     const estimatedTotalPages = Math.max(
-      virtualPage,
+      pageData.length > 0 ? effectivePage : 1,
       Math.ceil(estimatedTotal / virtualLimit),
     )
 
     const hasMore =
       pageData.length === virtualLimit &&
-      (collected.length > startIndex + virtualLimit || apiPage <= apiTotalPages)
+      (collected.length > effectiveStart + virtualLimit ||
+        apiPage <= apiTotalPages)
 
     return {
       success: true,
@@ -412,6 +422,7 @@ export const getGestaoclickProducts = async (
           totalPages: estimatedTotalPages,
           hasNext: hasMore,
           hasPrev: virtualPage > 1,
+          isExact: exhaustedApi,
         },
       },
     }
