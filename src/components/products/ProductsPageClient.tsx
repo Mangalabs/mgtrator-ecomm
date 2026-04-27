@@ -82,6 +82,7 @@ export const ProductsPageClient = ({
         params.set('page', String(currentPage))
         params.set('limit', String(ITEMS_PER_PAGE))
         params.set('sortBy', sortBy)
+        params.set('inStock', 'true')
         if (searchQuery.trim()) {
           params.set('search', searchQuery.trim())
         }

@@ -1,3 +1,4 @@
+import Image from 'next/image'
 import { Breadcrumbs } from '../layout/Breadcrumbs'
 
 interface PageHeroProps {
@@ -34,21 +35,17 @@ const PageHero = ({
         }}
       />
 
-      <div
-        className="
-          absolute inset-0
-          bg-[url('https://www.tracbel.com.br/wp-content/uploads/2025/04/Maquinas-Diversas.png')]
-          bg-no-repeat
-          bg-right
-          bg-contain
-          sm:bg-[length:22rem]
-          md:bg-[length:32rem]
-          lg:bg-[length:45rem]
-          xl:bg-[length:55rem]
-          pointer-events-none
-          z-10
-        "
-      />
+      <div className='absolute inset-y-0 right-[-5%] w-[60%] hidden sm:block z-10 pointer-events-none'>
+        <Image
+          src='/maq5.png'
+          alt='Máquinas pesadas'
+          fill
+          quality={100}
+          className='object-contain object-bottom select-none'
+          style={{ mixBlendMode: 'screen' }}
+          priority
+        />
+      </div>
 
       <div className='absolute inset-0 bg-linear-to-r from-(--primary)/95 via-[#1a2d5e]/90 to-[#1a2d5e]/90 sm:to-transparent lg:bg-none z-15 pointer-events-none' />
 
