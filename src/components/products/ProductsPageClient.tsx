@@ -17,6 +17,7 @@ type PaginationInfo = {
   totalPages: number
   hasNext: boolean
   hasPrev: boolean
+  isExact?: boolean
 }
 
 type ProductsPageClientProps = {
@@ -82,6 +83,7 @@ export const ProductsPageClient = ({
         params.set('page', String(currentPage))
         params.set('limit', String(ITEMS_PER_PAGE))
         params.set('sortBy', sortBy)
+        params.set('inStock', 'true')
         if (searchQuery.trim()) {
           params.set('search', searchQuery.trim())
         }
@@ -146,14 +148,15 @@ export const ProductsPageClient = ({
 
   const visibleProducts = sortedProducts
   const totalPages = pagination?.totalPages ?? 1
+  const isExact = pagination?.isExact ?? false
   const pageItems = useMemo(() => {
-    if (totalPages <= 7) {
+    if (isExact && totalPages <= 7) {
       return Array.from({ length: totalPages }, (_, i) => i + 1)
     }
 
     const items: Array<number | '...'> = []
     const start = Math.max(2, currentPage - 1)
-    const end = Math.min(totalPages - 1, currentPage + 1)
+    const end = Math.min(isExact ? totalPages - 1 : totalPages, currentPage + 1)
 
     items.push(1)
     if (start > 2) {
@@ -162,13 +165,15 @@ export const ProductsPageClient = ({
     for (let page = start; page <= end; page += 1) {
       items.push(page)
     }
-    if (end < totalPages - 1) {
+    if (isExact && end < totalPages - 1) {
+      items.push('...')
+      items.push(totalPages)
+    } else if (!isExact && end < totalPages) {
       items.push('...')
     }
-    items.push(totalPages)
 
     return items
-  }, [currentPage, totalPages])
+  }, [currentPage, totalPages, isExact])
 
   const canGoPrev = pagination?.hasPrev ?? currentPage > 1
   const canGoNext = pagination?.hasNext ?? currentPage < totalPages

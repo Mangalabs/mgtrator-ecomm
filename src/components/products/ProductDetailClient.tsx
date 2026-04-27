@@ -228,7 +228,7 @@ export const ProductDetailClient = ({
     {
       question: 'Esta peça é original ou compatível?',
       answer:
-        'Trabalhamos com peças 100% originais de fábrica. Todas nossas peças possuem certificado de autenticidade e garantia do fabricante.',
+        'Trabalhamos com peças 100% originais de fábrica e também de primeira linha. Todas nossas peças possuem garantia do fabricante.',
     },
     {
       question: 'Como faço para comprar?',
@@ -559,9 +559,9 @@ export const ProductDetailClient = ({
                   desempenho, resistência e durabilidade.
                 </p>
                 <p className='text-base'>
-                  Esta peça é ideal para manutenção
-                  preventiva e corretiva de equipamentos pesados. Entre em
-                  contato para verificar a aplicação exata.
+                  Esta peça é ideal para manutenção preventiva e corretiva de
+                  equipamentos pesados. Entre em contato para verificar a
+                  aplicação exata.
                 </p>
               </div>
             </div>
