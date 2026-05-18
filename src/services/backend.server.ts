@@ -5,6 +5,10 @@ import type {
   Product,
   ProductFilters,
 } from '@/data/types'
+import {
+  getHiddenProductTitleTags,
+  sanitizeProductTitle,
+} from '@/lib/productTitle'
 import { slugify } from '@/lib/utils'
 
 const BASE_URL =
@@ -104,7 +108,9 @@ const mapProduct = (data: BackendProduct): Product => {
     getString(data.clickId) ||
     getString(data.click_id) ||
     getString(data.barcode)
-  const name = getString(data.name) || getString(data.nome, 'Produto')
+  const rawName = getString(data.name) || getString(data.nome, 'Produto')
+  const name = sanitizeProductTitle(rawName)
+  const hiddenTitleTags = getHiddenProductTitleTags(rawName)
   const code =
     getString(data.codigo_interno) ||
     getString(data.internalCode) ||
@@ -174,7 +180,7 @@ const mapProduct = (data: BackendProduct): Product => {
     id,
     name,
     code,
-    slug: slugify(`${name}-${code}`),
+    slug: slugify(`${rawName}-${code}`),
     description,
     price:
       toNumber(data.price) ||
@@ -192,6 +198,7 @@ const mapProduct = (data: BackendProduct): Product => {
     sku: code,
     partNumber: getString(data.partNumber) || code,
     deliveryType: 'pronta-entrega',
+    tags: hiddenTitleTags,
     isFeatured: Boolean(data.isFeatured),
     isNew: Boolean(data.isNew),
     createdAt: getString(data.createdAt) || new Date().toISOString(),

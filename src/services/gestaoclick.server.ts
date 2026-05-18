@@ -5,6 +5,10 @@ import type {
   Product,
   ProductFilters,
 } from '@/data/types'
+import {
+  getHiddenProductTitleTags,
+  sanitizeProductTitle,
+} from '@/lib/productTitle'
 import { slugify } from '@/lib/utils'
 
 const normalizeBaseUrl = (value?: string) =>
@@ -139,7 +143,9 @@ const getImages = (data: GestaoclickProduct): string[] => {
 
 const mapProduct = (data: GestaoclickProduct): Product => {
   const id = getString(data.id, '') || String(data.id ?? '')
-  const name = getString(data.nome, 'Produto')
+  const rawName = getString(data.nome, 'Produto')
+  const name = sanitizeProductTitle(rawName)
+  const hiddenTitleTags = getHiddenProductTitleTags(rawName)
   const code =
     getString(data.codigo_interno) ||
     getString(data.codigo) ||
@@ -219,7 +225,7 @@ const mapProduct = (data: GestaoclickProduct): Product => {
     id,
     name,
     code,
-    slug: slugify(`${name}-${code}`),
+    slug: slugify(`${rawName}-${code}`),
     description,
     price,
     categoryId,
@@ -233,6 +239,7 @@ const mapProduct = (data: GestaoclickProduct): Product => {
     sku: code,
     partNumber: getString(data.codigo_barra, code),
     deliveryType: 'pronta-entrega',
+    tags: hiddenTitleTags,
     isFeatured: Boolean(data.destaque),
     isNew: Boolean(data.novo),
     createdAt: getString(data.cadastrado_em) || new Date().toISOString(),
