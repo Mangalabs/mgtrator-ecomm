@@ -4,6 +4,16 @@ const HIDDEN_PRODUCT_TITLE_TAGS = [
   'IMPORTADO',
   'IMP',
   'DIR',
+  'RHINO',
+  'PHILIPS',
+  'GATES',
+  'CONTINENTAL',
+  'HARD-GUANN',
+  'AUTOMOTIV',
+  'DNI',
+  'BOOZDE',
+  'VASPEC',
+  'HIGHTTEC',
 ] as const
 
 const TAG_BOUNDARY = String.raw`[\s\-_/.,;:()[\]{}]+`
