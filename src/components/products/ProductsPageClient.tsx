@@ -6,6 +6,7 @@ import { ProductCard } from './ProductCard'
 import { QuickViewModal } from './QuickViewModal'
 import type { Product } from '@/data/types'
 import PageHero from '../common/PageHero'
+import { sanitizeProductSearch } from '@/lib/productTitle'
 
 const IS_CATALOG_MODE = true
 const ITEMS_PER_PAGE = 10
@@ -79,13 +80,33 @@ export const ProductsPageClient = ({
     const fetchProducts = async () => {
       setLoading(true)
       try {
+        const rawSearch = searchQuery.trim()
+        const sanitizedSearch = rawSearch
+          ? sanitizeProductSearch(rawSearch)
+          : ''
+
+        if (rawSearch && !sanitizedSearch) {
+          if (!isMounted) return
+          setProducts([])
+          setPagination({
+            page: 1,
+            limit: ITEMS_PER_PAGE,
+            total: 0,
+            totalPages: 0,
+            hasNext: false,
+            hasPrev: false,
+            isExact: true,
+          })
+          return
+        }
+
         const params = new URLSearchParams()
         params.set('page', String(currentPage))
         params.set('limit', String(ITEMS_PER_PAGE))
         params.set('sortBy', sortBy)
         params.set('inStock', 'true')
-        if (searchQuery.trim()) {
-          params.set('search', searchQuery.trim())
+        if (sanitizedSearch) {
+          params.set('search', sanitizedSearch)
         }
         if (selectedCategory !== 'all') {
           params.set('category', selectedCategory)

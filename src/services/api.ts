@@ -33,6 +33,7 @@ import {
   getBackendRelatedProducts,
   hasBackendConfig,
 } from './backend.server'
+import { sanitizeProductSearch } from '@/lib/productTitle'
 
 const simulateNetworkDelay = (ms: number = 300) =>
   new Promise((resolve) => setTimeout(resolve, ms))
@@ -47,6 +48,37 @@ const errorResponse = <T>(error: string, data: T): ApiResponse<T> => ({
   error,
   data,
 })
+
+type ProductProvider = {
+  isConfigured: () => boolean
+  getProducts: typeof getBackendProducts
+  getProductById: typeof getBackendProductById
+  getProductBySlug: typeof getBackendProductBySlug
+  getFeaturedProducts: typeof getBackendFeaturedProducts
+  getRelatedProducts: typeof getBackendRelatedProducts
+}
+
+const productProviders: ProductProvider[] = [
+  {
+    isConfigured: hasBackendConfig,
+    getProducts: getBackendProducts,
+    getProductById: getBackendProductById,
+    getProductBySlug: getBackendProductBySlug,
+    getFeaturedProducts: getBackendFeaturedProducts,
+    getRelatedProducts: getBackendRelatedProducts,
+  },
+  {
+    isConfigured: hasGestaoclickConfig,
+    getProducts: getGestaoclickProducts,
+    getProductById: getGestaoclickProductById,
+    getProductBySlug: getGestaoclickProductBySlug,
+    getFeaturedProducts: getGestaoclickFeaturedProducts,
+    getRelatedProducts: getGestaoclickRelatedProducts,
+  },
+]
+
+const getProductProvider = () =>
+  productProviders.find((provider) => provider.isConfigured())
 
 const emptyPaginated = (
   pagination?: PaginationParams,
@@ -70,76 +102,65 @@ const emptyPaginated = (
   }
 }
 
+const normalizeProductFilters = (filters?: ProductFilters) => {
+  const search = filters?.search?.trim()
+  const sanitizedSearch = search ? sanitizeProductSearch(search) : undefined
+
+  return {
+    shouldReturnEmpty: Boolean(search && !sanitizedSearch),
+    filters:
+      filters && search
+        ? {
+            ...filters,
+            search: sanitizedSearch,
+          }
+        : filters,
+  }
+}
+
 export const getProducts = async (
   filters?: ProductFilters,
   pagination?: PaginationParams,
 ): Promise<ApiResponse<PaginatedResponse<Product>>> => {
-  if (hasBackendConfig()) {
-    return getBackendProducts(filters, pagination)
-  }
+  const normalized = normalizeProductFilters(filters)
 
-  if (hasGestaoclickConfig()) {
-    return getGestaoclickProducts(filters, pagination)
-  }
-
-  return emptyPaginated(pagination)
+  return normalized.shouldReturnEmpty
+    ? emptyPaginated(pagination)
+    : (await getProductProvider()?.getProducts(normalized.filters, pagination)) ??
+        emptyPaginated(pagination)
 }
 
 export const getProductById = async (
   id: string,
 ): Promise<ApiResponse<Product | null>> => {
-  if (hasBackendConfig()) {
-    return getBackendProductById(id)
-  }
-
-  if (hasGestaoclickConfig()) {
-    return getGestaoclickProductById(id)
-  }
-
-  return successResponse(null)
+  return (await getProductProvider()?.getProductById(id)) ?? successResponse(null)
 }
 
 export const getProductBySlug = async (
   slug: string,
 ): Promise<ApiResponse<Product | null>> => {
-  if (hasBackendConfig()) {
-    return getBackendProductBySlug(slug)
-  }
-
-  if (hasGestaoclickConfig()) {
-    return getGestaoclickProductBySlug(slug)
-  }
-
-  return successResponse(null)
+  return (
+    (await getProductProvider()?.getProductBySlug(slug)) ?? successResponse(null)
+  )
 }
 
 export const getFeaturedProducts = async (
   limit: number = 8,
 ): Promise<ApiResponse<Product[]>> => {
-  if (hasBackendConfig()) {
-    return getBackendFeaturedProducts(limit)
-  }
-
-  if (hasGestaoclickConfig()) {
-    return getGestaoclickFeaturedProducts(limit)
-  }
-
-  return successResponse([])
+  return (
+    (await getProductProvider()?.getFeaturedProducts(limit)) ??
+    successResponse([])
+  )
 }
 
 export const getRelatedProducts = async (
   productId: string,
   limit: number = 4,
 ): Promise<ApiResponse<Product[]>> => {
-  if (hasBackendConfig()) {
-    return getBackendRelatedProducts(productId, limit)
-  }
-
-  if (hasGestaoclickConfig()) {
-    return getGestaoclickRelatedProducts(productId, limit)
-  }
-
-  return successResponse([])
+  return (
+    (await getProductProvider()?.getRelatedProducts(productId, limit)) ??
+    successResponse([])
+  )
 }
 
 export const getCategories = async (): Promise<ApiResponse<Category[]>> => {
