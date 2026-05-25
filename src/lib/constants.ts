@@ -7,13 +7,13 @@ export const COMPANY_INFO = {
 
 export const CONTACTS = {
   whatsapp: {
-    number: '5563999828455',
-    formatted: '(31) 9 9875-3200',
-    link: 'https://wa.me/5563999828455',
+    number: '85991911540',
+    formatted: '(85) 9191-1540',
+    link: 'https://tintim.link/whatsapp/d6ae85fb-b33f-4b08-b29b-e9b0ee72942a/135f8540-2a5d-4573-b52f-338b7b4d4d39',
   },
   phone: {
-    main: '63999828455',
-    formatted: '(31) 9 9875-3200',
+    main: '85991911540',
+    formatted: '(85) 9191-1540',
   },
   email: {
     contact: 'contato@mgtratorpecas.com.br',
@@ -203,7 +203,8 @@ export const SEO_DEFAULTS = {
   titleTemplate: '%s | MG Tratorpeças',
   description:
     'Distribuidora especializada em peças originais para maquinas pesadas e máquinas pesadas. Estoque completo Caterpillar, Volvo, Case, JCB.',
-  siteUrl: process.env.NEXT_PUBLIC_SITE_URL || 'https://www.mgtratorpecas.com.br',
+  siteUrl:
+    process.env.NEXT_PUBLIC_SITE_URL || 'https://www.mgtratorpecas.com.br',
   twitterHandle: '@mgtratorpecas',
   ogImage: '/og-image.jpg',
   locale: 'pt_BR',

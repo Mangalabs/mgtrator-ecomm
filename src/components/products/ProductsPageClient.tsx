@@ -222,7 +222,7 @@ export const ProductsPageClient = ({
           },
         ]}
         title='Catálogo de Peças'
-        description='Encontre a peça ideal para sua máquina pesada'
+        description='Peças para máquinas pesadas'
       />
 
       <section

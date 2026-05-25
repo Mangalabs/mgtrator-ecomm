@@ -21,14 +21,8 @@ import { siteConfig } from '@/data/site'
 import PageHero from '../common/PageHero'
 
 export const LojasPageClient = () => {
-  const handleWhatsApp = (storeWhatsapp?: string) => {
-    const phone = storeWhatsapp
-      ? storeWhatsapp.replace(/\D/g, '')
-      : siteConfig.contact.whatsapp
-    const message = encodeURIComponent(
-      'Olá! Gostaria de consultar sobre peças para maquinas pesadas e máquinas pesadas. Pode me ajudar?',
-    )
-    window.open(`https://wa.me/${phone}?text=${message}`, '_blank')
+  const handleWhatsApp = () => {
+    window.open(siteConfig.contact.whatsappLink, '_blank')
   }
 
   return (
@@ -145,7 +139,7 @@ export const LojasPageClient = () => {
                                   WhatsApp:
                                 </span>{' '}
                                 <a
-                                  href={`https://wa.me/${store.contact.whatsapp.replace(/\D/g, '')}`}
+                                  href={siteConfig.contact.whatsappLink}
                                   className='hover:text-[#25D366] transition-colors font-medium'>
                                   {store.contact.whatsapp}
                                 </a>
@@ -190,7 +184,7 @@ export const LojasPageClient = () => {
 
                     <div className='grid grid-cols-2 gap-3 mt-auto'>
                       <button
-                        onClick={() => handleWhatsApp(store.contact.whatsapp)}
+                        onClick={() => handleWhatsApp()}
                         className='flex items-center justify-center gap-2 bg-gradient-to-br from-[#25D366] to-[#20BD5A] text-white py-4 px-5 rounded-2xl font-black hover:shadow-xl hover:scale-[1.02] transition-all duration-300'>
                         <MessageCircle className='w-5 h-5' />
                         <span>WhatsApp</span>

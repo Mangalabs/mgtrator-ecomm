@@ -575,14 +575,6 @@ export const ProductDetailClient = ({
                 <dl className='space-y-3'>
                   <div className='bg-white rounded-xl p-3 border border-[var(--neutral-200)] shadow-sm'>
                     <dt className='text-xs text-[var(--neutral-600)] uppercase tracking-wider font-bold mb-1'>
-                      Marca
-                    </dt>
-                    <dd className='font-black text-[var(--primary)]'>
-                      {product.brandName}
-                    </dd>
-                  </div>
-                  <div className='bg-white rounded-xl p-3 border border-[var(--neutral-200)] shadow-sm'>
-                    <dt className='text-xs text-[var(--neutral-600)] uppercase tracking-wider font-bold mb-1'>
                       Código
                     </dt>
                     <dd className='font-black text-[var(--primary)]'>
