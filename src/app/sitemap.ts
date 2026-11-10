@@ -1,5 +1,7 @@
 import { MetadataRoute } from 'next'
 import { getProducts } from '@/services/api'
+import { catalogLines } from '@/data/catalog'
+import { storesData } from '@/data/stores'
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const baseUrl = 'https://www.mgtratorpecas.com.br'
@@ -7,7 +9,9 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const staticRoutes: MetadataRoute.Sitemap = [
     '',
     '/catalogo',
+    ...catalogLines.map((line) => `/catalogo/${line.id}`),
     '/lojas',
+    ...storesData.map((store) => `/lojas/${store.slug}`),
     '/contato',
     '/como-comprar',
     '/politicas',

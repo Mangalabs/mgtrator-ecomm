@@ -111,3 +111,16 @@ Saem com redirect permanente: `/produtos`, `/produtos/[slug]`,
 - remaining: restante da etapa 5; etapas 6–7.
 - risks: perda de URLs indexadas (mitigar com redirects); fotos provisórias
   com direitos incertos; certificações não confirmadas publicadas.
+- completed (SEO local, 2026-11-10): `stores.ts` com horário por unidade,
+  link do perfil no Google Empresas e slugs `sao-luis`/`araguaina`;
+  `lib/structuredData.ts` gera Organization + AutoPartsStore por unidade
+  (home, `/lojas`, `/lojas/[slug]`); páginas `/lojas/sao-luis` e
+  `/lojas/araguaina`; `/lojas` com título/descrição das duas cidades; sitemap
+  com linhas do catálogo e unidades; endereço 402 confirmado pelo usuário.
+- resolvido (SEO local): endereço de Araguaína definido pelo usuário como o
+  do Google (Av. Cônego João Lima, Quadra 50, Lote 55, Jardim dos Ipês II,
+  77820-160), com coordenadas do perfil. O PDF da linha amarela ainda traz o
+  antigo (nº 1047, Setor Central).
+- pendente (SEO local): perfil de São Luís mostra só "Tirirical, São Luís -
+  MA", sem rua/número/telefone (usuário não vê "Reivindicar", provavelmente
+  já é gerenciado); dias de Araguaína assumidos como seg–sex.
