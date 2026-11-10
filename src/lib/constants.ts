@@ -1,3 +1,5 @@
+import { siteConfig } from '@/data/site'
+
 export const COMPANY_INFO = {
   name: 'MG Tratorpeças',
   legalName: 'MG Tratorpeças Ltda',
@@ -7,29 +9,30 @@ export const COMPANY_INFO = {
 
 export const CONTACTS = {
   whatsapp: {
-    number: '5563999828455',
-    formatted: '(31) 9 9875-3200',
-    link: 'https://wa.me/5563999828455',
+    number: siteConfig.contact.whatsapp,
+    formatted: siteConfig.contact.phoneFormatted,
+    link: `https://wa.me/${siteConfig.contact.whatsapp}`,
   },
   phone: {
-    main: '63999828455',
-    formatted: '(31) 9 9875-3200',
+    main: siteConfig.contact.phone,
+    formatted: siteConfig.contact.phoneFormatted,
   },
   email: {
-    contact: 'contato@mgtratorpecas.com.br',
-    sales: 'vendas@mgtratorpecas.com.br',
+    contact: siteConfig.contact.email,
+    sales: siteConfig.contact.email,
   },
   social: {
-    instagram: 'https://instagram.com/mgtratorpecas',
+    instagram: 'https://www.instagram.com/mg_tratorpecas_/',
     facebook: 'https://facebook.com/mgtratorpecas',
   },
 } as const
 
 export const WHATSAPP_MESSAGES = {
   default: 'Olá! Vim pelo site e gostaria de solicitar um orçamento de peças.',
-  product: (productName: string) => 
+  product: (productName: string) =>
     `Olá! Tenho interesse no produto: ${productName}. Gostaria de solicitar um orçamento.`,
-  catalog: 'Olá! Gostaria de receber informações sobre o catálogo completo de peças.',
+  catalog:
+    'Olá! Gostaria de receber informações sobre o catálogo completo de peças.',
   quote: 'Olá! Gostaria de solicitar um orçamento personalizado.',
   support: 'Olá! Preciso de suporte técnico para identificar uma peça.',
 } as const
@@ -42,13 +45,15 @@ export const HERO_SLIDES = [
     alt: 'Escavadeira Caterpillar em operação',
   },
   {
-    image: 'https://images.unsplash.com/photo-1764114441097-6a475eca993d?w=1920&q=80',
+    image:
+      'https://images.unsplash.com/photo-1764114441097-6a475eca993d?w=1920&q=80',
     title: 'Peças Industriais',
     tag: 'Originais',
     alt: 'Peças industriais para máquinas pesadas',
   },
   {
-    image: 'https://images.unsplash.com/photo-1692279847642-f72fa37b9e88?w=1920&q=80',
+    image:
+      'https://images.unsplash.com/photo-1692279847642-f72fa37b9e88?w=1920&q=80',
     title: 'Equipamentos Pesados',
     tag: 'Certificado',
     alt: 'Equipamentos pesados em construção',
@@ -97,13 +102,15 @@ export const KEY_BENEFITS = [
   {
     id: 'warranty',
     title: 'Garantia de Procedência',
-    description: 'Todas as peças com certificado de garantia e origem comprovada.',
+    description:
+      'Todas as peças com certificado de garantia e origem comprovada.',
     icon: 'Shield',
   },
   {
     id: 'genuine',
     title: 'Peças Genuínas e Compatíveis',
-    description: 'Estoque completo de peças originais de fábrica e alternativas certificadas.',
+    description:
+      'Estoque completo de peças originais de fábrica e alternativas certificadas.',
     icon: 'Award',
   },
   {
@@ -115,7 +122,8 @@ export const KEY_BENEFITS = [
   {
     id: 'support',
     title: 'Suporte Técnico Especializado',
-    description: 'Equipe qualificada para auxiliar na identificação da peça correta.',
+    description:
+      'Equipe qualificada para auxiliar na identificação da peça correta.',
     icon: 'Headphones',
   },
 ] as const
@@ -123,19 +131,23 @@ export const KEY_BENEFITS = [
 export const WHY_CHOOSE_US = [
   {
     title: 'Peças Genuínas com Garantia de Fábrica',
-    description: 'Trabalhamos exclusivamente com peças originais certificadas, garantindo compatibilidade total e durabilidade comprovada.',
+    description:
+      'Trabalhamos exclusivamente com peças originais certificadas, garantindo compatibilidade total e durabilidade comprovada.',
   },
   {
     title: 'Alternativas Compatíveis Certificadas',
-    description: 'Opções de peças alternativas de alta qualidade, devidamente certificadas e testadas.',
+    description:
+      'Opções de peças alternativas de alta qualidade, devidamente certificadas e testadas.',
   },
   {
     title: 'Atendimento Técnico Especializado',
-    description: 'Equipe técnica experiente para auxiliar na identificação correta da peça.',
+    description:
+      'Equipe técnica experiente para auxiliar na identificação correta da peça.',
   },
   {
     title: 'Entrega Rápida para Todo o Brasil',
-    description: 'Logística eficiente com entrega expressa na região metropolitana.',
+    description:
+      'Logística eficiente com entrega expressa na região metropolitana.',
   },
   {
     title: 'Estoque Completo e Disponibilidade Imediata',
@@ -191,8 +203,9 @@ export const ROUTES = {
 export const SEO_DEFAULTS = {
   siteName: 'MG Tratorpeças',
   titleTemplate: '%s | MG Tratorpeças',
-  description: 'Distribuidora especializada em peças originais para maquinas pesadas e máquinas pesadas. Estoque completo Caterpillar, Volvo, Case, JCB.',
-  siteUrl: process.env.NEXT_PUBLIC_SITE_URL || 'https://mgtratorpecas.com.br',
+  description:
+    'Distribuidora especializada em peças originais para maquinas pesadas e máquinas pesadas. Estoque completo Caterpillar, Volvo, Case, JCB.',
+  siteUrl: process.env.NEXT_PUBLIC_SITE_URL || 'https://www.mgtratorpecas.com.br',
   twitterHandle: '@mgtratorpecas',
   ogImage: '/og-image.jpg',
   locale: 'pt_BR',

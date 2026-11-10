@@ -1,5 +1,3 @@
-import 'server-only'
-
 import type {
   ApiResponse,
   PaginatedResponse,
@@ -7,6 +5,10 @@ import type {
   Product,
   ProductFilters,
 } from '@/data/types'
+import {
+  getHiddenProductTitleTags,
+  sanitizeProductTitle,
+} from '@/lib/productTitle'
 import { slugify } from '@/lib/utils'
 
 const BASE_URL =
@@ -106,7 +108,9 @@ const mapProduct = (data: BackendProduct): Product => {
     getString(data.clickId) ||
     getString(data.click_id) ||
     getString(data.barcode)
-  const name = getString(data.name) || getString(data.nome, 'Produto')
+  const rawName = getString(data.name) || getString(data.nome, 'Produto')
+  const name = sanitizeProductTitle(rawName)
+  const hiddenTitleTags = getHiddenProductTitleTags(rawName)
   const code =
     getString(data.codigo_interno) ||
     getString(data.internalCode) ||
@@ -170,13 +174,13 @@ const mapProduct = (data: BackendProduct): Product => {
     getString(data.brand) ||
     getString(data.marca) ||
     getString(data.fabricante) ||
-    'MG Trator'
+    'MG Tratorpeças'
 
   return {
     id,
     name,
     code,
-    slug: slugify(`${name}-${code}`),
+    slug: slugify(`${rawName}-${code}`),
     description,
     price:
       toNumber(data.price) ||
@@ -185,7 +189,7 @@ const mapProduct = (data: BackendProduct): Product => {
       0,
     categoryId,
     categoryName,
-    brandId: slugify(brandName) || 'mg-trator',
+    brandId: slugify(brandName) || 'mg-peças',
     brandName,
     images,
     thumbnail,
@@ -194,6 +198,7 @@ const mapProduct = (data: BackendProduct): Product => {
     sku: code,
     partNumber: getString(data.partNumber) || code,
     deliveryType: 'pronta-entrega',
+    tags: hiddenTitleTags,
     isFeatured: Boolean(data.isFeatured),
     isNew: Boolean(data.isNew),
     createdAt: getString(data.createdAt) || new Date().toISOString(),
@@ -241,19 +246,16 @@ const buildPagination = (
   count: number,
   pagination?: BackendListResponse['pagination'],
 ) => {
-  const inferredHasMore = pagination?.hasMore ?? (count === limit && count > 0)
-  const total =
-    pagination?.total ?? (inferredHasMore ? page * limit + 1 : count)
-  const totalPages =
-    pagination?.totalPages ?? (total > 0 ? Math.ceil(total / limit) : 0)
-  const hasNext = inferredHasMore || page < totalPages
+  const hasNext = pagination?.hasMore ?? (count === limit)
+  const total = pagination?.total ?? (hasNext ? (page * limit) + 1 : ((page - 1) * limit) + count)
+  const totalPages = pagination?.totalPages ?? Math.ceil(total / limit)
 
   return {
     page,
     limit,
     total,
     totalPages,
-    hasNext,
+    hasNext: page < totalPages,
     hasPrev: page > 1,
   }
 }
@@ -351,24 +353,7 @@ export const getBackendProducts = async (
     }
 
     const mapped = response.products.map(mapProduct)
-    const paginationInfo = response.pagination
-      ? {
-          page: response.pagination.page ?? page,
-          limit: response.pagination.limit ?? limit,
-          total: response.pagination.total ?? mapped.length,
-          totalPages:
-            response.pagination.totalPages ??
-            Math.ceil((response.pagination.total ?? mapped.length) / limit),
-          hasNext:
-            response.pagination.hasMore ??
-            page <
-              (response.pagination.totalPages ??
-                Math.ceil(
-                  (response.pagination.total ?? mapped.length) / limit,
-                )),
-          hasPrev: page > 1,
-        }
-      : buildPagination(page, limit, mapped.length, response.pagination)
+    const paginationInfo = buildPagination(page, limit, mapped.length, response.pagination)
 
     return {
       success: true,

@@ -189,7 +189,7 @@ export function PoliticasPageClient() {
 
   return (
     <div className="min-h-screen bg-white">
-      <section className="relative bg-gradient-to-br from-[var(--primary)] via-[#1a2d5e] to-[var(--primary)] text-white overflow-hidden" style={{ minHeight: '320px' }}>
+      <section className="relative bg-gradient-to-br from-[var(--primary)] via-[var(--primary-dark)] to-[var(--primary)] text-white overflow-hidden" style={{ minHeight: '320px' }}>
         <div className="absolute inset-0 opacity-5">
           <div className="absolute top-0 right-0 w-96 h-96 bg-white rounded-full blur-3xl transform translate-x-1/2 -translate-y-1/2" />
           <div className="absolute bottom-0 left-0 w-96 h-96 bg-[var(--secondary)] rounded-full blur-3xl transform -translate-x-1/2 translate-y-1/2" />
@@ -282,7 +282,7 @@ export function PoliticasPageClient() {
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="bg-gradient-to-br from-[var(--primary)] to-[#1a2d5e] rounded-3xl p-10 text-white text-center shadow-2xl"
+            className="bg-gradient-to-br from-[var(--primary)] to-[var(--primary-dark)] rounded-3xl p-10 text-white text-center shadow-2xl"
           >
             <div className="inline-flex items-center justify-center w-16 h-16 bg-white/20 backdrop-blur-sm rounded-2xl mb-6">
               <AlertCircle className="w-8 h-8" />

@@ -1,5 +1,3 @@
-import 'server-only'
-
 import type {
   ApiResponse,
   PaginatedResponse,
@@ -7,6 +5,10 @@ import type {
   Product,
   ProductFilters,
 } from '@/data/types'
+import {
+  getHiddenProductTitleTags,
+  sanitizeProductTitle,
+} from '@/lib/productTitle'
 import { slugify } from '@/lib/utils'
 
 const normalizeBaseUrl = (value?: string) =>
@@ -22,13 +24,20 @@ const SECRET_TOKEN =
   process.env.GESTAOCLICK_SECRET_TOKEN || process.env.CLICK_API_PRIVATE_TOKEN
 const STORE_ID =
   process.env.GESTAOCLICK_LOJA_ID || process.env.CLICK_API_STORE_ID
+
+const STORE_IDS: string[] = (() => {
+  const multi = process.env.GESTAOCLICK_LOJA_IDS
+  if (multi) {
+    return multi
+      .split(',')
+      .map((s) => s.trim())
+      .filter(Boolean)
+  }
+  return STORE_ID ? [STORE_ID] : []
+})()
 const DEFAULT_REVALIDATE = Number(
   process.env.GESTAOCLICK_REVALIDATE_SECONDS || 60,
 )
-const IN_STOCK_CACHE_TTL_MS = 5 * 60 * 1000
-
-// let inStockCache: { products: Product[]; cachedAt: number } | null = null
-// let cacheBuildPromise: Promise<void> | null = null
 
 const hasCredentials = Boolean(ACCESS_TOKEN && SECRET_TOKEN)
 
@@ -88,11 +97,13 @@ const dedupeByCode = (products: Product[]) => {
       return
     }
 
-    const existingStock = existing.stockQuantity ?? 0
-    const nextStock = product.stockQuantity ?? 0
-    if (nextStock > existingStock) {
-      mapped.set(key, product)
-    }
+    const combinedStock =
+      (existing.stockQuantity ?? 0) + (product.stockQuantity ?? 0)
+    mapped.set(key, {
+      ...existing,
+      stockQuantity: combinedStock,
+      inStock: combinedStock > 0,
+    })
   })
 
   return Array.from(mapped.values())
@@ -132,7 +143,9 @@ const getImages = (data: GestaoclickProduct): string[] => {
 
 const mapProduct = (data: GestaoclickProduct): Product => {
   const id = getString(data.id, '') || String(data.id ?? '')
-  const name = getString(data.nome, 'Produto')
+  const rawName = getString(data.nome, 'Produto')
+  const name = sanitizeProductTitle(rawName)
+  const hiddenTitleTags = getHiddenProductTitleTags(rawName)
   const code =
     getString(data.codigo_interno) ||
     getString(data.codigo) ||
@@ -206,18 +219,18 @@ const mapProduct = (data: GestaoclickProduct): Product => {
     ? ncmCode || cestCode || ''
     : fallbackCategory
   const brandName =
-    getString(data.marca) || getString(data.fabricante) || 'MG Trator'
+    getString(data.marca) || getString(data.fabricante) || 'MG Tratorpeças'
 
   return {
     id,
     name,
     code,
-    slug: slugify(`${name}-${code}`),
+    slug: slugify(`${rawName}-${code}`),
     description,
     price,
     categoryId,
     categoryName,
-    brandId: slugify(brandName) || 'mg-trator',
+    brandId: slugify(brandName) || 'mg-tratorpeças',
     brandName,
     images,
     thumbnail,
@@ -226,6 +239,7 @@ const mapProduct = (data: GestaoclickProduct): Product => {
     sku: code,
     partNumber: getString(data.codigo_barra, code),
     deliveryType: 'pronta-entrega',
+    tags: hiddenTitleTags,
     isFeatured: Boolean(data.destaque),
     isNew: Boolean(data.novo),
     createdAt: getString(data.cadastrado_em) || new Date().toISOString(),
@@ -298,96 +312,124 @@ export const getGestaoclickProducts = async (
   }
 
   try {
-    const params = new URLSearchParams()
-    if (STORE_ID) {
-      params.set('loja_id', STORE_ID)
-    }
+    const baseParams = new URLSearchParams()
     if (filters?.search) {
       const trimmed = filters.search.trim()
       if (trimmed) {
         const isCodeSearch = /^\d+$/.test(trimmed)
         if (isCodeSearch) {
-          params.set('codigo', trimmed)
+          baseParams.set('codigo', trimmed)
         } else {
-          params.set('nome', trimmed)
+          baseParams.set('nome', trimmed)
         }
       }
     }
     if (filters?.categoryId && /^\d+$/.test(filters.categoryId)) {
-      params.set('grupo_id', filters.categoryId)
-    }
-    if (filters?.inStock !== undefined) {
-      params.set('ativo', filters.inStock ? '1' : '0')
+      baseParams.set('grupo_id', filters.categoryId)
     }
 
-    const page = pagination?.page || 1
-    const limit = pagination?.limit || 20
-    
-    params.set('pagina', String(page))
-    params.set('limite', String(limit))
+    baseParams.set('ativo', '1')
 
-    const response = await fetchGestaoclick<
-      GestaoclickListResponse<GestaoclickProduct>
-    >('/api/produtos', params)
+    const virtualPage = pagination?.page || 1
+    const virtualLimit = pagination?.limit || 20
+    const applyStockFilter = filters?.inStock !== false
 
-    const refineProducts = (products: Product[]) => {
-      let filtered = dedupeByCode(products)
+    const API_BATCH = 100
+    const MAX_API_CALLS = 5
+    const neededAccumulated = virtualPage * virtualLimit
 
-      const search = filters?.search?.toLowerCase()
-      if (search) {
-        filtered = filtered.filter((product) =>
-          [
-            product.name,
-            product.description,
-            product.code,
-            product.brandName,
-            product.categoryName,
-          ]
-            .filter(Boolean)
-            .some((value) => value.toLowerCase().includes(search)),
-        )
+    const storeIds = STORE_IDS.length > 0 ? STORE_IDS : [null]
+
+    const collected: Product[] = []
+    const seenCodes = new Set<string>()
+    let apiPage = 1
+    let apiTotalItems = 0
+    let apiTotalPages = 1
+
+    while (
+      collected.length < neededAccumulated + virtualLimit &&
+      apiPage <= apiTotalPages &&
+      apiPage <= Math.max(MAX_API_CALLS * virtualPage, MAX_API_CALLS * 2)
+    ) {
+      // Busca o mesmo lote em paralelo para todas as lojas
+      const responses = await Promise.all(
+        storeIds.map((lojaId) => {
+          const params = new URLSearchParams(baseParams)
+          if (lojaId) params.set('loja_id', lojaId)
+          params.set('pagina', String(apiPage))
+          params.set('limite', String(API_BATCH))
+          return fetchGestaoclick<GestaoclickListResponse<GestaoclickProduct>>(
+            '/api/produtos',
+            params,
+          )
+        }),
+      )
+
+      const primary = responses[0]
+      apiTotalItems = primary.meta?.total_registros ?? 0
+      apiTotalPages =
+        primary.meta?.total_paginas ?? Math.ceil(apiTotalItems / API_BATCH)
+
+      const allMapped = responses.flatMap((r) => r.data.map(mapProduct))
+      const deduped = dedupeByCode(allMapped)
+
+      for (const product of deduped) {
+        const key = product.code
+          ? `${product.code}::${product.name}`
+          : product.id
+        if (seenCodes.has(key)) continue
+        seenCodes.add(key)
+        if (!applyStockFilter || (product.stockQuantity ?? 0) > 0) {
+          collected.push(product)
+        }
       }
 
-      if (filters?.categoryId) {
-        filtered = filtered.filter((product) => {
-          const categoryMatch = [
-            product.categoryId.toLowerCase(),
-            product.categoryName.toLowerCase(),
-            slugify(product.categoryName),
-          ]
-          return categoryMatch.includes(filters.categoryId!.toLowerCase())
-        })
-      }
-
-      if (filters?.brandId) {
-        filtered = filtered.filter((product) =>
-          [
-            product.brandId.toLowerCase(),
-            product.brandName.toLowerCase(),
-          ].includes(filters.brandId!.toLowerCase()),
-        )
-      }
-
-      return filtered
+      apiPage++
     }
 
-    const aggregated = response.data.map(mapProduct)
-    const refined = refineProducts(aggregated)
+    const exhaustedApi = apiPage > apiTotalPages
 
-    const total = response.meta?.total_registros ?? refined.length
-    const totalPages = response.meta?.total_paginas ?? Math.ceil(total / limit)
+    const startIndex = (virtualPage - 1) * virtualLimit
+    const actualTotalPages = Math.ceil(collected.length / virtualLimit) || 1
+    const effectivePage =
+      exhaustedApi && startIndex >= collected.length
+        ? actualTotalPages
+        : virtualPage
+    const effectiveStart = (effectivePage - 1) * virtualLimit
+    const pageData = collected.slice(
+      effectiveStart,
+      effectiveStart + virtualLimit,
+    )
+    const fetchedApiItems = (apiPage - 1) * API_BATCH
+    const ratio =
+      fetchedApiItems > 0 && applyStockFilter
+        ? collected.length / fetchedApiItems
+        : 1
+    const estimatedTotal = exhaustedApi
+      ? collected.length
+      : Math.max(collected.length, Math.round(apiTotalItems * ratio))
+    const estimatedTotalPages = Math.max(
+      pageData.length > 0 ? effectivePage : 1,
+      Math.ceil(estimatedTotal / virtualLimit),
+    )
+
+    const hasMore =
+      pageData.length === virtualLimit &&
+      (collected.length > effectiveStart + virtualLimit ||
+        apiPage <= apiTotalPages)
 
     return {
       success: true,
       data: {
-        data: refined,
+        data: pageData,
         pagination: {
-          page,
-          limit,
-          total,
-          totalPages,
-          hasNext: page < totalPages,
-          hasPrev: page > 1,
+          page: virtualPage,
+          limit: virtualLimit,
+          total: estimatedTotal,
+          totalPages: estimatedTotalPages,
+          hasNext: hasMore,
+          hasPrev: virtualPage > 1,
+          isExact: exhaustedApi,
         },
       },
     }

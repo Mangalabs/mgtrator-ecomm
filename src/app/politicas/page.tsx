@@ -17,13 +17,13 @@ export const metadata: Metadata = {
       'Políticas e Termos - Privacidade, Trocas, Garantia | MG Tratorpeças',
     description:
       'Conheça nossas políticas de privacidade (LGPD), trocas e devoluções, garantia, entrega e termos de uso. Compre com segurança e transparência na MG Tratorpeças.',
-    url: 'https://mgtratorpecas.com.br/politicas',
+    url: 'https://www.mgtratorpecas.com.br/politicas',
     siteName: 'MG Tratorpeças',
     locale: 'pt_BR',
     type: 'website',
   },
   alternates: {
-    canonical: 'https://mgtratorpecas.com.br/politicas',
+    canonical: 'https://www.mgtratorpecas.com.br/politicas',
   },
 }
 

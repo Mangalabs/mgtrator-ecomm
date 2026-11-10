@@ -1,40 +1,70 @@
 import '@/styles/global.css'
 
-import type { Metadata } from 'next'
-import { Inter } from 'next/font/google'
+import type { Metadata, Viewport } from 'next'
+import { Barlow_Condensed, Inter } from 'next/font/google'
 import { Header } from '@/components/layout/Header'
 import { Footer } from '@/components/layout/Footer'
 import { WhatsAppFloating } from '@/components/layout/WhatsAppFloating'
 import { CartProvider } from '@/contexts/CartContext'
 
 const inter = Inter({ subsets: ['latin'] })
+const barlowCondensed = Barlow_Condensed({
+  subsets: ['latin'],
+  weight: ['600', '700', '800'],
+  variable: '--font-barlow-condensed',
+})
+
+export const viewport: Viewport = {
+  themeColor: '#213A77',
+  width: 'device-width',
+  initialScale: 1,
+  maximumScale: 1,
+}
 
 export const metadata: Metadata = {
-  metadataBase: new URL('https://mgtratorpecas.com.br'),
+  metadataBase: new URL('https://www.mgtratorpecas.com.br'),
+
   title: {
-    default: 'MG Tratorpeças - E-commerce de Peças para Máquinas Pesadas',
+    default: 'MG Tratorpeças | Peças para Máquinas Pesadas',
     template: '%s | MG Tratorpeças',
   },
+
   description:
-    'E-commerce especializado em peças originais para maquinas pesadas e máquinas pesadas. Estoque completo Caterpillar, Volvo, Case, JCB. Compre online com entrega rápida em MG.',
-  keywords: [
-    'peças para maquinas pesadas',
-    'peças caterpillar',
-    'peças volvo',
-    'peças case',
-    'e-commerce MG',
-    'comprar peças online',
-  ],
+    'Especialistas em peças originais e de reposição para máquinas pesadas da linha amarela. Estoque completo Caterpillar, Volvo, Case e JCB. Entrega para todo o Brasil.',
+
   robots: {
     index: true,
     follow: true,
-    googleBot: {
-      index: true,
-      follow: true,
-      'max-video-preview': -1,
-      'max-image-preview': 'large',
-      'max-snippet': -1,
-    },
+  },
+
+  openGraph: {
+    title: 'MG Tratorpeças | Peças para Máquinas Pesadas',
+    description:
+      'Estoque completo de peças para escavadeiras, carregadeiras e mais. Compre com especialistas.',
+    url: 'https://www.mgtratorpecas.com.br/',
+    siteName: 'MG Tratorpeças',
+    locale: 'pt_BR',
+    type: 'website',
+    images: [
+      {
+        url: 'https://www.mgtratorpecas.com.br/logo-azul.png',
+        width: 1200,
+        height: 630,
+        alt: 'MG Tratorpeças - Linha Amarela',
+      },
+    ],
+  },
+
+  twitter: {
+    card: 'summary_large_image',
+    title: 'MG Tratorpeças | Peças para Máquinas Pesadas',
+    description:
+      'Estoque completo de peças para escavadeiras e carregadeiras.',
+    images: ['https://www.mgtratorpecas.com.br/logo-azul.png'],
+  },
+
+  alternates: {
+    canonical: 'https://www.mgtratorpecas.com.br/',
   },
 }
 
@@ -44,7 +74,10 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang='pt-BR' suppressHydrationWarning>
+    <html
+      lang='pt-BR'
+      className={barlowCondensed.variable}
+      suppressHydrationWarning>
       <body className={inter.className} suppressHydrationWarning>
         <CartProvider>
           <Header />
