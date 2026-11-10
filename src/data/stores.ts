@@ -3,17 +3,18 @@ import { Store } from './types';
 export type ExtendedStore = Store & {
   mapEmbed: string;
   mapsLink: string;
+  /** Perfil da unidade no Google Empresas. */
+  googleBusinessUrl: string;
+  /** Segunda a sexta; horários no formato HH:MM (schema.org). */
+  hours: { opens: string; closes: string; label: string };
   features: string[];
 };
-
-const ARAGUAINA_ADDRESS =
-  'Av. Cônego João Lima, 1047 - Setor Central, Araguaína - TO, 77804-010';
 
 export const storesData: ExtendedStore[] = [
   {
     id: 'store-sao-luis',
     name: 'Unidade São Luís',
-    slug: 'unidade-sao-luis',
+    slug: 'sao-luis',
     isActive: true,
     address: {
       street: 'Av. Guajajaras',
@@ -44,20 +45,27 @@ export const storesData: ExtendedStore[] = [
     updatedAt: new Date().toISOString(),
     mapEmbed: 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d296.24523649344457!2d-44.23968796725404!3d-2.5765193724946753!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x7f69ab0f5328e97%3A0xaea389787bb7ac44!2sMg%20Tratorpe%C3%A7as!5e0!3m2!1spt-BR!2sbr!4v1771627619764!5m2!1spt-BR!2sbr',
     mapsLink: 'https://maps.app.goo.gl/mLQSrLrvR9zhW5Kn9',
+    googleBusinessUrl: 'https://share.google/21D4uheFiMRyqyJ2Y',
+    hours: { opens: '08:00', closes: '18:00', label: 'Segunda a Sexta: 8h às 18h' },
   },
   {
     id: 'store-araguaina',
     name: 'Unidade Araguaína',
-    slug: 'unidade-araguaina',
+    slug: 'araguaina',
     isActive: true,
     address: {
       street: 'Av. Cônego João Lima',
-      number: '1047',
-      neighborhood: 'Setor Central',
+      number: 'Quadra 50, Lote 55',
+      neighborhood: 'Jardim dos Ipês II',
       city: 'Araguaína',
       state: 'TO',
-      zipCode: '77804-010',
+      zipCode: '77820-160',
       country: 'Brasil',
+    },
+    // Pino do perfil no Google Empresas.
+    coordinates: {
+      latitude: -7.1699374,
+      longitude: -48.23669,
     },
     contact: {
       phone: '+5563999828455',
@@ -69,7 +77,9 @@ export const storesData: ExtendedStore[] = [
     isMainStore: false,
     createdAt: '2026-10-28T00:00:00.000Z',
     updatedAt: new Date().toISOString(),
-    mapEmbed: `https://www.google.com/maps?q=${encodeURIComponent(ARAGUAINA_ADDRESS)}&output=embed`,
-    mapsLink: `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(ARAGUAINA_ADDRESS)}`,
+    mapEmbed: 'https://www.google.com/maps?q=-7.1699374,-48.23669&z=17&output=embed',
+    mapsLink: 'https://share.google/Gnjk18UqPqOIkylEh',
+    googleBusinessUrl: 'https://share.google/Gnjk18UqPqOIkylEh',
+    hours: { opens: '08:00', closes: '17:48', label: 'Segunda a Sexta: 8h às 17h48' },
   },
 ];

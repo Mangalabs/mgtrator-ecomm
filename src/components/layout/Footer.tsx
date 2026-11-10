@@ -262,7 +262,7 @@ export const Footer = () => {
                         {store.name}
                       </div>
                       <p className='text-xs text-[var(--neutral-400)] leading-relaxed'>
-                        {store.address.street}, {store.address.number},
+                        {store.address.street}, {store.address.number},{' '}
                         {store.address.neighborhood}
                         <br />
                         {store.address.city}/{store.address.state}

@@ -15,12 +15,25 @@ import {
   Star,
 } from 'lucide-react'
 import { motion } from 'motion/react'
+import Link from 'next/link'
 import { ImageWithFallback } from '@/components/figma/ImageWithFallback'
-import { storesData } from '@/data/stores'
+import { storesData, type ExtendedStore } from '@/data/stores'
 import { siteConfig } from '@/data/site'
 import PageHero from '../common/PageHero'
 
-export const LojasPageClient = () => {
+interface LojasPageClientProps {
+  stores?: ExtendedStore[]
+  title?: string
+  description?: string
+  breadcrumbs?: Array<{ label: string; href: string }>
+}
+
+export const LojasPageClient = ({
+  stores = storesData,
+  title = 'Nossas Lojas',
+  description = 'Unidades em São Luís/MA e Araguaína/TO',
+  breadcrumbs = [{ label: 'Lojas', href: '' }],
+}: LojasPageClientProps) => {
   const handleWhatsApp = (storeWhatsapp?: string) => {
     const phone = storeWhatsapp
       ? storeWhatsapp.replace(/\D/g, '')
@@ -34,14 +47,9 @@ export const LojasPageClient = () => {
   return (
     <div className='min-h-screen bg-white'>
       <PageHero
-        breadcrumbs={[
-          {
-            label: 'Lojas',
-            href: '',
-          },
-        ]}
-        title='Nossa Loja'
-        description='Visite nossa unidade'
+        breadcrumbs={breadcrumbs}
+        title={title}
+        description={description}
       />
 
       <section className='bg-gradient-to-br from-slate-50 via-white to-blue-50/30 relative overflow-hidden'>
@@ -52,7 +60,7 @@ export const LojasPageClient = () => {
 
         <div className='relative max-w-7xl mx-auto px-4'>
           <div className='space-y-8'>
-            {storesData.map((store, index) => (
+            {stores.map((store, index) => (
               <motion.div
                 key={store.id}
                 initial={{ opacity: 0, y: 30 }}
@@ -72,8 +80,8 @@ export const LojasPageClient = () => {
                       </div>
                     </div>
 
-                    <div className='aspect-video lg:aspect-[4/3] overflow-hidden relative'>
-                      {store.image && (
+                    {store.image && (
+                      <div className='aspect-video lg:aspect-[4/3] overflow-hidden relative'>
                         <ImageWithFallback
                           src={
                             store.image.startsWith('/')
@@ -84,10 +92,16 @@ export const LojasPageClient = () => {
                           sizes='(max-width: 1024px) 100vw, 50vw'
                           className='w-full h-full object-cover group-hover:scale-105 transition-transform duration-700'
                         />
-                      )}
-                    </div>
+                      </div>
+                    )}
 
-                    <div className='h-64 overflow-hidden border-t-2 border-[var(--neutral-200)]'>
+                    {/* Sem foto da unidade, o mapa ocupa a coluna inteira. */}
+                    <div
+                      className={`overflow-hidden ${
+                        store.image
+                          ? 'h-64 border-t-2 border-[var(--neutral-200)]'
+                          : 'h-80 lg:h-full'
+                      }`}>
                       <iframe
                         src={store.mapEmbed}
                         width='100%'
@@ -102,7 +116,15 @@ export const LojasPageClient = () => {
 
                   <div className='p-8 lg:p-10 flex flex-col'>
                     <h2 className='font-black text-3xl text-[var(--neutral-900)] mb-6'>
-                      {store.name}
+                      {stores.length > 1 ? (
+                        <Link
+                          href={`/lojas/${store.slug}`}
+                          className='hover:text-[var(--primary)] hover:underline underline-offset-4'>
+                          {store.name}
+                        </Link>
+                      ) : (
+                        store.name
+                      )}
                     </h2>
 
                     <div className='space-y-4 mb-8'>
@@ -115,7 +137,8 @@ export const LojasPageClient = () => {
                             Endereço
                           </div>
                           <div className='text-sm text-[var(--neutral-700)] leading-relaxed'>
-                            {store.address.street}, {store.address.number}
+                            {store.address.street}, {store.address.number} -{' '}
+                            {store.address.neighborhood}
                             <br />
                             {store.address.city}/{store.address.state}
                             <br />
@@ -164,7 +187,7 @@ export const LojasPageClient = () => {
                             Horário de Funcionamento
                           </div>
                           <div className='text-sm text-[var(--neutral-700)] space-y-1'>
-                            <div>{siteConfig.businessHours.detailed}</div>
+                            <div>{store.hours.label}</div>
                           </div>
                         </div>
                       </div>

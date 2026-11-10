@@ -1,6 +1,7 @@
 import { Metadata } from 'next'
 import { HomePageClient } from '@/components/home/HomePageClient'
 import { storesData } from '@/data/stores'
+import { jsonLdGraph, organizationJsonLd, storeJsonLd } from '@/lib/structuredData'
 
 export const metadata: Metadata = {
   title: 'MG Tratorpeças | Peças para Máquinas e Equipamentos Pesados',
@@ -59,24 +60,7 @@ export const metadata: Metadata = {
 }
 
 export default function Home() {
-  const matriz = storesData[0]
-
-  const jsonLd = {
-    '@context': 'https://schema.org',
-    '@type': 'AutoPartsStore', 
-    name: 'MG Tratorpeças',
-    url: 'https://www.mgtratorpecas.com.br',
-    description: 'Peças para máquinas pesadas da linha amarela e para máquinas agrícolas (MG Agro).',
-    image: 'https://www.mgtratorpecas.com.br/logo-azul.png',
-    address: {
-      '@type': 'PostalAddress',
-      streetAddress: `${matriz.address.street}, ${matriz.address.number} - ${matriz.address.neighborhood}`,
-      addressLocality: matriz.address.city,
-      addressRegion: matriz.address.state,
-      postalCode: matriz.address.zipCode,
-      addressCountry: 'BR'
-    }
-  }
+  const jsonLd = jsonLdGraph(organizationJsonLd(storesData), ...storesData.map(storeJsonLd))
 
   return (
     <>
