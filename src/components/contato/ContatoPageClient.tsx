@@ -56,7 +56,7 @@ export const ContatoPageClient = () => {
       <section className='py-16'>
         <div className='max-w-7xl mx-auto px-4'>
           <div className='grid lg:grid-cols-3 gap-8 mb-12'>
-            <div className='bg-gradient-to-br from-[var(--primary)] to-[#1a2d5e] text-white p-8 rounded-2xl'>
+            <div className='bg-gradient-to-br from-[var(--primary)] to-[var(--primary-dark)] text-white p-8 rounded-2xl'>
               <div className='w-14 h-14 bg-white/20 rounded-xl flex items-center justify-center mb-4'>
                 <Phone className='w-7 h-7' />
               </div>
@@ -64,7 +64,8 @@ export const ContatoPageClient = () => {
               <div className='space-y-2 mb-4'>
                 {storesData.map((store) => (
                   <div key={store.id}>
-                    {store.name}: {store.contact.phoneFormatted}
+                    {store.name}:{' '}
+                    <span className='whitespace-nowrap'>{store.contact.phoneFormatted}</span>
                   </div>
                 ))}
               </div>
@@ -83,7 +84,8 @@ export const ContatoPageClient = () => {
               <div className='space-y-2 mb-4'>
                 {storesData.map((store) => (
                   <div key={store.id}>
-                    {store.name}: {store.contact.whatsapp}
+                    {store.name}:{' '}
+                    <span className='whitespace-nowrap'>{store.contact.phoneFormatted}</span>
                   </div>
                 ))}
               </div>
@@ -96,7 +98,7 @@ export const ContatoPageClient = () => {
               </a>
             </div>
 
-            <div className='bg-gradient-to-br from-[var(--secondary)] to-[#e6b815] text-[var(--neutral-900)] p-8 rounded-2xl'>
+            <div className='bg-gradient-to-br from-[var(--secondary)] to-[var(--secondary-dark)] text-[var(--neutral-900)] p-8 rounded-2xl'>
               <div className='w-14 h-14 bg-white/30 rounded-xl flex items-center justify-center mb-4'>
                 <Mail className='w-7 h-7' />
               </div>
@@ -254,7 +256,7 @@ export const ContatoPageClient = () => {
 
                     <Link
                       href='/lojas'
-                      className='inline-block mt-4 text-[var(--primary)] font-medium hover:text-[var(--secondary)] transition-colors'>
+                      className='inline-block mt-4 text-[var(--primary)] font-medium hover:underline transition-colors'>
                       Ver detalhes completos das lojas →
                     </Link>
                   </div>

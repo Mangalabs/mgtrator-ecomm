@@ -18,7 +18,7 @@ import { getWhatsAppUrl } from '@/lib/whatsapp'
 export const Footer = () => {
   return (
     <footer
-      className='bg-linear-to-b from-[#0c162d] to-[#0f1419] text-white p-4'
+      className='bg-linear-to-b from-[var(--ink)] to-[var(--ink)] text-white p-4'
       role='contentinfo'>
       <div className='border-b border-(--neutral-800)'>
         <div className='max-w-9/10 mx-auto sm:py-2'>
@@ -146,7 +146,8 @@ export const Footer = () => {
               <ul className='space-y-2'>
                 {[
                   { name: 'Home', href: '/' },
-                  { name: 'Produtos', href: '/produtos' },
+                  { name: 'Catálogo', href: '/catalogo' },
+                  { name: 'MG Agro', href: '/catalogo/linha-verde' },
                   { name: 'Lojas', href: '/lojas' },
                   { name: 'Contato', href: '/contato' },
                   { name: 'Políticas', href: '/politicas' },

@@ -105,7 +105,7 @@ export interface Store extends BaseEntity {
   name: string
   slug: string
   address: BaseAddress
-  coordinates: {
+  coordinates?: {
     latitude: number
     longitude: number
   }
@@ -361,4 +361,40 @@ export interface ApiError {
   error: string
   code?: string
   details?: string
+}
+
+export type CatalogLineId = 'linha-amarela' | 'linha-verde'
+
+export interface CatalogItem {
+  id: string
+  name: string
+  description: string
+  image: string
+}
+
+export interface CatalogCategory {
+  id: string
+  name: string
+  description: string
+  items: CatalogItem[]
+}
+
+export interface CatalogContact {
+  label: string
+  phoneFormatted: string
+  whatsapp: string
+}
+
+export interface CatalogLine {
+  id: CatalogLineId
+  brand: string
+  title: string
+  description: string
+  heroImage: string
+  /** O primeiro contato recebe as consultas por item. */
+  contacts: CatalogContact[]
+  pdf: { href: string; size: string }
+  /** Marcas atendidas, exibidas como texto (sem logos de terceiros). */
+  brands: string[]
+  categories: CatalogCategory[]
 }

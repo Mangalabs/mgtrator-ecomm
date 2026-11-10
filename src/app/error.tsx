@@ -3,6 +3,7 @@
 import { useEffect } from 'react'
 import { AlertCircle, RefreshCw, Home } from 'lucide-react'
 import Link from 'next/link'
+import { siteConfig } from '@/data/site'
 
 export default function Error({
   error,
@@ -40,7 +41,7 @@ export default function Error({
         <div className="flex flex-col sm:flex-row gap-4 justify-center">
           <button
             onClick={reset}
-            className="inline-flex items-center justify-center gap-3 bg-[#213A77] hover:bg-[#1a2d5e] text-white px-8 py-4 rounded-xl font-bold transition"
+            className="inline-flex items-center justify-center gap-3 bg-[var(--primary)] hover:bg-[var(--primary-dark)] text-white px-8 py-4 rounded-xl font-bold transition"
           >
             <RefreshCw className="w-5 h-5" />
             Tentar Novamente
@@ -48,7 +49,7 @@ export default function Error({
 
           <Link
             href="/"
-            className="inline-flex items-center justify-center gap-3 bg-white border-2 border-slate-200 hover:border-[#213A77] text-slate-900 px-8 py-4 rounded-xl font-bold transition"
+            className="inline-flex items-center justify-center gap-3 bg-white border-2 border-slate-200 hover:border-[var(--primary)] text-slate-900 px-8 py-4 rounded-xl font-bold transition"
           >
             <Home className="w-5 h-5" />
             Voltar para Home
@@ -58,11 +59,11 @@ export default function Error({
         <div className="mt-12 bg-white rounded-2xl border-2 border-slate-200 p-6">
           <p className="text-slate-700">
             Se o problema persistir, entre em contato conosco pelo{' '}
-            <a href="https://wa.me/5563999828455" className="text-[#213A77] hover:underline font-semibold">
+            <a href={`https://wa.me/${siteConfig.contact.whatsapp}`} className="text-[var(--primary)] hover:underline font-semibold">
               WhatsApp
             </a>
             {' '}ou{' '}
-            <Link href="/contato" className="text-[#213A77] hover:underline font-semibold">
+            <Link href="/contato" className="text-[var(--primary)] hover:underline font-semibold">
               formulário de contato
             </Link>
             .

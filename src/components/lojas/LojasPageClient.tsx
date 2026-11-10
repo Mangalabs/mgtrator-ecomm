@@ -107,7 +107,7 @@ export const LojasPageClient = () => {
 
                     <div className='space-y-4 mb-8'>
                       <div className='flex items-start gap-4 p-4 bg-slate-50 rounded-2xl border border-[var(--neutral-200)] hover:border-[var(--primary)]/30 transition-colors'>
-                        <div className='w-12 h-12 bg-gradient-to-br from-[var(--primary)] to-[#1a2d5e] rounded-xl flex items-center justify-center flex-shrink-0'>
+                        <div className='w-12 h-12 bg-gradient-to-br from-[var(--primary)] to-[var(--primary-dark)] rounded-xl flex items-center justify-center flex-shrink-0'>
                           <MapPin className='w-6 h-6 text-white' />
                         </div>
                         <div className='flex-1'>
@@ -125,7 +125,7 @@ export const LojasPageClient = () => {
                       </div>
 
                       <div className='flex items-start gap-4 p-4 bg-slate-50 rounded-2xl border border-[var(--neutral-200)] hover:border-[var(--primary)]/30 transition-colors'>
-                        <div className='w-12 h-12 bg-gradient-to-br from-[var(--secondary)] to-[#f4d348] rounded-xl flex items-center justify-center flex-shrink-0'>
+                        <div className='w-12 h-12 bg-gradient-to-br from-[var(--secondary)] to-[var(--secondary-light)] rounded-xl flex items-center justify-center flex-shrink-0'>
                           <Phone className='w-6 h-6 text-[var(--primary)]' />
                         </div>
                         <div className='flex-1'>
@@ -147,7 +147,7 @@ export const LojasPageClient = () => {
                                 <a
                                   href={`https://wa.me/${store.contact.whatsapp.replace(/\D/g, '')}`}
                                   className='hover:text-[#25D366] transition-colors font-medium'>
-                                  {store.contact.whatsapp}
+                                  {store.contact.phoneFormatted}
                                 </a>
                               </>
                             )}
@@ -237,7 +237,7 @@ export const LojasPageClient = () => {
               viewport={{ once: true }}
               transition={{ delay: 0.1 }}
               className='group bg-gradient-to-br from-white to-slate-50/50 rounded-3xl border-2 border-[var(--neutral-200)] p-6 text-center hover:border-[var(--primary)]/50 hover:shadow-2xl transition-all duration-500'>
-              <div className='w-16 h-16 bg-gradient-to-br from-[var(--primary)] to-[#1a2d5e] rounded-2xl flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform duration-300'>
+              <div className='w-16 h-16 bg-gradient-to-br from-[var(--primary)] to-[var(--primary-dark)] rounded-2xl flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform duration-300'>
                 <Wrench className='w-8 h-8 text-white' />
               </div>
               <h3 className='font-black text-xl text-[var(--neutral-900)] mb-3'>
@@ -273,7 +273,7 @@ export const LojasPageClient = () => {
               viewport={{ once: true }}
               transition={{ delay: 0.3 }}
               className='group bg-gradient-to-br from-white to-slate-50/50 rounded-3xl border-2 border-[var(--neutral-200)] p-6 text-center hover:border-[var(--primary)]/50 hover:shadow-2xl transition-all duration-500'>
-              <div className='w-16 h-16 bg-gradient-to-br from-[var(--secondary)] to-[#f4d348] rounded-2xl flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform duration-300'>
+              <div className='w-16 h-16 bg-gradient-to-br from-[var(--secondary)] to-[var(--secondary-light)] rounded-2xl flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform duration-300'>
                 <Car className='w-8 h-8 text-[var(--primary)]' />
               </div>
               <h3 className='font-black text-xl text-[var(--neutral-900)] mb-3'>

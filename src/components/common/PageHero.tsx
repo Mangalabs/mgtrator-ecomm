@@ -16,7 +16,7 @@ const PageHero = ({
 }: PageHeroProps) => {
   return (
     <section
-      className='relative bg-gradient-to-br from-[var(--primary)] via-[#1a2d5e] to-[var(--primary)] text-white overflow-hidden'
+      className='relative bg-gradient-to-br from-[var(--primary)] via-[var(--primary-dark)] to-[var(--primary)] text-white overflow-hidden'
       style={{ height }}>
       <div
         className="
@@ -47,7 +47,7 @@ const PageHero = ({
         />
       </div>
 
-      <div className='absolute inset-0 bg-linear-to-r from-(--primary)/95 via-[#1a2d5e]/90 to-[#1a2d5e]/90 sm:to-transparent lg:bg-none z-15 pointer-events-none' />
+      <div className='absolute inset-0 bg-linear-to-r from-(--primary)/95 via-[var(--primary-dark)]/90 to-[var(--primary-dark)]/90 sm:to-transparent lg:bg-none z-15 pointer-events-none' />
 
       <div className='absolute inset-0 opacity-5 z-0 pointer-events-none'>
         <div className='absolute top-0 right-0 w-96 h-96 bg-white rounded-full blur-3xl transform translate-x-1/2 -translate-y-1/2'></div>
@@ -58,7 +58,7 @@ const PageHero = ({
         <div className='max-w-2xl'>
           {breadcrumbs && <Breadcrumbs items={breadcrumbs} />}
 
-          <h1 className='text-yellow-400 mt-6 mb-2 drop-shadow-md'>{title}</h1>
+          <h1 className='text-[var(--secondary)] mt-6 mb-2 drop-shadow-md'>{title}</h1>
 
           {description && (
             <p className='text-xl max-w-2xl text-white/95 drop-shadow-md'>

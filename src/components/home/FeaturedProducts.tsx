@@ -54,7 +54,7 @@ export const FeaturedProducts = () => {
 
           {loading ? (
             <div className='flex flex-col items-center justify-center py-20 gap-4'>
-              <Loader2 className='w-10 h-10 text-[#213A77] animate-spin' />
+              <Loader2 className='w-10 h-10 text-[var(--primary)] animate-spin' />
               <p className='text-slate-500 font-medium'>
                 Carregando destaques...
               </p>
@@ -83,7 +83,7 @@ export const FeaturedProducts = () => {
               <div className='text-center'>
                 <Link
                   href='/produtos'
-                  className='group inline-flex items-center gap-3 bg-gradient-to-r from-[#213A77] to-[#1a2d5f] text-white px-10 py-5 rounded-2xl font-black text-lg hover:shadow-2xl hover:scale-105 transition-all'>
+                  className='group inline-flex items-center gap-3 bg-gradient-to-r from-[var(--primary)] to-[var(--primary-dark)] text-white px-10 py-5 rounded-2xl font-black text-lg hover:shadow-2xl hover:scale-105 transition-all'>
                   <span>Ver Catálogo Completo</span>
                   <ArrowRight className='w-6 h-6 group-hover:translate-x-2 transition-transform' />
                 </Link>

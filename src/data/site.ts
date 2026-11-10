@@ -11,18 +11,25 @@ export const siteConfig = {
     },
     productPlaceholder: '/no-image.jpg',
   },
+  // Contato geral = matriz São Luís. `whatsapp` inclui o código do país (wa.me).
   contact: {
-    phone: '63999828455',
-    phoneFormatted: '(63) 99982-8455',
-    whatsapp: '63999828455',
+    phone: '+5598991620972',
+    phoneFormatted: '(98) 99162-0972',
+    whatsapp: '5598991620972',
     email: 'comercial@mgtratorpecas.com.br',
+  },
+  agroContact: {
+    name: 'MG Agro',
+    phone: '+5563991012458',
+    phoneFormatted: '(63) 99101-2458',
+    whatsapp: '5563991012458',
   },
   social: {
     instagram: 'https://www.instagram.com/mg_tratorpecas_/',
     instagramHandle: '@mgtratorpecas',
   },
   location: {
-    city: 'São Luis/MA',
+    city: 'São Luís/MA · Araguaína/TO',
   },
   businessHours: {
     short: 'Seg–Sex | 8h–18h',

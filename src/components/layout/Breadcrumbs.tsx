@@ -15,10 +15,10 @@ interface BreadcrumbsProps {
 }
 
 export const Breadcrumbs = ({ items, className = '', theme = 'light' }: BreadcrumbsProps) => {
-  let textColor = 'text-yellow-200'
-  let hoverColor = 'hover:text-yellow-200/70'
-  let activeColor = 'text-yellow-400'
-  let iconColor = 'text-yellow-400/80'
+  let textColor = 'text-[var(--secondary-light)]'
+  let hoverColor = 'hover:text-[var(--secondary-light)]/70'
+  let activeColor = 'text-[var(--secondary)]'
+  let iconColor = 'text-[var(--secondary)]/80'
 
   if (theme === 'dark') {
     textColor = 'text-white/80'

@@ -5,8 +5,8 @@ import { motion } from 'motion/react'
 import Link from 'next/link'
 import Image from 'next/image'
 import {
-  ShoppingCart,
-  Star,
+  BookOpen,
+  Sprout,
   Truck,
   Warehouse,
   CreditCard,
@@ -17,39 +17,23 @@ import {
   MapPin,
   MessageCircle,
 } from 'lucide-react'
-import { ProductCard } from '@/components/products/ProductCard'
-import { QuickViewModal } from '@/components/products/QuickViewModal'
-import type { Product } from '@/data/types'
-
-type DeliveryType = 'pronta-entrega' | 'sob-encomenda' | 'importado'
-
-const normalizeDeliveryType = (value: unknown): DeliveryType | undefined => {
-  if (
-    value === 'pronta-entrega' ||
-    value === 'sob-encomenda' ||
-    value === 'importado'
-  ) {
-    return value
-  }
-  return undefined
-}
-
-type HomePageClientProps = {
-  featuredProducts: Product[]
-  newProducts: Product[]
-}
+import { LinesSection } from './LinesSection'
 
 const buttonStyles = {
   products: {
-    bg: 'bg-gradient-to-r from-[var(--secondary)] to-[#ffd93d] text-black hover:scale-105',
-    Icon: ShoppingCart,
+    bg: 'bg-gradient-to-r from-[var(--secondary)] to-[var(--secondary-light)] text-black hover:scale-105',
+    Icon: BookOpen,
+  },
+  agro: {
+    bg: 'bg-agro-lime text-agro-deep hover:scale-105',
+    Icon: Sprout,
   },
   quote: {
     bg: 'bg-gradient-to-r from-[#25D366] to-[#128C7E] text-white hover:scale-105',
     Icon: MessageCircle,
   },
   location: {
-    bg: 'bg-gradient-to-r from-[#0f0f62] to-[#12128c] text-white hover:scale-105',
+    bg: 'bg-gradient-to-r from-[var(--primary-dark)] to-[var(--primary)] text-white hover:scale-105',
     Icon: MapPin,
   },
 } as const
@@ -74,9 +58,21 @@ const heroSlides: Array<{
       'Referência nacional na venda de peças para linha amarela — escavadeiras, carregadeiras, motoniveladoras, retroescavadeiras e outros equipamentos pesados.',
       'Peças originais e componentes de reposição para motor, sistema hidráulico, transmissão, material rodante e demais sistemas essenciais.',
     ],
-    cta: 'Ver Produtos',
-    link: '/produtos',
+    cta: 'Ver Catálogo',
+    link: '/catalogo/linha-amarela',
     type: 'products',
+  },
+  {
+    image: '/catalogo/linha-verde/trator-campo.webp',
+    title: 'Peças para Máquinas Agrícolas',
+    subtitle: 'Conheça a MG Agro, a linha verde da MG Tratorpeças',
+    description: [
+      'Peças de reposição para plantadeiras, pulverizadores e colheitadeiras, com a mesma agilidade que atende a linha amarela.',
+      'Consulte a peça direto pelo WhatsApp da MG Agro.',
+    ],
+    cta: 'Ver Catálogo MG Agro',
+    link: '/catalogo/linha-verde',
+    type: 'agro',
   },
   {
     image: '/retroescavadeira-cat.jpg',
@@ -94,9 +90,9 @@ const heroSlides: Array<{
   {
     image: '/carregadeira-volvo.jpg',
     title: 'Prefere Comprar Presencialmente?',
-    subtitle: 'Visite nossa loja física e veja o estoque de perto',
+    subtitle: 'Visite nossas lojas em São Luís/MA e Araguaína/TO',
     description: [
-      'Temos loja física com estoque disponível para retirada imediata. Nossos consultores estão prontos para te atender.',
+      'Temos lojas físicas com estoque disponível para retirada imediata. Nossos consultores estão prontos para te atender.',
       'Funcionamos de segunda a sexta das 8h às 18h. Venha nos visitar!',
     ],
     cta: 'Ver Endereço',
@@ -111,9 +107,9 @@ export function Highlights() {
       icon: <Truck className='w-8 h-8' />,
       title: 'Entrega Rápida',
       description: 'Para todo Brasil',
-      iconBg: 'bg-yellow-400',
+      iconBg: 'bg-[var(--secondary)]',
       iconColor: 'text-blue-900',
-      accentColor: 'bg-yellow-400',
+      accentColor: 'bg-[var(--secondary)]',
     },
     {
       icon: <Warehouse className='w-8 h-8' />,
@@ -127,9 +123,9 @@ export function Highlights() {
       icon: <CreditCard className='w-8 h-8' />,
       title: 'Parcele em 12x',
       description: 'No cartão',
-      iconBg: 'bg-yellow-400',
+      iconBg: 'bg-[var(--secondary)]',
       iconColor: 'text-blue-900',
-      accentColor: 'bg-yellow-400',
+      accentColor: 'bg-[var(--secondary)]',
     },
     {
       icon: <QrCode className='w-8 h-8' />,
@@ -179,11 +175,7 @@ export function Highlights() {
   )
 }
 
-export const HomePageClient = ({
-  featuredProducts,
-  newProducts,
-}: HomePageClientProps) => {
-  const [selectedProduct, setSelectedProduct] = useState<Product | null>(null)
+export const HomePageClient = () => {
   const [currentSlide, setCurrentSlide] = useState(0)
 
   useEffect(() => {
@@ -202,7 +194,7 @@ export const HomePageClient = ({
 
   return (
     <div className='min-h-screen bg-[#F5F5F5]'>
-      <section className='relative bg-linear-to-br from-[#1a2d5e] to-[#0c162d] overflow-hidden min-h-[calc(100vh-100px)] flex flex-col justify-center py-32 md:py-40 lg:py-48'>
+      <section className='relative bg-linear-to-br from-[var(--primary-dark)] to-[var(--ink)] overflow-hidden min-h-[calc(100vh-100px)] flex flex-col justify-center py-32 md:py-40 lg:py-48'>
         <div
           className='absolute inset-0 bg-[url("/icon-branco.png")] bg-repeat opacity-8 bg-[length:80px_80px] pointer-events-none'
           style={{
@@ -323,65 +315,7 @@ export const HomePageClient = ({
 
       <Highlights />
 
-      <section className='py-12 bg-[#F5F5F5]'>
-        <div className='w-full max-w-9/10 mx-auto px-4'>
-          <div className='flex items-center justify-between mb-8'>
-            <div className='flex items-center gap-3'>
-              <div>
-                <h2 className='font-black text-3xl text-blue-900 uppercase font-bold'>
-                  Produtos em Destaque
-                </h2>
-                <div className='h-2 md:w-72  rounded-full bg-linear-to-r from-blue-900 to-blue-200/5'></div>
-              </div>
-            </div>
-          </div>
-
-          <div className='grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4'>
-            {featuredProducts.map((product, index) => {
-              const deliveryType = normalizeDeliveryType(product.deliveryType)
-              return (
-                <motion.div
-                  key={product.id}
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: index * 0.05 }}>
-                  <ProductCard
-                    id={product.id}
-                    name={product.name}
-                    price={product.price}
-                    image={product.thumbnail}
-                    code={product.code}
-                    partNumber={product.partNumber}
-                    deliveryType={deliveryType}
-                    stockQuantity={product.inStock ? 100 : 0}
-                    thumbnail={product.thumbnail}
-                    onQuickView={() => setSelectedProduct(product)}
-                    showInstallments={true}
-                    installmentsCount={12}
-                  />
-                </motion.div>
-              )
-            })}
-          </div>
-
-          <div className='mt-10 flex justify-center'>
-            <Link href='/produtos'>
-              <button className='bg-gradient-to-r from-[#0f0f62] to-[#12128c] text-white px-8 py-3 rounded-xl font-bold text-lg shadow-md hover:shadow-lg transition-all flex items-center gap-2'>
-                Ver Todos os Produtos
-                <ArrowRight className='w-5 h-5' />
-              </button>
-            </Link>
-          </div>
-        </div>
-      </section>
-
-      {selectedProduct && (
-        <QuickViewModal
-          product={selectedProduct}
-          onClose={() => setSelectedProduct(null)}
-        />
-      )}
+      <LinesSection />
     </div>
   )
 }

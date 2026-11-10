@@ -1,16 +1,21 @@
 import '@/styles/global.css'
 
 import type { Metadata, Viewport } from 'next'
-import { Inter } from 'next/font/google'
+import { Barlow_Condensed, Inter } from 'next/font/google'
 import { Header } from '@/components/layout/Header'
 import { Footer } from '@/components/layout/Footer'
 import { WhatsAppFloating } from '@/components/layout/WhatsAppFloating'
 import { CartProvider } from '@/contexts/CartContext'
 
 const inter = Inter({ subsets: ['latin'] })
+const barlowCondensed = Barlow_Condensed({
+  subsets: ['latin'],
+  weight: ['600', '700', '800'],
+  variable: '--font-barlow-condensed',
+})
 
 export const viewport: Viewport = {
-  themeColor: '#0055A4',
+  themeColor: '#213A77',
   width: 'device-width',
   initialScale: 1,
   maximumScale: 1,
@@ -69,7 +74,10 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang='pt-BR' suppressHydrationWarning>
+    <html
+      lang='pt-BR'
+      className={barlowCondensed.variable}
+      suppressHydrationWarning>
       <body className={inter.className} suppressHydrationWarning>
         <CartProvider>
           <Header />

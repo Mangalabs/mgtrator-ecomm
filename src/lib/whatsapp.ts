@@ -1,7 +1,11 @@
 import { siteConfig } from '@/data/site'
 
-export const getWhatsAppUrl = (productName?: string, productCode?: string) => {
-  const baseUrl = `https://wa.me/${siteConfig.contact.whatsapp}`
+export const getWhatsAppUrl = (
+  productName?: string,
+  productCode?: string,
+  whatsapp: string = siteConfig.contact.whatsapp,
+) => {
+  const baseUrl = `https://wa.me/${whatsapp}`
   
   if (!productName) {
     return `${baseUrl}?text=${encodeURIComponent('Olá! Gostaria de falar com um consultor e solicitar um orçamento.')}`

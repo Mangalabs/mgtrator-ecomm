@@ -10,21 +10,20 @@ export const companyData: CompanyInfo = {
   logoWhite:
     'https://mgtratorpecas.com.br/assets/logo_mgtratorpecas_png_branco-BQx3whQg.png',
 
-  tagline: 'Peças Originais para maquinas pesadas e Máquinas Pesadas',
+  tagline: 'Peças para máquinas pesadas e agrícolas',
   description:
-    'Distribuidora especializada em peças originais para maquinas pesadas e máquinas pesadas em Contagem e Betim/MG.',
+    'Peças para máquinas pesadas da linha amarela e máquinas agrícolas (MG Agro), com unidades em São Luís/MA e Araguaína/TO.',
   foundedYear: 2014,
 
   email: {
-    contact: 'contato@mgtratorpecas.com.br',
-    sales: 'vendas@mgtratorpecas.com.br',
-    support: 'suporte@mgtratorpecas.com.br',
+    contact: 'comercial@mgtratorpecas.com.br',
+    sales: 'comercial@mgtratorpecas.com.br',
   },
 
   phone: {
-    main: '+553133684500',
-    secondary: '+553133684600',
-    whatsapp: '+5563999828455',
+    main: '+5598991620972',
+    secondary: '+5563999828455',
+    whatsapp: '+5598991620972',
   },
 
   social: {
@@ -38,7 +37,7 @@ export const companyData: CompanyInfo = {
   },
   address: {
     street: 'Av. Guajajaras',
-    number: '404',
+    number: '402',
     complement: 'Tirirical',
     neighborhood: 'Tirirical',
     city: 'São Luís',

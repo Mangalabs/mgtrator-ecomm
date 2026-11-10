@@ -1,3 +1,5 @@
+import { siteConfig } from '@/data/site'
+
 export const COMPANY_INFO = {
   name: 'MG Tratorpeças',
   legalName: 'MG Tratorpeças Ltda',
@@ -7,17 +9,17 @@ export const COMPANY_INFO = {
 
 export const CONTACTS = {
   whatsapp: {
-    number: '5563999828455',
-    formatted: '(31) 9 9875-3200',
-    link: 'https://wa.me/5563999828455',
+    number: siteConfig.contact.whatsapp,
+    formatted: siteConfig.contact.phoneFormatted,
+    link: `https://wa.me/${siteConfig.contact.whatsapp}`,
   },
   phone: {
-    main: '63999828455',
-    formatted: '(31) 9 9875-3200',
+    main: siteConfig.contact.phone,
+    formatted: siteConfig.contact.phoneFormatted,
   },
   email: {
-    contact: 'contato@mgtratorpecas.com.br',
-    sales: 'vendas@mgtratorpecas.com.br',
+    contact: siteConfig.contact.email,
+    sales: siteConfig.contact.email,
   },
   social: {
     instagram: 'https://www.instagram.com/mg_tratorpecas_/',

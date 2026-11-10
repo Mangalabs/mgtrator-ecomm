@@ -11,7 +11,7 @@ const config: Config = {
     extend: {
       colors: {
         primary: '#213A77',
-        secondary: '#FDCC19',
+        secondary: '#F4A30A',
         neutral: {
           50: '#f8fafc',
           100: '#f1f5f9',

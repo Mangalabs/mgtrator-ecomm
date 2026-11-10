@@ -17,10 +17,10 @@ export const CTASection = () => {
   }
 
   return (
-    <section className="py-20 bg-gradient-to-br from-[#213A77] via-[#1a2d5e] to-[#213A77] text-white relative overflow-hidden">
+    <section className="py-20 bg-gradient-to-br from-[var(--primary)] via-[var(--primary-dark)] to-[var(--primary)] text-white relative overflow-hidden">
       <div className="absolute inset-0 opacity-10" aria-hidden="true">
         <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-white rounded-full blur-[120px]" />
-        <div className="absolute bottom-0 left-0 w-[600px] h-[600px] bg-[#FDCC19] rounded-full blur-[120px]" />
+        <div className="absolute bottom-0 left-0 w-[600px] h-[600px] bg-[var(--secondary)] rounded-full blur-[120px]" />
       </div>
 
       <div className="relative max-w-4xl mx-auto px-4 text-center">
@@ -57,7 +57,7 @@ export const CTASection = () => {
               
               return (
                 <div key={idx} className="bg-white/10 backdrop-blur-xl border border-white/20 rounded-2xl p-6">
-                  <Icon className="w-10 h-10 text-[#FDCC19] mx-auto mb-3" />
+                  <Icon className="w-10 h-10 text-[var(--secondary)] mx-auto mb-3" />
                   <div className="font-black text-3xl text-white mb-2">{stat.value}</div>
                   <div className="text-sm text-blue-100 font-semibold">{stat.label}</div>
                 </div>
