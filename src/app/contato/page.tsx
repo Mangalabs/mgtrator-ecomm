@@ -2,7 +2,7 @@ import { Metadata } from 'next'
 import { ContatoPageClient } from '@/components/contato/ContatoPageClient'
 
 export const metadata: Metadata = {
-  title: 'Contato e Orçamentos | MG Tratorpeças',
+  title: 'Contato e Orçamentos',
   description: 'Entre em contato com a MG Tratorpeças para cotações e dúvidas. Atendimento especializado via WhatsApp, telefone e e-mail.',
   keywords: [
     'contato MG Tratorpeças',

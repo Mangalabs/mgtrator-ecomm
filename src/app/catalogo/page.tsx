@@ -56,7 +56,7 @@ export default function CatalogoPage() {
 
               <div className='relative'>
                 <Image
-                  src={isAgro ? '/logo-mgagro.png' : '/logo.png'}
+                  src={isAgro ? '/logo-mgagro-sm.webp' : '/logo.png'}
                   alt={line.brand}
                   width={isAgro ? 72 : 140}
                   height={isAgro ? 72 : 69}

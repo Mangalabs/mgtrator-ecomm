@@ -317,9 +317,9 @@ export const Footer = () => {
             </div>
             <div className='flex flex-wrap justify-center items-center gap-x-6 gap-y-1 text-xs text-[var(--neutral-400)] font-medium'>
               <Link
-                href='/como-comprar'
+                href='/catalogo'
                 className='hover:text-[var(--secondary)] transition-colors py-1'>
-                Como Comprar
+                Catálogo
               </Link>
               <span className='w-1 h-1 rounded-full bg-[var(--neutral-700)] hidden sm:block'></span>
               <Link

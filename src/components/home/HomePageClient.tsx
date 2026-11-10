@@ -50,7 +50,7 @@ const heroSlides: Array<{
   type: SlideType
 }> = [
   {
-    image: '/escavadeira-cat.jpg',
+    image: '/escavadeira-cat.webp',
     title: 'Peças para Máquinas Pesadas',
     subtitle:
       'Especialistas em peças originais Volvo e Caterpillar para todo o Brasil',
@@ -75,7 +75,7 @@ const heroSlides: Array<{
     type: 'agro',
   },
   {
-    image: '/retroescavadeira-cat.jpg',
+    image: '/retroescavadeira-cat.webp',
     title: 'Precisa da Peça Certa para sua Máquina Pesada?',
     subtitle:
       'Solicite sua cotação com especialistas em peças para linha amarela',
@@ -88,7 +88,7 @@ const heroSlides: Array<{
     type: 'quote',
   },
   {
-    image: '/carregadeira-volvo.jpg',
+    image: '/carregadeira-volvo.webp',
     title: 'Prefere Comprar Presencialmente?',
     subtitle: 'Visite nossas lojas em São Luís/MA e Araguaína/TO',
     description: [
@@ -196,7 +196,7 @@ export const HomePageClient = () => {
     <div className='min-h-screen bg-[#F5F5F5]'>
       <section className='relative bg-linear-to-br from-[var(--primary-dark)] to-[var(--ink)] overflow-hidden min-h-[calc(100vh-100px)] flex flex-col justify-center py-32 md:py-40 lg:py-48'>
         <div
-          className='absolute inset-0 bg-[url("/icon-branco.png")] bg-repeat opacity-8 bg-[length:80px_80px] pointer-events-none'
+          className='absolute inset-0 bg-[url("/icon-pattern.webp")] bg-repeat opacity-8 bg-[length:80px_80px] pointer-events-none'
           style={{
             WebkitMaskImage:
               'linear-gradient(to right, black 0%, transparent 90%)',

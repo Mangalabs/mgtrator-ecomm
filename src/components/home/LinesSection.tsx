@@ -6,7 +6,7 @@ import { catalogLines } from '@/data/catalog'
 import { getWhatsAppUrl } from '@/lib/whatsapp'
 
 const panelPhotos: Record<CatalogLine['id'], string> = {
-  'linha-amarela': '/escavadeira-cat.jpg',
+  'linha-amarela': '/escavadeira-cat.webp',
   'linha-verde': '/catalogo/linha-verde/trator-campo.webp',
 }
 
@@ -35,7 +35,7 @@ const LinePanel = ({ line }: { line: CatalogLine }) => {
 
       <div className='relative'>
         <Image
-          src={isAgro ? '/logo-mgagro.png' : '/logo.png'}
+          src={isAgro ? '/logo-mgagro-sm.webp' : '/logo.png'}
           alt={line.brand}
           width={isAgro ? 72 : 150}
           height={isAgro ? 72 : 74}

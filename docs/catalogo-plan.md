@@ -124,3 +124,15 @@ Saem com redirect permanente: `/produtos`, `/produtos/[slug]`,
 - pendente (SEO local): perfil de São Luís mostra só "Tirirical, São Luís -
   MA", sem rua/número/telefone (usuário não vê "Reivindicar", provavelmente
   já é gerenciado); dias de Araguaína assumidos como seg–sex.
+- completed (etapa 6 + hospedagem, 2026-11-10): site passou a export estático
+  para o cPanel (`output: 'export'`, `out/`); removidos rotas e componentes de
+  e-commerce, `api/`, `CartContext`, serviços GestãoClick, dados de produtos e
+  componentes antigos da home; redirects 301, URLs limpas, 404 e cabeçalhos em
+  `public/.htaccess`; imagens pesadas com versões WebP; títulos duplicados de
+  `/contato` e `/politicas` corrigidos.
+- verified (etapa 6): `type-check`; `eslint` (0 erros, 3 warnings); build
+  estático; `out/` servido por Apache 2.4 (Docker) com o `.htaccess`: páginas
+  200, URLs antigas 301, inexistente 404, navegação cliente sem falhas, headers
+  e gzip ok.
+- pendente: revisar o texto de `/politicas` (regras de pedido online);
+  originais pesados (`icon-branco.png`, JPGs) seguem em `public/` sem uso.

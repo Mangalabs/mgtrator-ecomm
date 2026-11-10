@@ -15,31 +15,30 @@ Public website of MG Tratorpeças. The business has two lines:
   its own visual identity.
 
 Sales close through WhatsApp/contact, not online payment. The site is a
-frontend-only Next.js app with no backend of its own.
+Next.js app exported as static files (`output: 'export'`) and hosted on cPanel
+(`public_html`, Apache). There is no server runtime: no route handlers, no
+ISR/`revalidate`, no on-demand image optimization, no runtime env vars.
 
 - Stack: Next.js 16 App Router, React 19, TypeScript strict, Tailwind CSS v4,
   Zod, react-hook-form, framer-motion/motion, lucide-react. Alias `@/*` ->
   `src/*`.
-- `src/app/`: routes, metadata, `sitemap.ts`, `robots.ts`, `manifest.ts`, and
-  route handlers under `api/products/`.
+- `src/app/`: routes, metadata, `sitemap.ts`, `robots.ts`, `manifest.ts`
+  (metadata routes need `export const dynamic = 'force-static'`).
 - `src/components/<feature>/`: UI per page (`*PageClient.tsx`), plus `layout/`,
   `common/`, `shared/`.
-- `src/services/`: data facade `api.ts` choosing a product provider
-  (`backend.server.ts` -> `gestaoclick.server.ts` -> empty result).
-  `*.server.ts` files are server-only.
-- `src/data/`: static content (company, stores, brands, categories) and shared
-  types in `types.ts`.
-- `src/lib/`: pure helpers (title sanitizing, WhatsApp links, constants).
-- `src/hooks/`, `src/contexts/`: client hooks and `CartContext` (quote cart).
+- `src/data/`: static content (company, site, stores, `catalog.ts`) and
+  shared types in `types.ts`.
+- `src/lib/`: pure helpers (WhatsApp links, JSON-LD, constants).
+- `public/.htaccess`: redirects of old URLs, clean URLs (`/lojas` ->
+  `lojas.html`), security and cache headers. Next `redirects()`/`headers()`
+  do not apply to a static export.
 - `.agents/`: specialized rules loaded as needed.
 
-**Current state (2026-10):** access to the GestãoClick ERP API was lost. The
-product catalog, product images, and the e-commerce flow (`/produtos`,
-`/categoria`, `/busca`, `/carrinho`, `/checkout`) depend on that integration and
-are being replaced by a catalog section adapted from the PDF catalogs the
-company maintains. The redesign also merges the MG Tratorpeças and MG Agro
-identities and refreshes photos and visuals. Treat GestãoClick code as legacy:
-do not extend it; remove it only as an explicit, planned step.
+**Current state (2026-11):** the GestãoClick ERP API was lost and the
+e-commerce flow (products, search, cart, checkout, API routes, GestãoClick
+services) was removed. The catalog lives in `src/data/catalog.ts`, adapted from
+the company's PDF catalogs; old URLs redirect via `public/.htaccess`. The
+redesign merges the MG Tratorpeças and MG Agro identities.
 
 ## Instruction routing
 
@@ -125,12 +124,13 @@ request, overwrite user changes, or continue across an unresolved
 merge/rebase conflict. Pull requests target `main` on
 `Mangalabs/mgtrator-ecomm`.
 
-Do not deploy, change Vercel settings, or edit production environment
-variables. The user runs deploys.
+Do not deploy. `npm run build` produces `out/`; the user uploads it to the
+cPanel `public_html` (a `public_html.zip` of `out/` may be prepared on request).
+Never upload, change hosting settings, or touch the production server.
 
 ## Engineering invariants
 
-- Preserve public URLs, route handler payloads, metadata, sitemap entries, and
+- Preserve public URLs, metadata, sitemap entries, and
   shared types unless a change is explicitly required; removed or renamed
   pages need a redirect plan (see `.agents/catalog-content.md`).
 - Search both producers and consumers before changing a type or contract;

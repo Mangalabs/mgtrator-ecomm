@@ -61,7 +61,7 @@ export const CatalogLinePage = ({ line }: CatalogLinePageProps) => {
             </nav>
 
             <Image
-              src={isAgro ? '/logo-mgagro.png' : '/logo.png'}
+              src={isAgro ? '/logo-mgagro-sm.webp' : '/logo.png'}
               alt={line.brand}
               width={isAgro ? 88 : 180}
               height={isAgro ? 88 : 89}

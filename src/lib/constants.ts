@@ -188,11 +188,8 @@ export const PAYMENT_METHODS = [
 
 export const ROUTES = {
   home: '/',
-  products: '/produtos',
-  product: (slug: string) => `/produtos/${slug}`,
-  category: (slug: string) => `/categoria/${slug}`,
-  brands: '/marcas',
-  brand: (slug: string) => `/marcas/${slug}`,
+  catalog: '/catalogo',
+  catalogLine: (line: string) => `/catalogo/${line}`,
   stores: '/lojas',
   contact: '/contato',
   about: '/sobre',

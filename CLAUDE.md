@@ -82,14 +82,15 @@ de presumir.
 ## Regras de engenharia
 
 - Server Components por padrão; `'use client'` só onde houver interação.
-- Componentes não chamam serviços `*.server.ts` diretamente a partir do
-  cliente; dados passam por `src/services/api.ts` em código de servidor ou por
-  route handlers.
+- O site é exportado como estático (`output: 'export'`) para a `public_html`
+  do cPanel: nada de route handlers, `revalidate`, APIs de request
+  (`cookies`, `headers`, `searchParams` no servidor) ou variáveis de ambiente
+  em runtime. Redirects e cabeçalhos ficam em `public/.htaccess`.
 - Conteúdo estático e tipos ficam em `src/data/`; helpers puros em `src/lib/`.
 - Não introduza outro sistema de estado, estilo, componentes ou fetch sem
   decisão explícita.
-- Não estenda a integração GestãoClick. Sua remoção é uma etapa planejada, não
-  efeito colateral (ver `.agents/catalog-content.md`).
+- A integração GestãoClick e o fluxo de e-commerce foram removidos
+  (2026-11); não os reintroduza sem decisão explícita.
 - Preserve URLs indexadas ou planeje redirects ao remover páginas.
 
 ## Fonte de dados inexistente

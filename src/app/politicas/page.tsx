@@ -2,7 +2,7 @@ import { Metadata } from 'next'
 import { PoliticasPageClient } from '@/components/politicas/PoliticasPageClient'
 
 export const metadata: Metadata = {
-  title: 'Políticas e Termos - Privacidade, Trocas, Garantia | MG Tratorpeças',
+  title: 'Políticas e Termos - Privacidade, Trocas, Garantia',
   description:
     'Conheça nossas políticas de privacidade (LGPD), trocas e devoluções, garantia, entrega e termos de uso. Compre com segurança e transparência na MG Tratorpeças.',
   keywords: [

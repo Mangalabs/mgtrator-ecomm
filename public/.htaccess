@@ -1,0 +1,53 @@
+# MG Tratorpeças — site estático (Next.js `output: 'export'`) no cPanel.
+# Este arquivo vai para a raiz da public_html junto com o restante de `out/`.
+
+Options -MultiViews -Indexes
+DirectorySlash Off
+DirectoryIndex index.html
+ErrorDocument 404 /404.html
+
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+
+  # URLs da antiga loja virtual (indexadas no Google) -> páginas atuais.
+  RewriteRule ^home/?$ / [R=301,L]
+  RewriteRule ^produtos(/.*)?$ /catalogo [R=301,L,QSD]
+  RewriteRule ^categoria(/.*)?$ /catalogo [R=301,L,QSD]
+  RewriteRule ^busca/?$ /catalogo [R=301,L,QSD]
+  RewriteRule ^(carrinho|checkout)/?$ /catalogo [R=301,L,QSD]
+  RewriteRule ^marcas(/.*)?$ /catalogo/linha-amarela [R=301,L,QSD]
+  RewriteRule ^como-comprar/?$ /contato [R=301,L,QSD]
+
+  # Sem barra final: /lojas/ -> /lojas
+  RewriteCond %{REQUEST_FILENAME} !-f
+  RewriteRule ^(.+)/$ /$1 [R=301,L]
+
+  # URLs limpas: /lojas -> lojas.html
+  RewriteCond %{REQUEST_FILENAME} !-f
+  RewriteCond %{DOCUMENT_ROOT}/$1.html -f
+  RewriteRule ^(.+)$ $1.html [L]
+</IfModule>
+
+<IfModule mod_headers.c>
+  Header always set X-Frame-Options "SAMEORIGIN"
+  Header always set X-Content-Type-Options "nosniff"
+  Header always set Referrer-Policy "origin-when-cross-origin"
+  Header always set Cross-Origin-Opener-Policy "same-origin"
+  Header always set Strict-Transport-Security "max-age=63072000; includeSubDomains; preload"
+  Header always set Content-Security-Policy "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://connect.facebook.net https://www.googletagmanager.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; font-src 'self' data:; frame-src 'self' https://www.google.com;"
+
+  # Arquivos com hash no nome nunca mudam; o HTML é sempre revalidado.
+  <If "%{REQUEST_URI} =~ m#^/_next/static/#">
+    Header set Cache-Control "public, max-age=31536000, immutable"
+  </If>
+  <FilesMatch "\.(html|txt)$">
+    Header set Cache-Control "no-cache"
+  </FilesMatch>
+  <FilesMatch "\.(webp|png|jpe?g|svg|ico|pdf)$">
+    Header set Cache-Control "public, max-age=604800"
+  </FilesMatch>
+</IfModule>
+
+<IfModule mod_deflate.c>
+  AddOutputFilterByType DEFLATE text/html text/css text/plain text/xml application/javascript application/json application/xml image/svg+xml
+</IfModule>
