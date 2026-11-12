@@ -1,16 +1,24 @@
 'use client'
 
 import { useState, useEffect } from 'react'
+import { usePathname } from 'next/navigation'
 import { MessageCircle, X } from 'lucide-react'
 import { motion, AnimatePresence } from 'motion/react'
 import { CONTACTS, WHATSAPP_MESSAGES } from '@/lib/constants'
 import { generateWhatsAppLink } from '@/lib/utils'
-import { openWhatsApp } from '@/lib/tracking'
+import { openWhatsApp, toTrackingLine } from '@/lib/tracking'
 import { siteConfig } from '@/data/site'
+import { catalogLines } from '@/data/catalog'
 
 export const WhatsAppFloating = () => {
   const [isVisible, setIsVisible] = useState(false)
   const [isOpen, setIsOpen] = useState(false)
+  const pathname = usePathname()
+
+  // Na página de uma linha do catálogo (ex.: /catalogo/linha-verde, destino da
+  // campanha MG Agro) o botão fala com o contato daquela linha.
+  const line = catalogLines.find((l) => pathname?.startsWith(`/catalogo/${l.id}`))
+  const contact = line?.contacts[0]
 
   useEffect(() => {
     const handleScroll = () => {
@@ -22,10 +30,14 @@ export const WhatsAppFloating = () => {
   }, [])
 
   const handleWhatsApp = () => {
-    openWhatsApp(generateWhatsAppLink(CONTACTS.whatsapp.number, WHATSAPP_MESSAGES.default), {
-      source: 'floating',
-      unit: siteConfig.contact.unit,
-    })
+    openWhatsApp(
+      generateWhatsAppLink(contact?.whatsapp ?? CONTACTS.whatsapp.number, WHATSAPP_MESSAGES.default),
+      {
+        source: 'floating',
+        line: line ? toTrackingLine(line.id) : undefined,
+        unit: contact?.unit ?? siteConfig.contact.unit,
+      },
+    )
     setIsOpen(false)
   }
 
