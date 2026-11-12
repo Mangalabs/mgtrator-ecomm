@@ -1,0 +1,100 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "redirects": [
+    {
+      "source": "/home",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/produtos",
+      "destination": "/catalogo",
+      "permanent": true
+    },
+    {
+      "source": "/produtos/:path*",
+      "destination": "/catalogo",
+      "permanent": true
+    },
+    {
+      "source": "/categoria",
+      "destination": "/catalogo",
+      "permanent": true
+    },
+    {
+      "source": "/categoria/:path*",
+      "destination": "/catalogo",
+      "permanent": true
+    },
+    {
+      "source": "/busca",
+      "destination": "/catalogo",
+      "permanent": true
+    },
+    {
+      "source": "/carrinho",
+      "destination": "/catalogo",
+      "permanent": true
+    },
+    {
+      "source": "/checkout",
+      "destination": "/catalogo",
+      "permanent": true
+    },
+    {
+      "source": "/marcas",
+      "destination": "/catalogo/linha-amarela",
+      "permanent": true
+    },
+    {
+      "source": "/marcas/:path*",
+      "destination": "/catalogo/linha-amarela",
+      "permanent": true
+    },
+    {
+      "source": "/como-comprar",
+      "destination": "/contato",
+      "permanent": true
+    }
+  ],
+  "headers": [
+    {
+      "source": "/(.*)",
+      "headers": [
+        {
+          "key": "X-Frame-Options",
+          "value": "SAMEORIGIN"
+        },
+        {
+          "key": "X-Content-Type-Options",
+          "value": "nosniff"
+        },
+        {
+          "key": "Referrer-Policy",
+          "value": "origin-when-cross-origin"
+        },
+        {
+          "key": "Cross-Origin-Opener-Policy",
+          "value": "same-origin"
+        },
+        {
+          "key": "Strict-Transport-Security",
+          "value": "max-age=63072000; includeSubDomains; preload"
+        },
+        {
+          "key": "Content-Security-Policy",
+          "value": "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://*.googletagmanager.com https://www.googleadservices.com https://googleads.g.doubleclick.net https://www.google.com https://*.google-analytics.com https://connect.facebook.net; style-src 'self' 'unsafe-inline' https://*.googletagmanager.com; img-src 'self' data: https:; font-src 'self' data:; connect-src 'self' https://*.google-analytics.com https://*.analytics.google.com https://*.googletagmanager.com https://pagead2.googlesyndication.com https://www.googleadservices.com https://googleads.g.doubleclick.net https://*.doubleclick.net https://www.google.com https://google.com https://www.google.com.br; frame-src 'self' https://www.google.com https://www.googletagmanager.com https://td.doubleclick.net https://bid.g.doubleclick.net;"
+        }
+      ]
+    },
+    {
+      "source": "/((?!_next/)[^.]*)",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "no-store"
+        }
+      ]
+    }
+  ]
+}

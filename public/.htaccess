@@ -34,7 +34,8 @@ ErrorDocument 404 /404.html
   Header always set Referrer-Policy "origin-when-cross-origin"
   Header always set Cross-Origin-Opener-Policy "same-origin"
   Header always set Strict-Transport-Security "max-age=63072000; includeSubDomains; preload"
-  Header always set Content-Security-Policy "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://connect.facebook.net https://www.googletagmanager.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; font-src 'self' data:; frame-src 'self' https://www.google.com;"
+  # CSP com os domínios da tag do Google (Google Ads/Analytics via GTM).
+  Header always set Content-Security-Policy "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://*.googletagmanager.com https://www.googleadservices.com https://googleads.g.doubleclick.net https://www.google.com https://*.google-analytics.com https://connect.facebook.net; style-src 'self' 'unsafe-inline' https://*.googletagmanager.com; img-src 'self' data: https:; font-src 'self' data:; connect-src 'self' https://*.google-analytics.com https://*.analytics.google.com https://*.googletagmanager.com https://pagead2.googlesyndication.com https://www.googleadservices.com https://googleads.g.doubleclick.net https://*.doubleclick.net https://www.google.com https://google.com https://www.google.com.br; frame-src 'self' https://www.google.com https://www.googletagmanager.com https://td.doubleclick.net https://bid.g.doubleclick.net;"
 
   # Arquivos com hash no nome nunca mudam; o HTML é sempre revalidado.
   <If "%{REQUEST_URI} =~ m#^/_next/static/#">
@@ -42,6 +43,14 @@ ErrorDocument 404 /404.html
   </If>
   <FilesMatch "\.(html|txt)$">
     Header set Cache-Control "no-cache"
+  </FilesMatch>
+
+  # O roteador do Next 16 pré-carrega links pedindo só os primeiros bytes do
+  # HTML (Range). Se o navegador guarda esse pedaço (206), uma navegação
+  # completa depois abre a página em branco. O HTML é sempre servido inteiro.
+  <FilesMatch "\.html$">
+    RequestHeader unset Range
+    Header unset Accept-Ranges
   </FilesMatch>
   <FilesMatch "\.(webp|png|jpe?g|svg|ico|pdf)$">
     Header set Cache-Control "public, max-age=604800"

@@ -5,6 +5,8 @@ import { MessageCircle, X } from 'lucide-react'
 import { motion, AnimatePresence } from 'motion/react'
 import { CONTACTS, WHATSAPP_MESSAGES } from '@/lib/constants'
 import { generateWhatsAppLink } from '@/lib/utils'
+import { openWhatsApp } from '@/lib/tracking'
+import { siteConfig } from '@/data/site'
 
 export const WhatsAppFloating = () => {
   const [isVisible, setIsVisible] = useState(false)
@@ -20,7 +22,10 @@ export const WhatsAppFloating = () => {
   }, [])
 
   const handleWhatsApp = () => {
-    window.open(generateWhatsAppLink(CONTACTS.whatsapp.number, WHATSAPP_MESSAGES.default), '_blank')
+    openWhatsApp(generateWhatsAppLink(CONTACTS.whatsapp.number, WHATSAPP_MESSAGES.default), {
+      source: 'floating',
+      unit: siteConfig.contact.unit,
+    })
     setIsOpen(false)
   }
 

@@ -82,10 +82,20 @@ de presumir.
 ## Regras de engenharia
 
 - Server Components por padrão; `'use client'` só onde houver interação.
-- O site é exportado como estático (`output: 'export'`) para a `public_html`
-  do cPanel: nada de route handlers, `revalidate`, APIs de request
-  (`cookies`, `headers`, `searchParams` no servidor) ou variáveis de ambiente
-  em runtime. Redirects e cabeçalhos ficam em `public/.htaccess`.
+- O site é exportado como estático (`output: 'export'`): nada de route
+  handlers, `revalidate`, APIs de request (`cookies`, `headers`,
+  `searchParams` no servidor) ou variáveis de ambiente em runtime.
+- Produção atual: Vercel, ligada a `Mangalabs/mgtrator-ecomm` (`main` →
+  produção; branches → preview). O mesmo `out/` também roda no cPanel.
+  Redirects e cabeçalhos ficam em `vercel.json` (Vercel) e
+  `public/.htaccess` (Apache/cPanel); mantenha os dois equivalentes.
+- HTML não pode ser cacheado em pedaços: o roteador do Next 16 pré-carrega
+  páginas com `Range` e o navegador abre a página em branco depois
+  (`no-store` no `vercel.json`, `Range` descartado no `.htaccess`).
+- Cliques no WhatsApp emitem `whatsapp_click` via `src/lib/tracking.ts`
+  (`trackWhatsAppClick`, `openWhatsApp`, `WhatsAppLink`); todo novo link de
+  WhatsApp deve usá-los. O GTM (`siteConfig.tracking`) é carregado em
+  `TrackingScripts`.
 - Conteúdo estático e tipos ficam em `src/data/`; helpers puros em `src/lib/`.
 - Não introduza outro sistema de estado, estilo, componentes ou fetch sem
   decisão explícita.

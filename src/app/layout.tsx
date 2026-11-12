@@ -5,6 +5,7 @@ import { Barlow_Condensed, Inter } from 'next/font/google'
 import { Header } from '@/components/layout/Header'
 import { Footer } from '@/components/layout/Footer'
 import { WhatsAppFloating } from '@/components/layout/WhatsAppFloating'
+import { TrackingScripts } from '@/components/shared/TrackingScripts'
 
 const inter = Inter({ subsets: ['latin'] })
 const barlowCondensed = Barlow_Condensed({
@@ -78,6 +79,7 @@ export default function RootLayout({
       className={barlowCondensed.variable}
       suppressHydrationWarning>
       <body className={inter.className} suppressHydrationWarning>
+        <TrackingScripts />
         <Header />
         <main>{children}</main>
         <Footer />

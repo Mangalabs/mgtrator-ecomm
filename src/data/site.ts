@@ -17,12 +17,17 @@ export const siteConfig = {
     phoneFormatted: '(98) 99162-0972',
     whatsapp: '5598991620972',
     email: 'comercial@mgtratorpecas.com.br',
+    unit: 'sao_luis',
   },
   agroContact: {
     name: 'MG Agro',
     phone: '+5563991012458',
     phoneFormatted: '(63) 99101-2458',
     whatsapp: '5563991012458',
+  },
+  // Tag do Google (Google Ads). ID público; vai no HTML de todas as páginas.
+  tracking: {
+    googleTagId: 'GTM-NB4JHDTS',
   },
   social: {
     instagram: 'https://www.instagram.com/mg_tratorpecas_/',

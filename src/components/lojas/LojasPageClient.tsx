@@ -19,6 +19,7 @@ import Link from 'next/link'
 import { ImageWithFallback } from '@/components/figma/ImageWithFallback'
 import { storesData, type ExtendedStore } from '@/data/stores'
 import { siteConfig } from '@/data/site'
+import { openWhatsApp, toTrackingUnit, trackWhatsAppClick } from '@/lib/tracking'
 import PageHero from '../common/PageHero'
 
 interface LojasPageClientProps {
@@ -34,14 +35,14 @@ export const LojasPageClient = ({
   description = 'Unidades em São Luís/MA e Araguaína/TO',
   breadcrumbs = [{ label: 'Lojas', href: '' }],
 }: LojasPageClientProps) => {
-  const handleWhatsApp = (storeWhatsapp?: string) => {
+  const handleWhatsApp = (storeWhatsapp?: string, unit: string = siteConfig.contact.unit) => {
     const phone = storeWhatsapp
       ? storeWhatsapp.replace(/\D/g, '')
       : siteConfig.contact.whatsapp
     const message = encodeURIComponent(
       'Olá! Gostaria de consultar sobre peças para maquinas pesadas e máquinas pesadas. Pode me ajudar?',
     )
-    window.open(`https://wa.me/${phone}?text=${message}`, '_blank')
+    openWhatsApp(`https://wa.me/${phone}?text=${message}`, { source: 'stores_page', unit })
   }
 
   return (
@@ -169,6 +170,12 @@ export const LojasPageClient = ({
                                 </span>{' '}
                                 <a
                                   href={`https://wa.me/${store.contact.whatsapp.replace(/\D/g, '')}`}
+                                  onClick={(event) =>
+                                    trackWhatsAppClick(event.currentTarget.href, {
+                                      source: 'stores_page',
+                                      unit: toTrackingUnit(store.slug),
+                                    })
+                                  }
                                   className='hover:text-[#25D366] transition-colors font-medium'>
                                   {store.contact.phoneFormatted}
                                 </a>
@@ -213,7 +220,9 @@ export const LojasPageClient = ({
 
                     <div className='grid grid-cols-2 gap-3 mt-auto'>
                       <button
-                        onClick={() => handleWhatsApp(store.contact.whatsapp)}
+                        onClick={() =>
+                          handleWhatsApp(store.contact.whatsapp, toTrackingUnit(store.slug))
+                        }
                         className='flex items-center justify-center gap-2 bg-gradient-to-br from-[#25D366] to-[#20BD5A] text-white py-4 px-5 rounded-2xl font-black hover:shadow-xl hover:scale-[1.02] transition-all duration-300'>
                         <MessageCircle className='w-5 h-5' />
                         <span>WhatsApp</span>
@@ -504,7 +513,7 @@ export const LojasPageClient = ({
                   <div className='flex items-center gap-3 text-[#2D3277]'>
                     <div className='w-2 h-2 bg-[#2D3277] rounded-full' />
                     <span className='font-semibold'>
-                      Parcele em até 12x sem juros
+                      Parcelamento no cartão
                     </span>
                   </div>
                   <div className='flex items-center gap-3 text-[#2D3277]'>

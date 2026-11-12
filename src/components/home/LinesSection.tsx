@@ -4,6 +4,8 @@ import { ArrowRight, MessageCircle } from 'lucide-react'
 import type { CatalogLine } from '@/data/types'
 import { catalogLines } from '@/data/catalog'
 import { getWhatsAppUrl } from '@/lib/whatsapp'
+import { toTrackingLine } from '@/lib/tracking'
+import { WhatsAppLink } from '@/components/shared/WhatsAppLink'
 
 const panelPhotos: Record<CatalogLine['id'], string> = {
   'linha-amarela': '/escavadeira-cat.webp',
@@ -53,14 +55,19 @@ const LinePanel = ({ line }: { line: CatalogLine }) => {
             Ver catálogo
             <ArrowRight className='h-5 w-5' aria-hidden='true' />
           </Link>
-          <a
+          <WhatsAppLink
             href={getWhatsAppUrl(undefined, undefined, line.contacts[0].whatsapp)}
+            tracking={{
+              source: 'home_lines',
+              line: toTrackingLine(line.id),
+              unit: line.contacts[0].unit,
+            }}
             target='_blank'
             rel='noopener noreferrer'
             className='inline-flex min-h-12 items-center gap-2 rounded-md border border-white/40 px-5 font-semibold text-white transition-colors hover:border-white hover:bg-white/10 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white'>
             <MessageCircle className='h-5 w-5' aria-hidden='true' />
             WhatsApp {isAgro ? 'MG Agro' : line.contacts[0].label}
-          </a>
+          </WhatsAppLink>
         </div>
       </div>
     </div>

@@ -1,15 +1,18 @@
 import Image from 'next/image'
 import { MessageCircle } from 'lucide-react'
-import type { CatalogItem } from '@/data/types'
+import type { CatalogContact, CatalogItem, CatalogLineId } from '@/data/types'
 import { getWhatsAppUrl } from '@/lib/whatsapp'
+import { toTrackingLine } from '@/lib/tracking'
+import { WhatsAppLink } from '@/components/shared/WhatsAppLink'
 
 interface CatalogItemCardProps {
   item: CatalogItem
-  whatsapp: string
+  lineId: CatalogLineId
+  contact: CatalogContact
   dark?: boolean
 }
 
-export const CatalogItemCard = ({ item, whatsapp, dark = false }: CatalogItemCardProps) => {
+export const CatalogItemCard = ({ item, lineId, contact, dark = false }: CatalogItemCardProps) => {
   return (
     <li className='flex flex-col'>
       {/* Moldura âmbar herdada dos catálogos em PDF. */}
@@ -36,8 +39,14 @@ export const CatalogItemCard = ({ item, whatsapp, dark = false }: CatalogItemCar
         {item.description}
       </p>
 
-      <a
-        href={getWhatsAppUrl(item.name, undefined, whatsapp)}
+      <WhatsAppLink
+        href={getWhatsAppUrl(item.name, undefined, contact.whatsapp)}
+        tracking={{
+          source: 'catalog_item',
+          line: toTrackingLine(lineId),
+          product: item.name,
+          unit: contact.unit,
+        }}
         target='_blank'
         rel='noopener noreferrer'
         aria-label={`Consultar ${item.name} no WhatsApp`}
@@ -46,7 +55,7 @@ export const CatalogItemCard = ({ item, whatsapp, dark = false }: CatalogItemCar
         }`}>
         <MessageCircle className='h-4 w-4 shrink-0' aria-hidden='true' />
         Consultar
-      </a>
+      </WhatsAppLink>
     </li>
   )
 }

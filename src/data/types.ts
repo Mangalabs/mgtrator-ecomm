@@ -383,6 +383,8 @@ export interface CatalogContact {
   label: string
   phoneFormatted: string
   whatsapp: string
+  /** Unidade para rastreamento (`sao_luis`, `araguaina`, `mg_agro`). */
+  unit: string
 }
 
 export interface CatalogLine {

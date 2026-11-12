@@ -12,6 +12,7 @@ import {
 } from 'lucide-react'
 import { storesData } from '@/data/stores'
 import { siteConfig } from '@/data/site'
+import { trackWhatsAppClick } from '@/lib/tracking'
 import Link from 'next/link'
 import PageHero from '../common/PageHero'
 
@@ -91,6 +92,12 @@ export const ContatoPageClient = () => {
               </div>
               <a
                 href={`https://wa.me/${siteConfig.contact.whatsapp}`}
+                onClick={(event) =>
+                  trackWhatsAppClick(event.currentTarget.href, {
+                    source: 'contact_page',
+                    unit: siteConfig.contact.unit,
+                  })
+                }
                 target='_blank'
                 rel='noopener noreferrer'
                 className='inline-block bg-white text-[#25D366] px-6 py-2 rounded-lg font-semibold hover:bg-green-50 transition-colors'>

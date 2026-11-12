@@ -4,6 +4,7 @@ import { useEffect } from 'react'
 import { AlertCircle, RefreshCw, Home } from 'lucide-react'
 import Link from 'next/link'
 import { siteConfig } from '@/data/site'
+import { trackWhatsAppClick } from '@/lib/tracking'
 
 export default function Error({
   error,
@@ -59,7 +60,15 @@ export default function Error({
         <div className="mt-12 bg-white rounded-2xl border-2 border-slate-200 p-6">
           <p className="text-slate-700">
             Se o problema persistir, entre em contato conosco pelo{' '}
-            <a href={`https://wa.me/${siteConfig.contact.whatsapp}`} className="text-[var(--primary)] hover:underline font-semibold">
+            <a
+              href={`https://wa.me/${siteConfig.contact.whatsapp}`}
+              onClick={(event) =>
+                trackWhatsAppClick(event.currentTarget.href, {
+                  source: 'error_page',
+                  unit: siteConfig.contact.unit,
+                })
+              }
+              className="text-[var(--primary)] hover:underline font-semibold">
               WhatsApp
             </a>
             {' '}ou{' '}

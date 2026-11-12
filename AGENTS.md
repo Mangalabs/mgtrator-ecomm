@@ -124,9 +124,11 @@ request, overwrite user changes, or continue across an unresolved
 merge/rebase conflict. Pull requests target `main` on
 `Mangalabs/mgtrator-ecomm`.
 
-Do not deploy. `npm run build` produces `out/`; the user uploads it to the
-cPanel `public_html` (a `public_html.zip` of `out/` may be prepared on request).
-Never upload, change hosting settings, or touch the production server.
+Do not deploy without an explicit request. Production is Vercel, connected
+to `Mangalabs/mgtrator-ecomm`: pushing `main` deploys production, other
+branches get preview deployments. `npm run build` also produces `out/` for
+the cPanel `public_html` (with `public/.htaccess`). Keep `vercel.json` and
+`public/.htaccess` equivalent. Never change hosting settings or env vars.
 
 ## Engineering invariants
 

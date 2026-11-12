@@ -4,6 +4,8 @@ import { Download, MessageCircle } from 'lucide-react'
 import type { CatalogLine } from '@/data/types'
 import { catalogLines } from '@/data/catalog'
 import { getWhatsAppUrl } from '@/lib/whatsapp'
+import { toTrackingLine } from '@/lib/tracking'
+import { WhatsAppLink } from '@/components/shared/WhatsAppLink'
 import { Breadcrumbs } from '@/components/layout/Breadcrumbs'
 import { CatalogItemCard } from './CatalogItemCard'
 
@@ -13,7 +15,8 @@ interface CatalogLinePageProps {
 
 export const CatalogLinePage = ({ line }: CatalogLinePageProps) => {
   const isAgro = line.id === 'linha-verde'
-  const itemWhatsapp = line.contacts[0].whatsapp
+  const mainContact = line.contacts[0]
+  const trackingLine = toTrackingLine(line.id)
 
   return (
     <div className={isAgro ? 'bg-agro-deep text-white' : 'bg-(--neutral-50) text-ink'}>
@@ -72,9 +75,10 @@ export const CatalogLinePage = ({ line }: CatalogLinePageProps) => {
 
             <div className='mt-8 flex flex-wrap gap-3'>
               {line.contacts.map((contact) => (
-                <a
+                <WhatsAppLink
                   key={contact.whatsapp}
                   href={getWhatsAppUrl(undefined, undefined, contact.whatsapp)}
+                  tracking={{ source: 'catalog_general', line: trackingLine, unit: contact.unit }}
                   target='_blank'
                   rel='noopener noreferrer'
                   className='inline-flex min-h-12 items-center gap-2 rounded-md bg-secondary px-5 font-semibold text-ink transition-colors hover:bg-secondary-light focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white'>
@@ -83,7 +87,7 @@ export const CatalogLinePage = ({ line }: CatalogLinePageProps) => {
                     WhatsApp {contact.label}
                     <span className='sr-only'>, {contact.phoneFormatted}</span>
                   </span>
-                </a>
+                </WhatsAppLink>
               ))}
               <a
                 href={line.pdf.href}
@@ -149,7 +153,13 @@ export const CatalogLinePage = ({ line }: CatalogLinePageProps) => {
 
             <ul className='grid grid-cols-2 gap-x-4 gap-y-8 sm:grid-cols-3 lg:grid-cols-4 lg:gap-x-6'>
               {category.items.map((item) => (
-                <CatalogItemCard key={item.id} item={item} whatsapp={itemWhatsapp} dark={isAgro} />
+                <CatalogItemCard
+                  key={item.id}
+                  item={item}
+                  lineId={line.id}
+                  contact={mainContact}
+                  dark={isAgro}
+                />
               ))}
             </ul>
           </section>
@@ -175,14 +185,15 @@ export const CatalogLinePage = ({ line }: CatalogLinePageProps) => {
               confirmamos a disponibilidade.
             </p>
           </div>
-          <a
-            href={getWhatsAppUrl(undefined, undefined, itemWhatsapp)}
+          <WhatsAppLink
+            href={getWhatsAppUrl(undefined, undefined, mainContact.whatsapp)}
+            tracking={{ source: 'catalog_general', line: trackingLine, unit: mainContact.unit }}
             target='_blank'
             rel='noopener noreferrer'
             className='inline-flex min-h-12 items-center justify-center gap-2 rounded-md bg-secondary px-5 font-semibold text-ink transition-colors hover:bg-secondary-light focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary'>
             <MessageCircle className='h-5 w-5' aria-hidden='true' />
             Enviar pelo WhatsApp
-          </a>
+          </WhatsAppLink>
         </div>
 
         <p className={`pb-10 text-xs! ${isAgro ? 'text-white/60' : 'text-(--neutral-500)'}`}>

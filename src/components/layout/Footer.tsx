@@ -14,6 +14,7 @@ import {
 import { siteConfig } from '@/data/site'
 import { storesData } from '@/data/stores'
 import { getWhatsAppUrl } from '@/lib/whatsapp'
+import { trackWhatsAppClick } from '@/lib/tracking'
 
 export const Footer = () => {
   return (
@@ -186,6 +187,12 @@ export const Footer = () => {
                   </div>
                   <a
                     href={getWhatsAppUrl()}
+                    onClick={() =>
+                      trackWhatsAppClick(getWhatsAppUrl(), {
+                        source: 'footer',
+                        unit: siteConfig.contact.unit,
+                      })
+                    }
                     target='_blank'
                     rel='noopener noreferrer'
                     className='text-sm sm:text-base text-white hover:text-[var(--secondary)] transition-colors font-semibold'
@@ -219,6 +226,12 @@ export const Footer = () => {
             <div className='flex flex-col sm:flex-row lg:flex-col xl:flex-row gap-6'>
               <a
                 href={getWhatsAppUrl()}
+                onClick={() =>
+                  trackWhatsAppClick(getWhatsAppUrl(), {
+                    source: 'footer',
+                    unit: siteConfig.contact.unit,
+                  })
+                }
                 target='_blank'
                 rel='noopener noreferrer'
                 className='flex-1 inline-flex justify-center items-center gap-2 bg-gradient-to-r from-[#25D366] to-[#20BD5A] hover:from-[#20BD5A] hover:to-[#1DA851] text-white  py-2 rounded-xl font-bold text-md transition-all shadow-lg hover:shadow-xl hover:scale-[1.02] active:scale-[0.98]'
